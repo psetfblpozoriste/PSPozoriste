@@ -24,4 +24,8 @@ public class AdministrativniRadnik extends RadnikKojiKoristiSistem {
         System.err.println("Milica");
     }
     
+    public void metoda_nova(){
+        
+    }
+    
 }
