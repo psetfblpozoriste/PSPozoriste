@@ -19,4 +19,9 @@ public class AdministrativniRadnik extends RadnikKojiKoristiSistem {
         System.err.println("============");
     }
     
+    
+    public void metoda(){
+        System.err.println("Djole i mac kralja milovana :P ");
+    }
+    
 }
