@@ -93,12 +93,13 @@ public class PregledRadnikaController implements Initializable {
     @FXML
     private TextArea taBiografija;
 
-    public static ObservableList<Radnik> radniciObservaleList = FXCollections.observableArrayList();
+    public static ObservableList<Radnik> radniciObservableList = FXCollections.observableArrayList();
 
     public static Radnik radnikIzPretrage;
     
     public static boolean dodajRadnika = true;
     public static Radnik izabraniRadnik,radnikIzPretraga;//, radnikIzPretrage;
+        public static String tipRadnika = "";
 
     @FXML
     void dodajRadnikaAction(ActionEvent event) {
@@ -113,10 +114,20 @@ public class PregledRadnikaController implements Initializable {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    
     @FXML
     void izmijeniRadnikaAction(ActionEvent event) {
-    try {
+        
+            dodajRadnika = false;         
+            ObservableList<Radnik> izabranaVrsta,radniciObservableList;
+            radniciObservableList = radniciTableView.getItems();
+            izabranaVrsta = radniciTableView.getSelectionModel().getSelectedItems();
+            izabraniRadnik = (Radnik) izabranaVrsta.get(0);
+            tipRadnika = ((Radnik) izabranaVrsta.get(0)).getTipRadnika();
+            if(izabraniRadnik != null){
+             try {
+            System.out.println("IZMJENAAA");
             Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRadnika.fxml"));
 
             Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
@@ -126,6 +137,9 @@ public class PregledRadnikaController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
+            } else {
+                
+            }
     }
 
     @FXML
@@ -135,7 +149,7 @@ public class PregledRadnikaController implements Initializable {
         if (pattern.matcher(tfPretraga.getText()).matches() && (tfPretraga.getText().length() == 13)) {
             radniciTableView.getColumns().clear();
             final String zaPorednje = tfPretraga.getText();
-            Optional<Radnik> radnik = radniciObservaleList.stream().filter(e -> e.getJmb().equals(zaPorednje)).findFirst();
+            Optional<Radnik> radnik = radniciObservableList.stream().filter(e -> e.getJmb().equals(zaPorednje)).findFirst();
             ObservableList<Radnik> radnikIzPretrageObservableList = null;
             if (radnik.isPresent()) {
                 radnikIzPretrageObservableList = FXCollections.observableArrayList();
@@ -153,9 +167,10 @@ public class PregledRadnikaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //RadnikDAO.ubaciUTabeluRadnik();
+        taBiografija.setEditable(false);
         BIletarDAO.ubaciUTabeluRadnik();
         UmjetnikDAO.ubaciUTabeluRadnik();
-        ubaciKoloneUTabeluRadnik(radniciObservaleList);
+        ubaciKoloneUTabeluRadnik(radniciObservableList);
         radniciTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 //radniciTableView.getSelectionModel().clearSelection();
@@ -195,7 +210,7 @@ public class PregledRadnikaController implements Initializable {
         korisnickoImeColumn = new TableColumn("Korisnicko Ime");
         korisnickoImeColumn.setCellValueFactory(new PropertyValueFactory<>("korisnickoIme"));
 
-        radniciTableView.setItems(radniciObservaleList);
+        radniciTableView.setItems(radniciObservableList);
         radniciTableView.getColumns().addAll(imeColumn, prezimeColumn, opisPoslaColumn, jmbColumn, kontaktColumn, korisnickoImeColumn);
 
         //statusRadnikaColumn = new TableColumn("Status radnika");
@@ -221,6 +236,14 @@ public class PregledRadnikaController implements Initializable {
         alert.setTitle("Greska prilikom unosa podataka !");
         alert.setHeaderText(null);
         alert.setContentText("Provjerite polja za pretragu po JMB-u.");
+        alert.showAndWait();
+    }
+    
+        private void upozorenjeIzaberi() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom izbora zaposlenog !");
+        alert.setHeaderText(null);
+        alert.setContentText("Izaberite zaposlenog iz tabele !");
         alert.showAndWait();
     }
 

@@ -29,7 +29,7 @@ import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
 /**
  * FXML Controller class
  *
- * @author Grupa6
+ * @author djord
  */
 
 

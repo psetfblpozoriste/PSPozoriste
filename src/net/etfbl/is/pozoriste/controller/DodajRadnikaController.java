@@ -127,6 +127,9 @@ public class DodajRadnikaController implements Initializable {
                 }
 
                 Biletar biletar = new Biletar();
+                 if(!PregledRadnikaController.dodajRadnika){
+                    biletar = (Biletar)PregledRadnikaController.izabraniRadnik;
+                }
 
                 biletar.setJmb(tfJmb.getText());
                 biletar.setIme(tfIme.getText());
@@ -151,15 +154,21 @@ public class DodajRadnikaController implements Initializable {
                 tfPassword.clear();
             } else {
                 upozorenjePoljaSuPrazna();
-
+                return false;
             }
                     return true;
     }
     
     private boolean dodajUmjetnika(){
             System.out.println("USO U UMJETNIK");
+            if(PregledRadnikaController.dodajRadnika) {
+                if(cmbTipRadnika.getSelectionModel().getSelectedItem() == null){
+                upozorenjeComboBox();
+                return false;
+            }
+            }
             if (!tfJmb.getText().isEmpty() && !tfIme.getText().isEmpty() && !tfPrezime.getText().isEmpty() && !tfOpisPosla.getText().isEmpty()
-                    && !tfKontakt.getText().isEmpty() && !taBiografija.getText().isEmpty() && (cmbTipRadnika.getSelectionModel().getSelectedItem() != null)) {
+                    && !tfKontakt.getText().isEmpty() && !taBiografija.getText().isEmpty()) {
 
                 String jmbRegex = "\\d+";
                 Pattern pattern = Pattern.compile(jmbRegex);
@@ -175,6 +184,9 @@ public class DodajRadnikaController implements Initializable {
                 }
 
                 Umjetnik umjetnik = new Umjetnik();
+                if(!PregledRadnikaController.dodajRadnika){
+                    umjetnik = (Umjetnik)PregledRadnikaController.izabraniRadnik;
+                }
 
                 umjetnik.setJmb(tfJmb.getText());
                 umjetnik.setIme(tfIme.getText());
@@ -183,8 +195,12 @@ public class DodajRadnikaController implements Initializable {
                 umjetnik.setStatusRadnika(true);
                 umjetnik.setKontak(tfKontakt.getText());
                 umjetnik.setBiografija(taBiografija.getText());
-
+                
+                if(PregledRadnikaController.dodajRadnika){
                 UmjetnikDAO.dodajUmjetnika(umjetnik);
+                } else {
+                    UmjetnikDAO.izmjeniUmjetnika(umjetnik);
+                }
 
                 tfIme.clear();
                 tfPrezime.clear();
@@ -195,7 +211,7 @@ public class DodajRadnikaController implements Initializable {
                 taBiografija.clear();
             } else {
                 upozorenjePoljaSuPrazna();
-
+                return false;
             }
             return true;
     }
@@ -203,29 +219,34 @@ public class DodajRadnikaController implements Initializable {
     public boolean unesiZaposlenog() {
         if(PregledRadnikaController.dodajRadnika){
         if (cmbTipRadnika.getValue().equals("Biletar")) {
-            dodajBiletara();
+            if(dodajBiletara()) return true;
         }
         if (cmbTipRadnika.getValue().equals("Umjetnik")) {
-            dodajUmjetnika();
+            if(dodajUmjetnika()) return true;
         }
         } else if(!PregledRadnikaController.dodajRadnika){ // izmjena
             Radnik radnik = PregledRadnikaController.izabraniRadnik;
-            if(radnik.getTipRadnika().equals("biletar")){
-                
+            if(radnik.getTipRadnika().equals("biletar") || radnik.getTipRadnika().equals("Biletar")){
+                System.out.println("IZMJENA BILETARA");
+                dodajBiletara(); // izmjeni biletara
             } else if(radnik.getTipRadnika().equals("Umjetnik")){
-                
+                dodajUmjetnika(); // izmjeni umjetnika
+                //UmjetnikDAO.izmjeniUmjetnika((Umjetnik)radnik);
+                System.out.println("IZMJENA UMJETNIKA");
             }
         }
-        return true;
+        return false;
     }
 
     @FXML
     void potvrdiUnosRadnikaAction(ActionEvent event) {
+        if(PregledRadnikaController.dodajRadnika){
         if (cmbTipRadnika.getSelectionModel().isEmpty()) {
             upozorenjeComboBox();
             return;
         }
-        unesiZaposlenog();
+        }
+        if(unesiZaposlenog()){
         Parent dodajZaposlenogView;
         try {
             dodajZaposlenogView = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRadnika.fxml"));
@@ -237,6 +258,9 @@ public class DodajRadnikaController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(DodajRadnikaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        } else {
+        return;
+    }
     }
 
     @FXML
@@ -338,7 +362,71 @@ public class DodajRadnikaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         sakriPolja();
         cmbTipRadnika.getItems().addAll("Biletar", "Umjetnik");
+        if(!PregledRadnikaController.dodajRadnika){
+            cmbTipRadnika.setVisible(false);
+            System.out.println("- - - - - > "+PregledRadnikaController.tipRadnika);
+            if(PregledRadnikaController.tipRadnika.equals("biletar") || PregledRadnikaController.tipRadnika.equals("Biletar") ){
+                System.out.println("BILETAR BILETAR");
+            taBiografija.setVisible(false);
+            tfIme.setVisible(true);
+            tfPrezime.setVisible(true);
+            tfOpisPosla.setVisible(true);
+            tfJmb.setVisible(true);
+            tfStatusRadnika.setVisible(true);
+            tfKontakt.setVisible(true);
+            tfKorisnickoIme.setVisible(true);
+            tfPassword.setVisible(true);
 
+            lIme.setVisible(true);
+            lPrezime.setVisible(true);
+            lOpisPosla.setVisible(true);
+            lJmb.setVisible(true);
+            lStatusRadnika.setVisible(true);
+            lKontakt.setVisible(true);
+            lKorisnickoIme.setVisible(true);
+            lLozinka.setVisible(true);
+            lBiografija.setVisible(false);
+            
+            tfIme.setText(PregledRadnikaController.izabraniRadnik.getIme());
+            tfPrezime.setText(PregledRadnikaController.izabraniRadnik.getPrezime());
+            tfOpisPosla.setText(PregledRadnikaController.izabraniRadnik.getOpisPosla());
+            tfJmb.setText(PregledRadnikaController.izabraniRadnik.getJmb());
+            tfStatusRadnika.setText("ovo jos doraditi");
+            tfKontakt.setText(PregledRadnikaController.izabraniRadnik.getKontakt());
+            tfKorisnickoIme.setText("ovde dodati korisncko ime");
+            tfPassword.setText("ovde dodati prezime");
+            
+            } else if(PregledRadnikaController.tipRadnika.equals("Umjetnik")){
+            System.out.println("UMJETNIK UMJETNIK");
+            taBiografija.setVisible(true);
+            tfIme.setVisible(true);
+            tfPrezime.setVisible(true);
+            tfOpisPosla.setVisible(true);
+            tfJmb.setVisible(true);
+            tfStatusRadnika.setVisible(true);
+            tfKontakt.setVisible(true);
+            tfKorisnickoIme.setVisible(false);
+            tfPassword.setVisible(false);
+
+            lIme.setVisible(true);
+            lPrezime.setVisible(true);
+            lOpisPosla.setVisible(true);
+            lJmb.setVisible(true);
+            lStatusRadnika.setVisible(true);
+            lKontakt.setVisible(true);
+            lKorisnickoIme.setVisible(false);
+            lLozinka.setVisible(false);
+            lBiografija.setVisible(false);
+            
+            tfIme.setText(PregledRadnikaController.izabraniRadnik.getIme());
+            tfPrezime.setText(PregledRadnikaController.izabraniRadnik.getPrezime());
+            tfOpisPosla.setText(PregledRadnikaController.izabraniRadnik.getOpisPosla());
+            tfJmb.setText(PregledRadnikaController.izabraniRadnik.getJmb());
+            tfStatusRadnika.setText("ovo jos doraditi");
+            tfKontakt.setText(PregledRadnikaController.izabraniRadnik.getKontakt());
+            taBiografija.setText("DODATI BIOGRAFIJU");
+        }
+        }
     }
 
     private boolean provjeriMaticniBrojUBazi(String jmb) {

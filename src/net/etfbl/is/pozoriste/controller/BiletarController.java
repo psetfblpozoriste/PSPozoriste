@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 /**
  * FXML Controller class
  *
- * @author Darko
+ * @author djord
  */
 
 

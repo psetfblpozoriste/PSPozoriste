@@ -20,7 +20,7 @@ import net.etfbl.is.pozoriste.model.dto.Radnik;
 
 /**
  *
- * @author Grupa6
+ * @author djordj
  */
 public class AdminController implements Initializable {
 

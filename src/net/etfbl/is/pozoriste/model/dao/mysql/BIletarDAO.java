@@ -96,8 +96,8 @@ public class BIletarDAO {
                        ,rs.getString("Prezime"), rs.getString("OpisPosla"), rs.getString("JMB")
                        ,rs.getBoolean("StatusRadnika"), rs.getString("Kontakt"), rs.getString("KorisnickoIme")
                        ,rs.getString("HashLozinke"),rs.getString("TipKorisnika"));
-                if (!PregledRadnikaController.radniciObservaleList.contains(biletar)) {
-                    PregledRadnikaController.radniciObservaleList.add(biletar);
+                if (!PregledRadnikaController.radniciObservableList.contains(biletar)) {
+                    PregledRadnikaController.radniciObservableList.add(biletar);
                 }
             }
 

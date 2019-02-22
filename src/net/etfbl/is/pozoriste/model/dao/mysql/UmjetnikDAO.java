@@ -67,8 +67,8 @@ public class UmjetnikDAO {
             while (rs.next()) {
 
                 umjetnik = new Umjetnik(rs.getString("Ime"), rs.getString("Prezime"), rs.getString("OpisPosla"), rs.getString("JMB"), rs.getBoolean("StatusRadnika"), rs.getString("Kontakt"), rs.getString("Biografija"));
-                if (!PregledRadnikaController.radniciObservaleList.contains(umjetnik)) {
-                    PregledRadnikaController.radniciObservaleList.add(umjetnik);
+                if (!PregledRadnikaController.radniciObservableList.contains(umjetnik)) {
+                    PregledRadnikaController.radniciObservableList.add(umjetnik);
                 }
             }
 
@@ -87,4 +87,40 @@ public class UmjetnikDAO {
             }
         }
     }
+    
+       public static void izmjeniUmjetnika(Umjetnik umjetnik) {
+
+
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call azuriranjeUmjetnika(?,?,?,?,?,?,?)}");
+
+            callableStatement.setString(1, umjetnik.getIme());
+            callableStatement.setString(2, umjetnik.getPrezime());
+            callableStatement.setString(3, umjetnik.getJmb());
+            callableStatement.setString(4, umjetnik.getOpisPosla());
+            callableStatement.setInt(5, 0);
+            callableStatement.setBoolean(6,true);
+            callableStatement.setString(7, umjetnik.getBiografija());
+
+
+            callableStatement.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
 }

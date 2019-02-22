@@ -17,6 +17,7 @@ public class Umjetnik extends Radnik {
     public Umjetnik(String ime, String prezime, String opisPosla, String jmb, boolean statusRadnika, String kontak, String biografija) {
         super(ime, prezime, opisPosla, jmb, statusRadnika, kontak);
         this.biografija = biografija;
+        this.tipRadnika = "Umjetnik";
     }
 
     public Umjetnik() {
@@ -27,11 +28,11 @@ public class Umjetnik extends Radnik {
         this.biografija = biografija;
     }
 
-    public String getTipKorisnika() {
+    public String getTipRadnika() {
         return tipRadnika;
     }
 
-    public void setTipKorisnika(String tipKorisnika) {
+    public void setTipRadnika(String tipKorisnika) {
         this.tipRadnika = tipKorisnika;
     }
     
@@ -39,5 +40,6 @@ public class Umjetnik extends Radnik {
     public String getBiografija() {
         return biografija;
     }
+    
     
 }
