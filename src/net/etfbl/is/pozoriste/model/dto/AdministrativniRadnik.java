@@ -19,9 +19,6 @@ public class AdministrativniRadnik extends RadnikKojiKoristiSistem {
         System.err.println("============");
     }
     
-    
-    public void metoda(){
-        System.err.println("Milica");
-    }
+   
     
 }
