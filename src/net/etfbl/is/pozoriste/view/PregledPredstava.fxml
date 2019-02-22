@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="net.etfbl.is.pozoriste.controller.PregledPredstavaController">
+   <children>
+      <TableView layoutX="211.0" layoutY="55.0" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <Label layoutX="347.0" layoutY="25.0" text="tabela sa predstavama" />
+      <Label layoutX="211.0" layoutY="263.0" text="id,naziv,opis,tip,pisac,reziser,glumci" />
+      <VBox layoutX="24.0" layoutY="63.0" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Button mnemonicParsing="false" text="Dodaj" />
+            <Button mnemonicParsing="false" text="Izmjeni" />
+            <Button mnemonicParsing="false" text="Detaljan pregled" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="436.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.DodajRadnikaController">
+   <children>
+      <VBox layoutX="216.0" layoutY="56.0" prefHeight="349.0" prefWidth="148.0" spacing="15.0">
+         <children>
+            <TextField fx:id="tfIme" />
+            <TextField fx:id="tfPrezime" />
+            <TextField fx:id="tfOpisPosla" />
+            <TextField fx:id="tfJmb" />
+            <TextField fx:id="tfStatusRadnika" />
+            <TextField fx:id="tfKontakt" />
+            <TextField fx:id="tfKorisnickoIme" />
+            <PasswordField fx:id="tfPassword" />
+         </children>
+      </VBox>
+      <Label fx:id="lBiografija" layoutX="372.0" layoutY="36.0" text="Biografija">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <VBox layoutX="42.0" layoutY="56.0" prefHeight="283.0" prefWidth="130.0" spacing="20.0">
+         <children>
+            <Label fx:id="lIme" text="Ime">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lPrezime" text="Prezime">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lOpisPosla" text="Opis posla">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lJmb" text="JMB">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lStatusRadnika" text="Status radnika">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lKontakt" text="Kontakt">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lKorisnickoIme" text="Korisničko ime">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lLozinka" text="Lozinka">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <TextArea fx:id="taBiografija" layoutX="372.0" layoutY="57.0" prefHeight="301.0" prefWidth="208.0" />
+      <ComboBox fx:id="cmbTipRadnika" layoutX="42.0" layoutY="21.0" onAction="#prikazPoljaNaOsnovuTipaRadnikaIzKomboBoksa" prefWidth="150.0" promptText="Tip radnika" />
+      <Button fx:id="bOdustani" layoutX="409.0" layoutY="380.0" mnemonicParsing="false" onAction="#odustaniOdUnosaRadnikaAction" text="Odustani" />
+      <Button fx:id="bPotvrdi" layoutX="528.0" layoutY="380.0" mnemonicParsing="false" onAction="#potvrdiUnosRadnikaAction" text="Potvrdi" />
+      <Label layoutX="51.0" layoutY="384.0" text="Poraditti na statusu radnika jer je boolean" />
+   </children>
+</AnchorPane>
