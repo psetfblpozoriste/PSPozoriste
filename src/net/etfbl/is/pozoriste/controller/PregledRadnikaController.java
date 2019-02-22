@@ -40,7 +40,7 @@ import net.etfbl.is.pozoriste.model.dao.mysql.UmjetnikDAO;
 import net.etfbl.is.pozoriste.model.dto.Biletar;
 import net.etfbl.is.pozoriste.model.dto.Radnik;
 import net.etfbl.is.pozoriste.model.dto.Umjetnik;
-
+import net.etfbl.is.pozoriste.model.dto.Radnik;
 /**
  * FXML Controller class
  *
@@ -96,6 +96,9 @@ public class PregledRadnikaController implements Initializable {
     public static ObservableList<Radnik> radniciObservaleList = FXCollections.observableArrayList();
 
     public static Radnik radnikIzPretrage;
+    
+    public static boolean dodajRadnika = true;
+    public static Radnik izabraniRadnik,radnikIzPretraga;//, radnikIzPretrage;
 
     @FXML
     void dodajRadnikaAction(ActionEvent event) {
@@ -113,17 +116,20 @@ public class PregledRadnikaController implements Initializable {
 
     @FXML
     void izmijeniRadnikaAction(ActionEvent event) {
+    try {
+            Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRadnika.fxml"));
 
+            Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(dodajRadnikaScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     void pretraziRadnikaAction(ActionEvent event) {
-        // if (comboBox.getSelectionModel().isEmpty()) {
-        //    upozorenjeComboBox();
-        //    return;
-        // }
-        // if (comboBox.getSelectionModel().getSelectedItem().equals("Zaposleni")) {
-
         String jmbRegex = "\\d+";
         Pattern pattern = Pattern.compile(jmbRegex);
         if (pattern.matcher(tfPretraga.getText()).matches() && (tfPretraga.getText().length() == 13)) {
@@ -141,7 +147,6 @@ public class PregledRadnikaController implements Initializable {
             upozorenjePretraga();
             return;
         }
-        // }
 
     }
 

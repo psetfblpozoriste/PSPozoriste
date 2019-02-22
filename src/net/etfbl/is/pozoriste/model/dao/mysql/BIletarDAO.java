@@ -38,7 +38,7 @@ public class BIletarDAO {
             callableStatement.setString(5, biletar.getKontakt());
             callableStatement.setString(6, biletar.getKorisnickoIme());
             callableStatement.setString(7, hashSHA256(biletar.getHash()));
-            callableStatement.setString(8, biletar.getTipKorisnika());
+            callableStatement.setString(8, biletar.getTipRadnika());
 
             callableStatement.executeQuery();
         } catch (SQLException ex) {

@@ -6,8 +6,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="net.etfbl.is.pozoriste.controller.PregledRepertoaraController">
+<AnchorPane id="AnchorPane" prefHeight="469.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledRepertoaraController">
    <children>
       <TableView layoutX="14.0" layoutY="154.0" prefHeight="200.0" prefWidth="526.0">
         <columns>
@@ -16,8 +15,9 @@
         </columns>
       </TableView>
       <Label layoutX="81.0" layoutY="58.0" text="OVDE dve kolone   id i  mjesec kad je reprertoar" />
-      <Button layoutX="81.0" layoutY="75.0" mnemonicParsing="false" text="dodaj" />
+      <Button fx:id="bDodaj" layoutX="81.0" layoutY="75.0" mnemonicParsing="false" text="dodaj" />
       <Button layoutX="76.0" layoutY="100.0" mnemonicParsing="false" text="izmjeni" />
       <Button layoutX="76.0" layoutY="125.0" mnemonicParsing="false" text="detaljan pregled" />
+      <Button fx:id="bNazad" layoutX="29.0" layoutY="393.0" mnemonicParsing="false" onAction="#povratakNaAdminFormu" text="Nazad" />
    </children>
 </AnchorPane>

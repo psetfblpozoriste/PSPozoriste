@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
+import net.etfbl.is.pozoriste.model.dto.Radnik;
 
 /**
  *
@@ -31,6 +32,8 @@ public class AdminController implements Initializable {
 
     @FXML
     private Button bPregledRepertoara;
+    
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

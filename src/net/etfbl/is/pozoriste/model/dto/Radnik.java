@@ -19,6 +19,7 @@ public class Radnik {
     private String jmb;
     private boolean statusRadnika;
     private String kontakt;
+    protected String tipRadnika = "";
     
     public Radnik(){}
 
@@ -84,6 +85,15 @@ public class Radnik {
         return "Radnik{" + "ime=" + ime + ", prezime=" + prezime + ", opisPosla=" + opisPosla + ", jmb=" + jmb + ", statusRadnika=" + statusRadnika + ", kontak=" + kontakt + '}';
     }
 
+    public String getTipRadnika() {
+        return tipRadnika;
+    }
+
+    public void setTipRadnika(String tipRadnika) {
+        this.tipRadnika = tipRadnika;
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 3;

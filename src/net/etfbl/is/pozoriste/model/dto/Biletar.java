@@ -22,7 +22,7 @@ public class Biletar extends RadnikKojiKoristiSistem {
 
     private String korisnickoIme = "";
 
-    private String tipKorisnika = "Biletar";
+    private String tipRadnika = "Biletar";
     
     
     public Biletar(){
@@ -34,7 +34,7 @@ public class Biletar extends RadnikKojiKoristiSistem {
         super(ime, prezime, opisPosla, jmb, statusRadnika, kontakt);
         this.korisnickoIme = korisnickoIme;
         this.hash = hashLozinke;
-        this.tipKorisnika = tipKorisnika;
+        this.tipRadnika = tipKorisnika;
     }
 
     public String getHash() {
@@ -49,16 +49,16 @@ public class Biletar extends RadnikKojiKoristiSistem {
         return korisnickoIme;
     }
 
-    public String getTipKorisnika() {
-        return tipKorisnika;
+    public String getTipRadnika() {
+        return tipRadnika;
     }
 
     public void setKorisnickoIme(String korisnickoIme) {
         this.korisnickoIme = korisnickoIme;
     }
 
-    public void setTipKorisnika(String tipKorisnika) {
-        this.tipKorisnika = tipKorisnika;
+    public void setTipRadnika(String tipKorisnika) {
+        this.tipRadnika = tipKorisnika;
     }
 
     private String hashSHA256(String value) {

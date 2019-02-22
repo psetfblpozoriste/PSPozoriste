@@ -45,6 +45,8 @@ public class LogInController implements Initializable {
     private Button bPotvrda; // Value injected by FXMLLoader
 
     private String tipKorisnika = "";
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,9 +59,11 @@ public class LogInController implements Initializable {
     private boolean provjeraAutentifikacije(String username, String password) {
         String passwordHash = hashSHA256(password);
         String userType = postojiUBazi(username, passwordHash);
+        System.out.println("USER TYPE: "+userType);
         if ("".equals(userType)) {
             return false;
         }
+        System.out.println("POSALO!!!");
         return true;
     }
 
@@ -67,7 +71,7 @@ public class LogInController implements Initializable {
         Connection connection = null;
         CallableStatement callableStatement = null;
         ResultSet resultSet = null;
-
+        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         try {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call provjeraLozinkeIKorisnickogImena(?,?)}");
@@ -77,6 +81,7 @@ public class LogInController implements Initializable {
             resultSet = callableStatement.executeQuery();
             if (resultSet.next()) {
                 tipKorisnika = resultSet.getString("tipKorisnika");
+                System.out.println("TTTTTTTT:    "+tipKorisnika);
                 return tipKorisnika;
             }
         } catch (SQLException ex) {
@@ -113,9 +118,10 @@ public class LogInController implements Initializable {
 
     @FXML
     void potvrdaAction(ActionEvent event) throws IOException {
-        if (!provjeraAutentifikacije(tfKorisnickoIme.getText(), tfLozinka.getText())) {
-            if (!"administrator".equals(tipKorisnika)) {
-                
+        if(provjeraAutentifikacije(tfKorisnickoIme.getText(), tfLozinka.getText())) {
+            System.out.println("OPALA");
+            if ("administrator".equals(tipKorisnika)) {
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 try {
                     Parent pozoristeController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/Admin.fxml"));
 
@@ -128,12 +134,31 @@ public class LogInController implements Initializable {
                 }
             }else if("biletar".equals(tipKorisnika)){
                 System.out.println("ovo je sad da se otvori za biletara");
+                                try {
+                    Parent pozoristeController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/Biletar.fxml"));
+
+                    Scene pozScene = new Scene(pozoristeController);
+                    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    window.setScene(pozScene);
+                    window.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
         } else {
-            upozorenjeLozinka();
+            upozorenjeKorisnik();
         }
     }
+    
+        private void upozorenjeKorisnik() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom unosa korisnickog imena!");
+        alert.setHeaderText(null);
+        alert.setContentText("Pogresno korisnicko ime!");
+        alert.showAndWait();
+    }
+    
 
     private void upozorenjeLozinka() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
