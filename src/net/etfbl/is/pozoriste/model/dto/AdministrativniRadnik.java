@@ -15,4 +15,8 @@ public class AdministrativniRadnik extends RadnikKojiKoristiSistem {
         super(ime, prezime, opisPosla, jmb, statusRadnika, kontak);
     }
     
+    public AdministrativniRadnik(Number rs){
+        System.err.println("============");
+    }
+    
 }

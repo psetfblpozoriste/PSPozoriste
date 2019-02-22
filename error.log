@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
-<record>
-  <date>2019-02-22T16:14:17</date>
-  <millis>1550848457624</millis>
-  <sequence>0</sequence>
-  <logger>javafx</logger>
-  <level>WARNING</level>
-  <class>javafx.fxml.FXMLLoader$ValueElement</class>
-  <method>processValue</method>
-  <thread>14</thread>
-  <message>Loading FXML document with JavaFX API of version 10.0.1 by JavaFX runtime of version 8.0.192</message>
-</record>
 </log>
