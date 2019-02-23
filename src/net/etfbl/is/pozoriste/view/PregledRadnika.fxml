@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="768.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledRadnikaController">
+<AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledRadnikaController">
    <children>
-      <TableView fx:id="radniciTableView" layoutX="14.0" layoutY="154.0" prefHeight="200.0" prefWidth="514.0" />
+      <TableView fx:id="radniciTableView" layoutX="14.0" layoutY="154.0" prefHeight="200.0" prefWidth="584.0" />
       <VBox layoutX="14.0" layoutY="14.0" prefHeight="140.0" prefWidth="130.0" spacing="20.0">
          <children>
             <Button fx:id="bDodaj" mnemonicParsing="false" onAction="#dodajRadnikaAction" text="Dodaj">
@@ -30,8 +30,8 @@
             </Button>
          </children>
       </VBox>
-      <TextField fx:id="tfPretraga" layoutX="150.0" layoutY="102.0" prefHeight="25.0" prefWidth="262.0" />
-      <TextArea fx:id="taBiografija" layoutX="535.0" layoutY="154.0" prefHeight="200.0" prefWidth="219.0" />
+      <TextField fx:id="tfPretraga" layoutX="150.0" layoutY="102.0" prefHeight="25.0" prefWidth="262.0" promptText="Unesite JMB ..." />
+      <TextArea fx:id="taBiografija" layoutX="611.0" layoutY="154.0" prefHeight="200.0" prefWidth="219.0" />
       <Button fx:id="bNazad" layoutX="14.0" layoutY="377.0" mnemonicParsing="false" onAction="#idiNazadNaAdminForm" text="Nazad" />
    </children>
 </AnchorPane>

@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.etfbl.is.pozoriste.controller.PregledRadnikaController;
@@ -26,11 +27,12 @@ import net.etfbl.is.pozoriste.model.dto.Radnik;
 public class BIletarDAO {
 
     public static void dodajBiletara(Biletar biletar) {
+        System.out.println("DODAVANJE BILETARA : : : "+biletar.getHash());
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call dodavanjeBiletara(?,?,?,?,?,?,?)}");
+            callableStatement = connection.prepareCall("{call dodavanjeBiletara(?,?,?,?,?,?,?,?)}");
             callableStatement.setString(1, biletar.getIme());
             callableStatement.setString(2, biletar.getPrezime());
             callableStatement.setString(3, biletar.getJmb());
@@ -38,8 +40,12 @@ public class BIletarDAO {
             callableStatement.setString(5, biletar.getKorisnickoIme());
             callableStatement.setString(6, biletar.getHash());
             callableStatement.setString(7, biletar.getTipRadnika());
+            callableStatement.registerOutParameter(8, Types.INTEGER);
 
             callableStatement.executeQuery();
+            
+            biletar.setIdRadnika(callableStatement.getInt(8));
+            System.out.println("BILETAR ID: "+biletar.getIdRadnika());
         } catch (SQLException ex) {
             Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -95,6 +101,7 @@ public class BIletarDAO {
                        ,rs.getString("Prezime")/*, rs.getString("OpisPosla")*/, rs.getString("JMB")
                        ,rs.getBoolean("StatusRadnika"), rs.getString("Kontakt"), rs.getString("KorisnickoIme")
                        ,rs.getString("HashLozinke"),rs.getString("TipKorisnika"));
+             biletar.setIdRadnika(rs.getInt("Id"));
                 if (!PregledRadnikaController.radniciObservableList.contains(biletar)) {
                     PregledRadnikaController.radniciObservableList.add(biletar);
                 }
@@ -115,10 +122,10 @@ public class BIletarDAO {
             }
         }
     }
-    /*
+    
        public static void izmjeniBiletara(Biletar biletar) {
-
-
+        System.out.println("IZMJENA BILETARA : : : "+biletar.getHash());
+        System.out.println("BILETAR ID : "+biletar.getIdRadnika());
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
@@ -128,11 +135,10 @@ public class BIletarDAO {
             callableStatement.setString(1, biletar.getIme());
             callableStatement.setString(2, biletar.getPrezime());
             callableStatement.setString(3, biletar.getJmb());
-            callableStatement.setString(4, umjetnik.getOpisPosla());
             callableStatement.setInt(4, biletar.getIdRadnika());
-            callableStatement.setBoolean(5,true);
-            callableStatement.setString(6, biletar.getBiografija());
-
+            callableStatement.setBoolean(5, biletar.isStatusRadnika());
+            callableStatement.setString(6, biletar.getKorisnickoIme());
+            callableStatement.setString(7, biletar.getHash());
 
             callableStatement.executeQuery();
         } catch (SQLException ex) {
@@ -150,6 +156,6 @@ public class BIletarDAO {
             }
         }
     }
-    */
+    
 
 }

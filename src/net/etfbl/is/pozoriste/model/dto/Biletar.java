@@ -44,7 +44,7 @@ public class Biletar extends RadnikKojiKoristiSistem {
     }
 
     public void setHash(String hash) {
-        this.hash = hash;
+        this.hash = hashSHA256(this.hash);
     }
 
     public String getKorisnickoIme() {

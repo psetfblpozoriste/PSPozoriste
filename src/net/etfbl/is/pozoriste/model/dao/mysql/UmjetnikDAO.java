@@ -95,7 +95,7 @@ public class UmjetnikDAO {
     
        public static void izmjeniUmjetnika(Umjetnik umjetnik) {
 
-
+        System.out.println("IZMJENA UMJETNIKA");
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
@@ -105,9 +105,8 @@ public class UmjetnikDAO {
             callableStatement.setString(1, umjetnik.getIme());
             callableStatement.setString(2, umjetnik.getPrezime());
             callableStatement.setString(3, umjetnik.getJmb());
-           // callableStatement.setString(4, umjetnik.getOpisPosla());
             callableStatement.setInt(4, umjetnik.getIdRadnika());
-            callableStatement.setBoolean(5,true);
+            callableStatement.setBoolean(5,umjetnik.isStatusRadnika());
             callableStatement.setString(6, umjetnik.getBiografija());
 
 

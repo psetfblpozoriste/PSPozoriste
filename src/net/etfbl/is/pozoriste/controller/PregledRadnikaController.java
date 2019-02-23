@@ -61,7 +61,7 @@ public class PregledRadnikaController implements Initializable {
     private TableColumn<Radnik, String> prezimeColumn;
 
     @FXML
-    private TableColumn<Radnik, String> opisPoslaColumn;
+    private TableColumn<Radnik, String> zanimanjeColumn;
 
     @FXML
     private TableColumn<Radnik, String> jmbColumn;
@@ -128,7 +128,6 @@ public class PregledRadnikaController implements Initializable {
             tipRadnika = ((Radnik) izabranaVrsta.get(0)).getTipRadnika();
             if(izabraniRadnik != null){
              try {
-            System.out.println("IZMJENAAA");
             Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRadnika.fxml"));
 
             Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
@@ -166,14 +165,12 @@ public class PregledRadnikaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //RadnikDAO.ubaciUTabeluRadnik();
         taBiografija.setEditable(false);
         BIletarDAO.ubaciUTabeluRadnik();
         UmjetnikDAO.ubaciUTabeluRadnik();
         ubaciKoloneUTabeluRadnik(radniciObservableList);
         radniciTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                //radniciTableView.getSelectionModel().clearSelection();
                 Radnik radnik = (Radnik) radniciTableView.getSelectionModel().getSelectedItem();
                 if (radnik instanceof Umjetnik) {
                     taBiografija.setText(((Umjetnik) radniciTableView.getSelectionModel().getSelectedItem()).getBiografija());
@@ -187,8 +184,7 @@ public class PregledRadnikaController implements Initializable {
 
     public void tabelaRadnika(ObservableList radnici) {
         ubaciKoloneUTabeluRadnik(radnici);
-        radniciTableView.setItems(radnici);
-        
+        radniciTableView.setItems(radnici);       
     }
 
     private void ubaciKoloneUTabeluRadnik(ObservableList radnici) {
@@ -198,9 +194,6 @@ public class PregledRadnikaController implements Initializable {
         prezimeColumn = new TableColumn("Prezime");
         prezimeColumn.setCellValueFactory(new PropertyValueFactory<>("prezime"));
 
-        opisPoslaColumn = new TableColumn("Opis posla");
-        opisPoslaColumn.setCellValueFactory(new PropertyValueFactory<>("opisPosla"));
-
         jmbColumn = new TableColumn("JMB");
         jmbColumn.setCellValueFactory(new PropertyValueFactory<>("jmb"));
 
@@ -209,12 +202,15 @@ public class PregledRadnikaController implements Initializable {
 
         korisnickoImeColumn = new TableColumn("Korisnicko Ime");
         korisnickoImeColumn.setCellValueFactory(new PropertyValueFactory<>("korisnickoIme"));
+        
+        zanimanjeColumn = new TableColumn("Zanimanje");
+        zanimanjeColumn.setCellValueFactory(new PropertyValueFactory<>("tipRadnika"));
+        
+        statusRadnikaColumn = new TableColumn("Status radnika");
+        statusRadnikaColumn.setCellValueFactory(new PropertyValueFactory<>("statusRadnika"));
 
         radniciTableView.setItems(radniciObservableList);
-        radniciTableView.getColumns().addAll(imeColumn, prezimeColumn, opisPoslaColumn, jmbColumn, kontaktColumn, korisnickoImeColumn);
-
-        //statusRadnikaColumn = new TableColumn("Status radnika");
-        // statusRadnikaColumn.setCellValueFactory(new PropertyValueFactory<>("statusRadnika"));
+        radniciTableView.getColumns().addAll(jmbColumn,imeColumn, prezimeColumn,zanimanjeColumn,kontaktColumn, korisnickoImeColumn,statusRadnikaColumn);
     }
 
     @FXML

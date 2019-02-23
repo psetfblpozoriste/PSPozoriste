@@ -118,7 +118,7 @@ public class LogInController implements Initializable {
     @FXML
     void potvrdaAction(ActionEvent event) throws IOException {
         if(provjeraAutentifikacije(tfKorisnickoIme.getText(), tfLozinka.getText())) {
-            if ("administrator".equals(tipKorisnika)) {
+            if ("Administrator".equals(tipKorisnika)) {
                 try {
                     Parent pozoristeController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/Admin.fxml"));
 
@@ -129,7 +129,7 @@ public class LogInController implements Initializable {
                 } catch (IOException ex) {
                     Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }else if("biletar".equals(tipKorisnika)){
+            }else if("Biletar".equals(tipKorisnika)){
                                 try {
                     Parent pozoristeController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
                     PregledRepertoaraController.incijalizacija(0);

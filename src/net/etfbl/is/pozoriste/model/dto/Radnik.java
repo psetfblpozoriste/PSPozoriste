@@ -20,7 +20,7 @@ public class Radnik {
     private boolean statusRadnika;
     private String kontakt;
     protected String tipRadnika = "";
-    private int idRadnika;
+    protected int idRadnika;
     
     public Radnik(){}
 
@@ -119,26 +119,14 @@ public class Radnik {
             return false;
         }
         final Radnik other = (Radnik) obj;
-        if (!Objects.equals(this.ime, other.ime)) {
-            return false;
+
+        if (Objects.equals(this.jmb, other.jmb)) {
+            return true;
         }
-        if (!Objects.equals(this.prezime, other.prezime)) {
-            return false;
-        }
-      //  if (!Objects.equals(this.opisPosla, other.opisPosla)) {
-       //     return false;
-       // }
-        if (!Objects.equals(this.jmb, other.jmb)) {
-            return false;
-        }
-        if (this.statusRadnika != other.statusRadnika) {
-            return false;
-        }
-        if (!Objects.equals(this.kontakt, other.kontakt)) {
-            return false;
-        }
-        return true;
+        return false;
     }
+    
+    
     
     
 
