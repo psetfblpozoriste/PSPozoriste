@@ -104,6 +104,7 @@ public class PregledRadnikaController implements Initializable {
     @FXML
     void dodajRadnikaAction(ActionEvent event) {
         try {
+            dodajRadnika = true;
             Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRadnika.fxml"));
 
             Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
@@ -154,7 +155,6 @@ public class PregledRadnikaController implements Initializable {
             if (radnik.isPresent()) {
                 radnikIzPretrageObservableList = FXCollections.observableArrayList();
                 radnikIzPretrageObservableList.add(radnik.get());
-                System.out.println("AAAAAAAAAAAAAA"+radnikIzPretrageObservableList);
                 tabelaRadnika(radnikIzPretrageObservableList);
             }
         } else {

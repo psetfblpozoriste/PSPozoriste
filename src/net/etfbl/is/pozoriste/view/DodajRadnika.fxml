@@ -16,7 +16,6 @@
          <children>
             <TextField fx:id="tfIme" />
             <TextField fx:id="tfPrezime" />
-            <TextField fx:id="tfOpisPosla" />
             <TextField fx:id="tfJmb" />
             <TextField fx:id="tfStatusRadnika" />
             <TextField fx:id="tfKontakt" />
@@ -37,11 +36,6 @@
                </font>
             </Label>
             <Label fx:id="lPrezime" text="Prezime">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <Label fx:id="lOpisPosla" text="Opis posla">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>

@@ -34,11 +34,11 @@ public class BIletarDAO {
             callableStatement.setString(1, biletar.getIme());
             callableStatement.setString(2, biletar.getPrezime());
             callableStatement.setString(3, biletar.getJmb());
-            callableStatement.setString(4, biletar.getOpisPosla());
-            callableStatement.setString(5, biletar.getKontakt());
-            callableStatement.setString(6, biletar.getKorisnickoIme());
-            callableStatement.setString(7, hashSHA256(biletar.getHash()));
-            callableStatement.setString(8, biletar.getTipRadnika());
+           // callableStatement.setString(4, biletar.getOpisPosla());
+            callableStatement.setString(4, biletar.getKontakt());
+            callableStatement.setString(5, biletar.getKorisnickoIme());
+            callableStatement.setString(6, hashSHA256(biletar.getHash()));
+            callableStatement.setString(7, biletar.getTipRadnika());
 
             callableStatement.executeQuery();
         } catch (SQLException ex) {
@@ -93,7 +93,7 @@ public class BIletarDAO {
             while (rs.next()) {
 
                 biletar = new Biletar(rs.getString("Ime")
-                       ,rs.getString("Prezime"), rs.getString("OpisPosla"), rs.getString("JMB")
+                       ,rs.getString("Prezime")/*, rs.getString("OpisPosla")*/, rs.getString("JMB")
                        ,rs.getBoolean("StatusRadnika"), rs.getString("Kontakt"), rs.getString("KorisnickoIme")
                        ,rs.getString("HashLozinke"),rs.getString("TipKorisnika"));
                 if (!PregledRadnikaController.radniciObservableList.contains(biletar)) {

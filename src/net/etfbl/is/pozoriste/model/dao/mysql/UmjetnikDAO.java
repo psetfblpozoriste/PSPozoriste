@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.etfbl.is.pozoriste.controller.PregledRadnikaController;
@@ -34,11 +35,14 @@ public class UmjetnikDAO {
             callableStatement.setString(1, umjetnik.getIme());
             callableStatement.setString(2, umjetnik.getPrezime());
             callableStatement.setString(3, umjetnik.getJmb());
-            callableStatement.setString(4, umjetnik.getOpisPosla());
-            callableStatement.setString(5, umjetnik.getKontakt());
-            callableStatement.setString(6, umjetnik.getBiografija());
+           // callableStatement.setString(4, umjetnik.getOpisPosla());
+            callableStatement.setString(4, umjetnik.getKontakt());
+            callableStatement.setString(5, umjetnik.getBiografija());
+            callableStatement.registerOutParameter(6, Types.INTEGER);
 
             callableStatement.executeQuery();
+            
+            umjetnik.setIdRadnika(callableStatement.getInt(6));
         } catch (SQLException ex) {
             Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -66,7 +70,8 @@ public class UmjetnikDAO {
             rs = statement.executeQuery("select * from umjetnici_info");
             while (rs.next()) {
 
-                umjetnik = new Umjetnik(rs.getString("Ime"), rs.getString("Prezime"), rs.getString("OpisPosla"), rs.getString("JMB"), rs.getBoolean("StatusRadnika"), rs.getString("Kontakt"), rs.getString("Biografija"));
+                umjetnik = new Umjetnik(rs.getString("Ime"), rs.getString("Prezime")/*, rs.getString("OpisPosla")*/, rs.getString("JMB"), rs.getBoolean("StatusRadnika"), rs.getString("Kontakt"), rs.getString("Biografija"));
+                umjetnik.setIdRadnika(rs.getInt("Id"));
                 if (!PregledRadnikaController.radniciObservableList.contains(umjetnik)) {
                     PregledRadnikaController.radniciObservableList.add(umjetnik);
                 }
@@ -95,15 +100,15 @@ public class UmjetnikDAO {
         CallableStatement callableStatement = null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call azuriranjeUmjetnika(?,?,?,?,?,?,?)}");
+            callableStatement = connection.prepareCall("{call azuriranjeUmjetnika(?,?,?,?,?,?)}");
 
             callableStatement.setString(1, umjetnik.getIme());
             callableStatement.setString(2, umjetnik.getPrezime());
             callableStatement.setString(3, umjetnik.getJmb());
-            callableStatement.setString(4, umjetnik.getOpisPosla());
-            callableStatement.setInt(5, 0);
-            callableStatement.setBoolean(6,true);
-            callableStatement.setString(7, umjetnik.getBiografija());
+           // callableStatement.setString(4, umjetnik.getOpisPosla());
+            callableStatement.setInt(4, umjetnik.getIdRadnika());
+            callableStatement.setBoolean(5,true);
+            callableStatement.setString(6, umjetnik.getBiografija());
 
 
             callableStatement.executeQuery();

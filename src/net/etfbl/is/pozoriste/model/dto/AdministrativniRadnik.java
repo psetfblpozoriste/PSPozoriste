@@ -11,8 +11,8 @@ package net.etfbl.is.pozoriste.model.dto;
  */
 public class AdministrativniRadnik extends RadnikKojiKoristiSistem {
 
-    public AdministrativniRadnik(String ime, String prezime, String opisPosla, String jmb, boolean statusRadnika, String kontak) {
-        super(ime, prezime, opisPosla, jmb, statusRadnika, kontak);
+    public AdministrativniRadnik(String ime, String prezime/*, String opisPosla */, String jmb, boolean statusRadnika, String kontak) {
+        super(ime, prezime/*, opisPosla */, jmb, statusRadnika, kontak);
     }
     
     public AdministrativniRadnik(Number rs){

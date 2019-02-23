@@ -29,9 +29,9 @@ public class Biletar extends RadnikKojiKoristiSistem {
         
     }
 
-    public Biletar(String ime, String prezime, String opisPosla, String jmb, boolean statusRadnika, String kontakt,
+    public Biletar(String ime, String prezime/*, String opisPosla */, String jmb, boolean statusRadnika, String kontakt,
             String korisnickoIme, String hashLozinke, String tipKorisnika) {
-        super(ime, prezime, opisPosla, jmb, statusRadnika, kontakt);
+        super(ime, prezime/*, opisPosla */, jmb, statusRadnika, kontakt);
         this.korisnickoIme = korisnickoIme;
         this.hash = hashLozinke;
         this.tipRadnika = tipKorisnika;

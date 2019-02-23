@@ -15,18 +15,19 @@ public class Radnik {
 
     private String ime;
     private String prezime;
-    private String opisPosla;
+    /*private String opisPosla; */
     private String jmb;
     private boolean statusRadnika;
     private String kontakt;
     protected String tipRadnika = "";
+    private int idRadnika;
     
     public Radnik(){}
 
-    public Radnik(String ime, String prezime, String opisPosla, String jmb, boolean statusRadnika, String kontak) {
+    public Radnik(String ime, String prezime /*, String opisPosla */, String jmb, boolean statusRadnika, String kontak) {
         this.ime = ime;
         this.prezime = prezime;
-        this.opisPosla = opisPosla;
+       /* this.opisPosla = opisPosla; */
         this.jmb = jmb;
         this.statusRadnika = statusRadnika;
         this.kontakt = kontak;
@@ -40,9 +41,9 @@ public class Radnik {
         return prezime;
     }
 
-    public String getOpisPosla() {
+   /* public String getOpisPosla() {
         return opisPosla;
-    }
+    }*/
 
     public String getJmb() {
         return jmb;
@@ -64,9 +65,9 @@ public class Radnik {
         this.prezime = prezime;
     }
 
-    public void setOpisPosla(String opisPosla) {
+   /* public void setOpisPosla(String opisPosla) {
         this.opisPosla = opisPosla;
-    }
+    } */
 
     public void setJmb(String jmb) {
         this.jmb = jmb;
@@ -82,8 +83,8 @@ public class Radnik {
 
     @Override
     public String toString() {
-        return "Radnik{" + "ime=" + ime + ", prezime=" + prezime + ", opisPosla=" + opisPosla + ", jmb=" + jmb + ", statusRadnika=" + statusRadnika + ", kontak=" + kontakt + '}';
-    }
+        return "Radnik{" + "ime=" + ime + ", prezime=" + prezime + ", jmb=" + jmb + ", statusRadnika=" + statusRadnika + ", kontakt=" + kontakt + ", tipRadnika=" + tipRadnika + ", idRadnika=" + idRadnika + '}';
+    }    
 
     public String getTipRadnika() {
         return tipRadnika;
@@ -99,6 +100,14 @@ public class Radnik {
         int hash = 3;
         hash = 59 * hash + Objects.hashCode(this.jmb);
         return hash;
+    }
+    
+    public void setIdRadnika(int id){
+        this.idRadnika = id;
+    }
+    
+    public int getIdRadnika(){
+        return this.idRadnika;
     }
 
     @Override
@@ -116,9 +125,9 @@ public class Radnik {
         if (!Objects.equals(this.prezime, other.prezime)) {
             return false;
         }
-        if (!Objects.equals(this.opisPosla, other.opisPosla)) {
-            return false;
-        }
+      //  if (!Objects.equals(this.opisPosla, other.opisPosla)) {
+       //     return false;
+       // }
         if (!Objects.equals(this.jmb, other.jmb)) {
             return false;
         }
