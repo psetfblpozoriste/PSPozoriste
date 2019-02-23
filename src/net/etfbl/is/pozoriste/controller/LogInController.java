@@ -9,6 +9,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,39 +57,68 @@ public class LogInController implements Initializable {
     }
 
     private boolean provjeraAutentifikacije(String username, String password) {
+        System.out.println("PASSS: "+password);
         String passwordHash = hashSHA256(password);
+        System.out.println("1313PASS: "+passwordHash);
+        //if(postojiUBazi(username, passwordHash)){
+        //    return true;
+       // } else return false;
         String userType = postojiUBazi(username, passwordHash);
         System.out.println("USER TYPE: "+userType);
         if ("".equals(userType)) {
             return false;
         }
         System.out.println("POSALO!!!");
-        return true;
+        return true; 
     }
 
     private String postojiUBazi(String username, String passwordHash) {
+   // private boolean postojiUBazi(String username, String passwordHash) {
+        boolean postoji = false;
         Connection connection = null;
         CallableStatement callableStatement = null;
         ResultSet resultSet = null;
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call provjeraLozinkeIKorisnickogImena(?,?)}");
+            //callableStatement = connection.prepareCall("{call provjeraLozinkeIKorisnickogImena(?,?)}");
+            callableStatement = connection.prepareCall("{call provjeraLogovanja(?,?,?)}");
             callableStatement.setString(1, username);
             callableStatement.setString(2, passwordHash);
+            callableStatement.registerOutParameter(3, Types.BOOLEAN);
 
-            resultSet = callableStatement.executeQuery();
-            if (resultSet.next()) {
-                tipKorisnika = resultSet.getString("tipKorisnika");
-                System.out.println("TTTTTTTT:    "+tipKorisnika);
+            //resultSet = callableStatement.executeQuery();
+            callableStatement.executeQuery();
+           // if (resultSet.next()) {
+                //postoji = resultSet.getBoolean("postojiUSistemu");
+                postoji = callableStatement.getBoolean(3);
+                System.out.println("KOPSAJAOG: "+postoji);
+                if(postoji){
+                    System.out.println("POSTOJ!!!");
+                    callableStatement = connection.prepareCall("{call provjeraLozinkeIKorisnickogImena(?,?)}");
+                    callableStatement.setString(1, username);
+                    callableStatement.setString(2, passwordHash);
+                    
+                    resultSet = callableStatement.executeQuery();
+                    if (resultSet.next()) {
+                       tipKorisnika = resultSet.getString("tipKorisnika"); 
+                    }
+                //tipKorisnika = resultSet.getString("tipKorisnika");
+                 
+               // System.out.println("POSOTJI:    "+tipKorisnika);
+                } else {
+                   upozorenjeLogovanje();
+
+                }
                 return tipKorisnika;
-            }
+          //  }
         } catch (SQLException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionPool.getInstance().checkIn(connection);
         }
         return "";
+       // return postoji;
     }
 
     private String hashSHA256(String value) {
@@ -145,6 +175,14 @@ public class LogInController implements Initializable {
         } else {
             upozorenjeKorisnik();
         }
+    }
+    private void upozorenjeLogovanje() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom unosa korisnickog imena ili lozinke!");
+        alert.setHeaderText(null);
+        alert.setContentText("Pogresno korisnicko ime ili lozinka!");
+        alert.showAndWait();
+        return;
     }
     
         private void upozorenjeKorisnik() {

@@ -51,9 +51,6 @@ public class DodajRadnikaController implements Initializable {
     @FXML
     private TextField tfPrezime;
 
-   // @FXML
-   // private TextField tfOpisPosla;
-
     @FXML
     private TextField tfJmb;
 
@@ -133,7 +130,6 @@ public class DodajRadnikaController implements Initializable {
             Biletar biletar = new Biletar();
             if (!PregledRadnikaController.dodajRadnika) {
                 biletar = (Biletar) PregledRadnikaController.izabraniRadnik;
-                System.out.println("IZABRANI RADNIK: " +PregledRadnikaController.izabraniRadnik);
                 biletar.setIdRadnika(((Biletar) PregledRadnikaController.izabraniRadnik).getIdRadnika());
             }
             
@@ -141,7 +137,6 @@ public class DodajRadnikaController implements Initializable {
             biletar.setIme(tfIme.getText());
             biletar.setPrezime(tfPrezime.getText());
             String statusRadnika = cmbStatusRadnika.getSelectionModel().getSelectedItem().toString();
-            System.out.println("- - - - - - - - - - > > > "+statusRadnika);
             if(statusRadnika.equals("Aktivan")){
                 biletar.setStatusRadnika(true);
             } else {
@@ -152,10 +147,10 @@ public class DodajRadnikaController implements Initializable {
             biletar.setKorisnickoIme(tfKorisnickoIme.getText());
             biletar.setHash(tfPassword.getText());
             biletar.setTipRadnika("Biletar");
+            System.out.println("AAAA: "+biletar.getHash());
             if(PregledRadnikaController.dodajRadnika){
             BIletarDAO.dodajBiletara(biletar);
             } else {
-                System.out.println("BILETAR ZA IZMJENU: "+biletar);
                 BIletarDAO.izmjeniBiletara(biletar);
             }
 
@@ -163,6 +158,7 @@ public class DodajRadnikaController implements Initializable {
             upozorenjePoljaSuPrazna();
             return false;
         }
+        
         return true;
     }
 
@@ -200,9 +196,7 @@ public class DodajRadnikaController implements Initializable {
             umjetnik.setIme(tfIme.getText());
             umjetnik.setPrezime(tfPrezime.getText());
             String statusRadnika = cmbStatusRadnika.getSelectionModel().getSelectedItem().toString();
-            System.out.println("- - - - - - - - - - > > > "+statusRadnika);
             if(statusRadnika.equals("Aktivan")){
-                System.out.println("POSTAVLJEN NA AKTIVAN !!!!!");
                 umjetnik.setStatusRadnika(true);
             } else {
                 umjetnik.setStatusRadnika(false);
@@ -237,8 +231,7 @@ public class DodajRadnikaController implements Initializable {
             }
         } else if (!PregledRadnikaController.dodajRadnika) { 
             Radnik radnik = PregledRadnikaController.izabraniRadnik;
-            System.out.println("USAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO:  "+radnik);
-            if (radnik.getTipRadnika().equals("biletar") || radnik.getTipRadnika().equals("Biletar")) {
+            if (radnik.getTipRadnika().equals("Biletar")) {
                 dodajBiletara(); 
                 return true;
             } else if (radnik.getTipRadnika().equals("Umjetnik")) {
@@ -369,9 +362,7 @@ public class DodajRadnikaController implements Initializable {
         cmbStatusRadnika.setVisible(false);
         if (!PregledRadnikaController.dodajRadnika) {
             cmbTipRadnika.setVisible(false);
-            System.out.println("- - - - - > " + PregledRadnikaController.tipRadnika);
             if (PregledRadnikaController.tipRadnika.equals("Biletar")) {
-                System.out.println("BILETAR BILETAR"+PregledRadnikaController.izabraniRadnik.isStatusRadnika());
                 if(PregledRadnikaController.izabraniRadnik.isStatusRadnika()){
                     cmbStatusRadnika.getSelectionModel().selectFirst();
                 } else {
@@ -403,7 +394,6 @@ public class DodajRadnikaController implements Initializable {
                 tfPassword.setText("");
 
             } else if (PregledRadnikaController.tipRadnika.equals("Umjetnik")) {
-                System.out.println("UMJETNIK UMJETNIK:::"+PregledRadnikaController.izabraniRadnik.isStatusRadnika());
                  if(PregledRadnikaController.izabraniRadnik.isStatusRadnika()){
                     cmbStatusRadnika.getSelectionModel().selectFirst();
                 } else {

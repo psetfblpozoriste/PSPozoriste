@@ -35,16 +35,16 @@ public class Biletar extends RadnikKojiKoristiSistem {
         this.korisnickoIme = korisnickoIme;
         this.hash = hashLozinke;
         this.tipRadnika = tipKorisnika;
-        this.hash = hashSHA256(this.hash);
-        System.out.println("HESSSSSSSSSSSSSSSSS"+this.hash);
+       // this.hash = hashSHA256(this.hash);
+       // System.out.println("HESSSSSSSSSSSSSSSSS"+this.hash);
     }
 
     public String getHash() {
         return hash;
     }
 
-    public void setHash(String hash) {
-        this.hash = hashSHA256(this.hash);
+    public void setHash(String hashhh) {
+        this.hash = hashSHA256(hashhh);
     }
 
     public String getKorisnickoIme() {

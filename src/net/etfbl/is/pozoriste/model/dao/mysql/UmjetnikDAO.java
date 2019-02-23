@@ -14,10 +14,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javafx.collections.ObservableList;
 import net.etfbl.is.pozoriste.controller.PregledRadnikaController;
 import net.etfbl.is.pozoriste.model.dto.Biletar;
+import net.etfbl.is.pozoriste.model.dto.Radnik;
 import net.etfbl.is.pozoriste.model.dto.Umjetnik;
 
 /**
@@ -35,7 +39,6 @@ public class UmjetnikDAO {
             callableStatement.setString(1, umjetnik.getIme());
             callableStatement.setString(2, umjetnik.getPrezime());
             callableStatement.setString(3, umjetnik.getJmb());
-           // callableStatement.setString(4, umjetnik.getOpisPosla());
             callableStatement.setString(4, umjetnik.getKontakt());
             callableStatement.setString(5, umjetnik.getBiografija());
             callableStatement.registerOutParameter(6, Types.INTEGER);
@@ -60,6 +63,8 @@ public class UmjetnikDAO {
     }
 
     public static void ubaciUTabeluRadnik() {
+        
+        System.out.println("BLA BLA BLA BLA");
         Connection connection = null;
         Statement statement = null;
         ResultSet rs = null;
