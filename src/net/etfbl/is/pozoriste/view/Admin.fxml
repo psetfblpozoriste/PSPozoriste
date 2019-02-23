@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane id="AnchorPane" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.AdminController">
    <children>
-      <VBox layoutX="24.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" />
-      <VBox prefHeight="418.0" prefWidth="274.0" spacing="20.0">
+      <VBox layoutX="290.0" layoutY="147.0" prefHeight="174.0" prefWidth="171.0" spacing="15.0">
          <children>
-            <Button mnemonicParsing="false" text="Button" />
-            <Button fx:id="bPregledPredstave" mnemonicParsing="false" onAction="#PregledPredstavaAction" text="Pregled predstava" />
-            <Button fx:id="bPregledRadnika" mnemonicParsing="false" onAction="#PregledRadnikaAction" prefHeight="318.0" prefWidth="620.0" text="Pregled radnika" />
+            <Button fx:id="bPregledPredstave" mnemonicParsing="false" onAction="#PregledPredstavaAction" prefHeight="46.0" prefWidth="170.0" text="Pregled predstava" />
+            <Button fx:id="bPregledRepertoara" mnemonicParsing="false" onAction="#PregledRepertoaraAction" prefHeight="44.0" prefWidth="174.0" text="Pregled repertoara" />
+            <Button fx:id="bPregledRadnika" mnemonicParsing="false" onAction="#PregledRadnikaAction" prefHeight="42.0" prefWidth="173.0" text="Pregled radnika" />
          </children>
-      </VBox>
-      <Button fx:id="bPregledRepertoara" mnemonicParsing="false" onAction="#PregledRepertoaraAction" text="Pregled repertoara" />
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets></VBox>
    </children>
 </AnchorPane>
