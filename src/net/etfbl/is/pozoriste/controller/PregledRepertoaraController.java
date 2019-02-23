@@ -1,11 +1,18 @@
 package net.etfbl.is.pozoriste.controller;
 
-import java.awt.Color;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
@@ -13,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -26,10 +34,19 @@ public class PregledRepertoaraController implements Initializable {
     @FXML // fx:id="scrollPane"
     private ScrollPane scrollPane; // Value injected by FXMLLoader
 
+    @FXML // fx:id="buttonNazad"
+    private Button buttonNazad; // Value injected by FXMLLoader
+
     private static int brojPredstava = 2;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (!"administrator".equals(LogInController.tipKorisnika)) {
+            buttonNazad.setVisible(false);
+        }
+
+        buttonNazad.setOnAction(e -> buttonSetAction());
+
         if (!(brojPredstava == 0)) {
             vBox = new VBox();
             for (int i = 0; i < 20; i++) {
@@ -51,7 +68,7 @@ public class PregledRepertoaraController implements Initializable {
                     naziv.setBorder(Border.EMPTY);
                     setLabel(naziv);
                 });
-                
+
                 vBox.getChildren().add(naziv);
             }
             scrollPane.vvalueProperty().bind(vBox.heightProperty());
@@ -73,6 +90,18 @@ public class PregledRepertoaraController implements Initializable {
         naziv.setFont(new Font(16));
         naziv.setStyle("-fx-font-weight: bold");
         naziv.setPadding(new Insets(0, 0, 0, 10));
+    }
+
+    private void buttonSetAction() {
+        try {
+            Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/Admin.fxml"));
+            Scene adminControllerScene = new Scene(adminController);
+            Stage window = (Stage) buttonNazad.getScene().getWindow();
+            window.setScene(adminControllerScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

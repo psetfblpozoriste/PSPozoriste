@@ -32,6 +32,6 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
         </content>
       </ScrollPane>
-      <Button layoutX="49.0" layoutY="544.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="112.0" text="Nazad" />
+      <Button fx:id="buttonNazad" layoutX="49.0" layoutY="544.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="112.0" text="Nazad" />
    </children>
 </AnchorPane>

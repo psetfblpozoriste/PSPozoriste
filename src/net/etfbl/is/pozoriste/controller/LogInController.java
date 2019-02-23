@@ -44,8 +44,7 @@ public class LogInController implements Initializable {
     @FXML // fx:id="bPotvrda"
     private Button bPotvrda; // Value injected by FXMLLoader
 
-    private String tipKorisnika = "";
-    
+    public static String tipKorisnika = "";
     
 
     @Override
@@ -119,9 +118,7 @@ public class LogInController implements Initializable {
     @FXML
     void potvrdaAction(ActionEvent event) throws IOException {
         if(provjeraAutentifikacije(tfKorisnickoIme.getText(), tfLozinka.getText())) {
-            System.out.println("OPALA");
             if ("administrator".equals(tipKorisnika)) {
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 try {
                     Parent pozoristeController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/Admin.fxml"));
 
@@ -133,7 +130,6 @@ public class LogInController implements Initializable {
                     Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }else if("biletar".equals(tipKorisnika)){
-                System.out.println("ovo je sad da se otvori za biletara");
                                 try {
                     Parent pozoristeController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/Biletar.fxml"));
 
