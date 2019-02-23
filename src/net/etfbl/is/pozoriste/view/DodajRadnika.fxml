@@ -17,7 +17,7 @@
             <TextField fx:id="tfIme" />
             <TextField fx:id="tfPrezime" />
             <TextField fx:id="tfJmb" />
-            <TextField fx:id="tfStatusRadnika" />
+            <ComboBox fx:id="cmbStatusRadnika" prefWidth="150.0" />
             <TextField fx:id="tfKontakt" />
             <TextField fx:id="tfKorisnickoIme" />
             <PasswordField fx:id="tfPassword" />

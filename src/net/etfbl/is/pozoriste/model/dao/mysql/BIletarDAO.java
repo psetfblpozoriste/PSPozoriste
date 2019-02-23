@@ -30,14 +30,13 @@ public class BIletarDAO {
         CallableStatement callableStatement = null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call dodavanjeBiletara(?,?,?,?,?,?,?,?)}");
+            callableStatement = connection.prepareCall("{call dodavanjeBiletara(?,?,?,?,?,?,?)}");
             callableStatement.setString(1, biletar.getIme());
             callableStatement.setString(2, biletar.getPrezime());
             callableStatement.setString(3, biletar.getJmb());
-           // callableStatement.setString(4, biletar.getOpisPosla());
             callableStatement.setString(4, biletar.getKontakt());
             callableStatement.setString(5, biletar.getKorisnickoIme());
-            callableStatement.setString(6, hashSHA256(biletar.getHash()));
+            callableStatement.setString(6, biletar.getHash());
             callableStatement.setString(7, biletar.getTipRadnika());
 
             callableStatement.executeQuery();
@@ -56,7 +55,7 @@ public class BIletarDAO {
             }
         }
     }
-
+/*
     private static String hashSHA256(String value) {
         MessageDigest digest = null;
         try {
@@ -80,7 +79,7 @@ public class BIletarDAO {
         }
         return hexString.toString();
     }
-
+*/
     public static void ubaciUTabeluRadnik() {
         Connection connection = null;
         Statement statement = null;
@@ -116,5 +115,41 @@ public class BIletarDAO {
             }
         }
     }
+    /*
+       public static void izmjeniBiletara(Biletar biletar) {
+
+
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call azuriranjeRadnikaKojiKoristiSistem(?,?,?,?,?,?,?)}");
+
+            callableStatement.setString(1, biletar.getIme());
+            callableStatement.setString(2, biletar.getPrezime());
+            callableStatement.setString(3, biletar.getJmb());
+            callableStatement.setString(4, umjetnik.getOpisPosla());
+            callableStatement.setInt(4, biletar.getIdRadnika());
+            callableStatement.setBoolean(5,true);
+            callableStatement.setString(6, biletar.getBiografija());
+
+
+            callableStatement.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    */
 
 }
