@@ -2,8 +2,8 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2019-02-22T23:54:41</date>
-  <millis>1550876081197</millis>
+  <date>2019-02-23T12:14:04</date>
+  <millis>1550920444538</millis>
   <sequence>0</sequence>
   <logger>javafx</logger>
   <level>WARNING</level>
@@ -13,8 +13,8 @@
   <message>Loading FXML document with JavaFX API of version 10.0.1 by JavaFX runtime of version 8.0.192</message>
 </record>
 <record>
-  <date>2019-02-22T23:54:42</date>
-  <millis>1550876082433</millis>
+  <date>2019-02-23T12:14:05</date>
+  <millis>1550920445983</millis>
   <sequence>1</sequence>
   <logger>javafx</logger>
   <level>WARNING</level>

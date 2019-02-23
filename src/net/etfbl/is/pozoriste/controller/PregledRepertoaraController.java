@@ -2,25 +2,15 @@ package net.etfbl.is.pozoriste.controller;
 
 import java.awt.Color;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.LinkedList;
 import java.util.ResourceBundle;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
@@ -31,15 +21,18 @@ import javafx.scene.text.Font;
  */
 public class PregledRepertoaraController implements Initializable {
 
-    @FXML // fx:id="vBox"
-    private VBox vBox; // Value injected by FXMLLoader
+    private VBox vBox;
+
+    @FXML // fx:id="scrollPane"
+    private ScrollPane scrollPane; // Value injected by FXMLLoader
 
     private static int brojPredstava = 2;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (!(brojPredstava == 0)) {
-            for (int i = 0; i < brojPredstava; i++) {
+            vBox = new VBox();
+            for (int i = 0; i < 20; i++) {
                 Label naziv = new Label("Alisa u zemlji cuda termin                                                                               10.3 u 20:00");
                 setLabel(naziv);
                 naziv.setOnMouseClicked(event -> {
@@ -58,9 +51,11 @@ public class PregledRepertoaraController implements Initializable {
                     naziv.setBorder(Border.EMPTY);
                     setLabel(naziv);
                 });
-
+                
                 vBox.getChildren().add(naziv);
             }
+            scrollPane.vvalueProperty().bind(vBox.heightProperty());
+            scrollPane.setContent(vBox);
         }
     }
 
