@@ -21,6 +21,8 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import net.etfbl.is.pozoriste.model.dao.mysql.RepertoarDAO;
+import net.etfbl.is.pozoriste.model.dto.Repertoar;
 
 
 /**
@@ -44,8 +46,9 @@ public class PregledRepertoaraController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         if (!"administrator".equals(LogInController.tipKorisnika)) {
             buttonNazad.setVisible(false);
+            
         }
-
+        RepertoarDAO.getRepertoar(1).getIgranja().forEach(e -> System.out.println(e.getTermin()));
         buttonNazad.setOnAction(e -> buttonSetAction());
 
         if (!(brojPredstava == 0)) {

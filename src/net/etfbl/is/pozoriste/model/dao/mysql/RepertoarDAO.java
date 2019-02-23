@@ -7,15 +7,19 @@ package net.etfbl.is.pozoriste.model.dao.mysql;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.etfbl.is.pozoriste.model.dto.Biletar;
 import net.etfbl.is.pozoriste.model.dto.Repertoar;
 
 /**
  *
- * @author Darko
+ * @author Ognjen
  */
 public class RepertoarDAO {
     
@@ -46,6 +50,46 @@ public class RepertoarDAO {
     }
     
     
+    public static Repertoar getRepertoar(final int id) {
+        return repertoars().stream().filter(e -> e.getId() == id).findFirst().get();
+    }
+    
+    public static List<Repertoar> repertoars() {
+        List<Repertoar> repertoars = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        String query = "SELECT * " + "FROM  repertoar";
+
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                Repertoar repertoar = new Repertoar(resultSet.getInt("id"),resultSet.getDate("mjesecIGodina"));
+                repertoar.setIgranja(IgranjeDAO.getIgranja(repertoar.getId()));
+                repertoars.add(repertoar);
+            }
+
+        } catch (SQLException sql) {
+            Logger.getLogger(RepertoarDAO.class.getName()).log(Level.SEVERE, null, sql);
+        } catch (Exception e) {
+            Logger.getLogger(RepertoarDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException sql) {
+                    Logger.getLogger(RepertoarDAO.class.getName()).log(Level.SEVERE, null, sql);
+                }
+            }
+        }
+        return repertoars;
+    }
     
 
     
