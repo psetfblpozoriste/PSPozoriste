@@ -22,12 +22,13 @@ public class Pozoriste extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Handler handler = null;
-        try {
+       /* try {
             handler = new FileHandler("./error.log");
             Logger.getLogger("").addHandler(handler);
         } catch (IOException | SecurityException ex) {
             Logger.getLogger(Pozoriste.class.getName()).log(Level.SEVERE, null, ex);
         }
+        */
 
         final FXMLLoader loader = new FXMLLoader(getClass().getResource("/net/etfbl/is/pozoriste/view/LogIn.fxml"));
         LogInController logInController1 = null;

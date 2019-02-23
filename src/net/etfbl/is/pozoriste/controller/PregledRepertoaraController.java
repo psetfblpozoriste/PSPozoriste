@@ -21,7 +21,7 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import net.etfbl.is.pozoriste.model.dao.mysql.ScenaDAO;
+
 
 /**
  * FXML Controller class
@@ -90,13 +90,13 @@ public class PregledRepertoaraController implements Initializable {
         try {
             root = loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PregledKarataController.class.getName()).log(Level.SEVERE, null, ex);
         }
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setScene(scene);
 //        stage.setTitle("Karte " + "za scenu " + PregledKarataController.scenaZaPrikaz.getNazivScene());
-        stage.getIcons().add(new Image(AdminController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/drama.png")));
+        stage.getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/drama.png")));
         stage.sizeToScene();
         stage.show();
         stage.setMinWidth(stage.getWidth());
