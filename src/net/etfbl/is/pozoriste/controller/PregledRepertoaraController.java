@@ -2,10 +2,14 @@ package net.etfbl.is.pozoriste.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,10 +37,12 @@ import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.GostujucaPredstavaDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.PredstavaDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.RepertoarDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.ScenaDAO;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
 import net.etfbl.is.pozoriste.model.dto.Igranje;
 import net.etfbl.is.pozoriste.model.dto.Predstava;
 import net.etfbl.is.pozoriste.model.dto.Repertoar;
+import net.etfbl.is.pozoriste.model.dto.Scena;
 
 /**
  * FXML Controller class
@@ -59,12 +65,18 @@ public class PregledRepertoaraController implements Initializable {
 
     private static int brojPredstava = 2;
 
+    public static String predstavaSaKojomRadim = "";
+
+    public static Scena scena;
+
+    private Repertoar repertoarZaPrikaz;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (!"Administrator".equals(LogInController.tipKorisnika)) {
             buttonNazad.setVisible(false);
         }
-        Repertoar repertoarZaPrikaz = RepertoarDAO.getRepertoar(1);
+        repertoarZaPrikaz = RepertoarDAO.getRepertoar(1);//ovde zvati repertoar
         buttonNazad.setOnAction(e -> buttonSetAction());
 
         if (!(brojPredstava == 0)) {
@@ -83,7 +95,8 @@ public class PregledRepertoaraController implements Initializable {
                 }
             });
             repertoarZaPrikaz.getIgranja().sort(Comparator.comparing(e -> e.getTermin()));
-            for (int i = 0; i < repertoarZaPrikaz.getIgranja().size(); i++) {
+
+            for (Integer i = 0; i < repertoarZaPrikaz.getIgranja().size(); i++) {
                 final Igranje igranje = repertoarZaPrikaz.getIgranja().get(i);
                 String stringZaPrikaz = "";
                 if (igranje.getIdPredstave() != 0) {
@@ -91,17 +104,20 @@ public class PregledRepertoaraController implements Initializable {
                     String[] empty = new String[115 - stringZaPrikaz.length()];
                     Arrays.fill(empty, " ");
                     stringZaPrikaz += Arrays.asList(empty).stream().collect(Collectors.joining(""));
-                    stringZaPrikaz += igranje.getTermin().toString();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
+                    stringZaPrikaz += format.format(igranje.getTermin());
                 }
                 if (igranje.getIdGostujucePredstave() != 0) {
                     stringZaPrikaz += gostujuce.stream().filter(e -> e.getId() == igranje.getIdGostujucePredstave()).findFirst().get().getNaziv();
                     String[] empty = new String[115 - stringZaPrikaz.length()];
                     Arrays.fill(empty, " ");
                     stringZaPrikaz += Arrays.asList(empty).stream().collect(Collectors.joining(""));
-                    stringZaPrikaz += igranje.getTermin().toString();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
+                    stringZaPrikaz += format.format(igranje.getTermin());
                 }
                 Label nazivLabel = new Label(stringZaPrikaz);
                 setLabel(nazivLabel);
+                nazivLabel.setId(i.toString());
                 if ("Biletar".equals(LogInController.tipKorisnika)) {
                     labelSetAction(nazivLabel);
                 }
@@ -119,22 +135,27 @@ public class PregledRepertoaraController implements Initializable {
         brojPredstava = 2;
     }
 
-    private void pregledRepertoara() {
+    private void pregledRepertoara(Label label) {
+        Igranje zeljenoIgranje = null;
         try {
+            predstavaSaKojomRadim = label.getText().split(" ")[0];
+            String string = label.getText().split(" ")[Arrays.asList(label.getText().split(" ")).size()-1];
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm",Locale.GERMANY);
+            Date date = format.parse(string);
+            zeljenoIgranje = repertoarZaPrikaz.getIgranja().stream().filter(e -> e.getTermin().equals(date)).findFirst().get();
+        } catch (Exception e) {
+            Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        try {
+            final Igranje temp = zeljenoIgranje;
+            PregledKarataController.scenaZaPrikaz = new Scena(temp.getIdScene(), ScenaDAO.scene().stream().filter(e -> e.getIdScene().equals(temp.getIdScene())).findAny().get().getNazivScene());
             Parent pregledKarataController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledKarata.fxml"));
             Scene scene = new Scene(pregledKarataController);
             Stage stage = (Stage) buttonNazad.getScene().getWindow();
             stage.getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/drama.png")));
             stage.setScene(scene);
-            //stage.setTitle("Karte " + "za scenu " + PregledKarataController.scenaZaPrikaz.getNazivScene());
-
-            //Screen screen = Screen.getPrimary();
-            //Rectangle2D bounds = screen.getVisualBounds();
-            //stage.setX(bounds.getMinX());
-            //stage.setY(bounds.getMinY());
-            //stage.setWidth(bounds.getWidth());
-            //stage.setHeight(bounds.getHeight());
-            //stage.sizeToScene();
+            stage.setTitle("Karte " + "za scenu " + predstavaSaKojomRadim);
+            stage.setResizable(false);
             stage.show();
         } catch (Exception ex) {
             Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -165,7 +186,7 @@ public class PregledRepertoaraController implements Initializable {
         label.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 if (((MouseEvent) event).getClickCount() == 2) {
-                    pregledRepertoara();
+                    pregledRepertoara(label);
                 }
             }
         });

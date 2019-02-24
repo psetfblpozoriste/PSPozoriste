@@ -22,7 +22,7 @@ public class ScenaDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String query = "SELECT * " + "FROM  scene";
+        String query = "SELECT * " + "FROM  scena";
         
         try {
             connection = ConnectionPool.getInstance().checkOut();
@@ -31,8 +31,7 @@ public class ScenaDAO {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-               Scena scena = new Scena(resultSet.getString("Naziv"),resultSet.getInt("BrojRedova"),resultSet.getInt("BrojKolona"));
-               scena.setIdScene(new Integer(resultSet.getString("Identifikator")));
+               Scena scena = new Scena(resultSet.getInt("id"),resultSet.getString("nazivScene"));
                scene.add(scena);
             }
 

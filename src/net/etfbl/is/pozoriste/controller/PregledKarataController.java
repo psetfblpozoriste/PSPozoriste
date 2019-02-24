@@ -17,8 +17,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import net.etfbl.is.pozoriste.model.dao.mysql.SjedisteDAO;
 import net.etfbl.is.pozoriste.model.dto.Scena;
-
+import net.etfbl.is.pozoriste.model.dto.Sjediste;
 
 /**
  * FXML Controller class
@@ -42,37 +43,29 @@ public class PregledKarataController implements Initializable {
     @FXML // fx:id="comboRezervacije"
     private ComboBox comboRezervacije; // Value injected by FXMLLoader
 
-    @FXML // fx:id="buttonFullScrean"
-    private Button buttonFullScrean; // Value injected by FXMLLoader
-    
     @FXML // fx:id="buttonNazad"
     private Button buttonNazad; // Value injected by FXMLLoader
-    
-    public static Scena scenaZaPrikaz=null;
-    
+
     private final Integer RED = 10;
-    
+
     private final Integer KOLONA = 10;
-    
-    public PregledKarataController(){
-      //  RED = scenaZaPrikaz.getBrojRedova();
-      //  KOLONA = scenaZaPrikaz.getBrojKolona();
-    }
+
+    public static Scena scenaZaPrikaz;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         postavi();
-        buttonFullScrean.setOnAction(e -> ((Stage)buttonFullScrean.getScene().getWindow()).setFullScreen(true));
         buttonNazad.setOnAction(e -> buttonNazadSetAction());
-        for (int i = 0; i < RED; i++) {
-            for (int j = 0; j < KOLONA; j++) {
-//                SjedisteDAO.dodavanjeSjedista(scenaZaPrikaz.getIdScene(), (i * KOLONA + j)+1);
+        if (SjedisteDAO.sjedista(scenaZaPrikaz.getIdScene()).isEmpty()) {
+            for (int i = 0; i < RED; i++) {
+                for (int j = 0; j < KOLONA; j++) {
+                    SjedisteDAO.dodavanjeSjedista(scenaZaPrikaz.getIdScene(), (i * KOLONA + j) + 1);
+                }
             }
         }
-        
     }
-    
-     private void buttonNazadSetAction() {
+
+    private void buttonNazadSetAction() {
         try {
             Parent pregledRepertoaraController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
             Scene scene = new Scene(pregledRepertoaraController);

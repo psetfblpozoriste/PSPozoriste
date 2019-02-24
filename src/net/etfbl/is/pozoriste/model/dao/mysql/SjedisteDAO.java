@@ -19,7 +19,7 @@ import net.etfbl.is.pozoriste.model.dto.Sjediste;
 public class SjedisteDAO {
 
     public static List<Sjediste> sjedista(Integer idScene) {
-        List<Sjediste> sjedista = new ArrayList<>();
+        ArrayList<Sjediste> sjedista = new ArrayList<>();
         Connection connection = null;
         CallableStatement callableStatement = null;
         ResultSet resultSet = null;
@@ -65,8 +65,8 @@ public class SjedisteDAO {
             callableStatement.setInt(1, idScene);
             callableStatement.setInt(2, brojSjedista);
 
-            return callableStatement.executeUpdate() > 0;
-
+            callableStatement.executeQuery();
+            return true;
         } catch (SQLException sql) {
             Logger.getLogger(SjedisteDAO.class.getName()).log(Level.SEVERE, null, sql);
         } catch (Exception e) {

@@ -6,18 +6,13 @@ package net.etfbl.is.pozoriste.model.dto;
  */
 public class Scena {
     
-    private Integer idScene = null;
+    private Integer idScene;
     
     private String nazivScene;
     
-    private Integer brojRedova;
-    
-    private Integer brojKolona;
-    
-    public Scena(String naziv,Integer brojRedova, Integer brojKolona){
+    public Scena(Integer id,String naziv){
         this.nazivScene=naziv;
-        this.brojRedova=brojRedova;
-        this.brojKolona=brojKolona;
+        this.idScene = id;
     }
 
     public Integer getIdScene() {
@@ -34,22 +29,6 @@ public class Scena {
 
     public void setNazivScene(String nazivScene) {
         this.nazivScene = nazivScene;
-    }
-
-    public Integer getBrojRedova() {
-        return brojRedova;
-    }
-
-    public void setBrojRedova(Integer brojRedova) {
-        this.brojRedova = brojRedova;
-    }
-
-    public Integer getBrojKolona() {
-        return brojKolona;
-    }
-
-    public void setBrojKolona(Integer brojKolona) {
-        this.brojKolona = brojKolona;
     }
     
     
