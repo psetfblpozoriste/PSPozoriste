@@ -33,6 +33,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import net.etfbl.is.pozoriste.model.dao.mysql.AdministratorDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.BIletarDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
 import net.etfbl.is.pozoriste.model.dao.mysql.RadnikDAO;
@@ -166,6 +167,7 @@ public class PregledRadnikaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         taBiografija.setEditable(false);
+        AdministratorDAO.ubaciUTabeluRadnik();
         BIletarDAO.ubaciUTabeluRadnik();
         UmjetnikDAO.ubaciUTabeluRadnik();
         ubaciKoloneUTabeluRadnik(radniciObservableList);

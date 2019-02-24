@@ -91,5 +91,39 @@ public class AdministratorDAO {
             }
         }
     }
+    
+    public static void izmjeniAdministratora(AdministrativniRadnik admin) {
+        System.out.println("IZMJENA ADMINA : : : "+admin.getHash());
+        System.out.println("BILETAR ID : "+admin.getIdRadnika());
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call azuriranjeRadnikaKojiKoristiSistem(?,?,?,?,?,?,?)}");
+
+            callableStatement.setString(1, admin.getIme());
+            callableStatement.setString(2, admin.getPrezime());
+            callableStatement.setString(3, admin.getJmb());
+            callableStatement.setInt(4, admin.getIdRadnika());
+            callableStatement.setBoolean(5, admin.isStatusRadnika());
+            callableStatement.setString(6, admin.getKorisnickoIme());
+            callableStatement.setString(7, admin.getHash());
+
+            callableStatement.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 
 }

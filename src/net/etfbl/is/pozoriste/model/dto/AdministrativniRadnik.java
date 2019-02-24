@@ -22,7 +22,7 @@ public class AdministrativniRadnik extends RadnikKojiKoristiSistem {
 
     private String korisnickoIme = "";
 
-    private String tipRadnika = "AdministrativniRadnik";
+    private String tipRadnika = "Administrator";
     
     public AdministrativniRadnik(){
         

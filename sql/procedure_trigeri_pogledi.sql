@@ -576,8 +576,6 @@ from radnik as r join umjetnik as u on r.idRadnik=u.idRadnik
 where r.statusRadnika = true;
 
 
-
-
 delimiter $$
 create procedure azuriranjeRezervacije (in id int, in ime varchar(20))
 begin

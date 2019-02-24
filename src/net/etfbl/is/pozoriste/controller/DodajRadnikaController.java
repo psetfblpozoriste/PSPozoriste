@@ -146,12 +146,12 @@ public class DodajRadnikaController implements Initializable {
             admin.setKontak(tfKontakt.getText());
             admin.setKorisnickoIme(tfKorisnickoIme.getText());
             admin.setHash(tfPassword.getText());
-            admin.setTipRadnika("Administrativni radnik");
-            System.out.println("AAAA: " + admin.getHash());
+            admin.setTipRadnika("Administrator");
+            System.out.println("AAAA: " + admin.getHash()+ "-----"+admin.getTipRadnika());
             if (PregledRadnikaController.dodajRadnika) {
                 AdministratorDAO.dodajAdministrativnogRadnika(admin);
             } else {
-                //  BIletarDAO.izmjeniBiletara(admin);
+                  AdministratorDAO.izmjeniAdministratora(admin);
             }
 
         } else {
@@ -301,7 +301,7 @@ public class DodajRadnikaController implements Initializable {
             } else if (radnik.getTipRadnika().equals("Umjetnik")) {
                 dodajUmjetnika();
                 return true;
-            } else if (radnik.getTipRadnika().equals("Administrativni radnik")) {
+            } else if (radnik.getTipRadnika().equals("Administrator")) {
                 dodajAdministrativnogRadnika();
                 return true;
             }
