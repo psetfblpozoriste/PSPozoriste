@@ -4,7 +4,7 @@ call dodavanjeAdministrativnogRadnika("PEro", "Peric", "1111111111111",
 "065/056-999", "admin", "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918","Administrator",@pero);
 
 call dodavanjeBiletara("Simo", "Simic", "2222222222222",
-"065/333-333", "biletar", "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918","Biletar",@pero);
+"065333333", "biletar", "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918","Biletar",@pero);
 
 
 insert into predstava

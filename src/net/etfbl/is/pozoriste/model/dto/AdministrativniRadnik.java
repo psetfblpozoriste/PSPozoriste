@@ -60,7 +60,7 @@ public class AdministrativniRadnik extends RadnikKojiKoristiSistem {
         this.tipRadnika = tipKorisnika;
     }
 
-    private String hashSHA256(String value) {
+    public String hashSHA256(String value) {
         MessageDigest digest = null;
         try {
             digest = MessageDigest.getInstance("SHA-256");

@@ -6,6 +6,7 @@ call azuriranjeUmjetnika('OGNJEN','OGNJEN','1231231239876',3,true,'bla');
 select * from umjetnici_info;
 select * from radnik_koji_koristi_sistem;
 
+delete  from radnik_koji_koristi_sistem where idRadnik=3;
 drop procedure provjeraLogovanja;
 delimiter $$
 	create procedure provjeraLogovanja(in pkorisnickoIme varchar(64),in psifra varchar(64),out vpostojiUSistemu boolean )

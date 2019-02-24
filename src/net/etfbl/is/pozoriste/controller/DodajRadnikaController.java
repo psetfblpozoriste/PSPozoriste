@@ -109,6 +109,8 @@ public class DodajRadnikaController implements Initializable {
     private Label lNovaLozinka;
     @FXML
     private ComboBox cmbStatusRadnika;
+    
+    public static String korisnickoImeIzabranogRadnika = "";
 
     private boolean dodajAdministrativnogRadnika() {
         if (PregledRadnikaController.dodajRadnika) {
@@ -169,14 +171,48 @@ public class DodajRadnikaController implements Initializable {
             } else {
                 admin.setStatusRadnika(false);
             }
+            admin.setKorisnickoIme(tfKorisnickoIme.getText());
             admin.setKontak(tfKontakt.getText());
-            if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
+            
+            if (!PregledRadnikaController.dodajRadnika) {
+
+                if (!korisnickoImeIzabranogRadnika.equals(tfKorisnickoIme.getText())) {
+                    if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
+                        admin.setKorisnickoIme(tfKorisnickoIme.getText());
+                    } else {
+                        upozorenjeKorisnickoIme();
+                        return false;
+                    }
+                }
+            } else {
+                if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
+                    admin.setKorisnickoIme(tfKorisnickoIme.getText());
+                } else {
+                    upozorenjeKorisnickoIme();
+                    return false;
+                }
+            }
+            String staraLozinka = tfPassword.getText();
+            if (!PregledRadnikaController.dodajRadnika) {
+                if (postojiUBaziLozinka(admin.hashSHA256(staraLozinka))) {
+                    admin.setHash(tfNovaLozinka.getText());
+
+                } else {
+                    upozorenjeStaraLozinkaNijeIspravna();
+                    return false;
+                }
+            } else {
+                admin.setHash(tfPassword.getText());
+            }
+            
+            
+           /* if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
                 admin.setKorisnickoIme(tfKorisnickoIme.getText());
             } else {
                 upozorenjeKorisnickoIme();
                 return false;
             }
-            admin.setHash(tfPassword.getText());
+            admin.setHash(tfPassword.getText()); */
             admin.setTipRadnika("Administrator");
             if (PregledRadnikaController.dodajRadnika) {
                 AdministratorDAO.dodajAdministrativnogRadnika(admin);
@@ -261,14 +297,9 @@ public class DodajRadnikaController implements Initializable {
             }
             biletar.setKorisnickoIme(tfKorisnickoIme.getText());
             biletar.setKontak(tfKontakt.getText());
-            String korisnickoImeIzabranogRadnika = "";
             if (!PregledRadnikaController.dodajRadnika) {
-                korisnickoImeIzabranogRadnika = ((Biletar) PregledRadnikaController.izabraniRadnik).getKorisnickoIme();
-                System.out.println("------> <------" + korisnickoImeIzabranogRadnika);
-                System.out.println("----OO====" + tfKorisnickoIme.getText());
 
                 if (!korisnickoImeIzabranogRadnika.equals(tfKorisnickoIme.getText())) {
-                    System.out.println("AAAAAA");
                     if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
                         biletar.setKorisnickoIme(tfKorisnickoIme.getText());
                     } else {
@@ -276,11 +307,19 @@ public class DodajRadnikaController implements Initializable {
                         return false;
                     }
                 }
+            } else {
+                if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
+                    biletar.setKorisnickoIme(tfKorisnickoIme.getText());
+                } else {
+                    upozorenjeKorisnickoIme();
+                    return false;
+                }
             }
             String staraLozinka = tfPassword.getText();
             if (!PregledRadnikaController.dodajRadnika) {
                 if (postojiUBaziLozinka(biletar.hashSHA256(staraLozinka))) {
                     biletar.setHash(tfNovaLozinka.getText());
+
                 } else {
                     upozorenjeStaraLozinkaNijeIspravna();
                     return false;
@@ -399,16 +438,23 @@ public class DodajRadnikaController implements Initializable {
         } else if (!PregledRadnikaController.dodajRadnika) {
             Radnik radnik = PregledRadnikaController.izabraniRadnik;
             if (radnik.getTipRadnika().equals("Biletar")) {
-                dodajBiletara();
-                return true;
+                if(dodajBiletara()){
+                return true;}
+                else {
+                    return false;
+                }
             } else if (radnik.getTipRadnika().equals("Umjetnik")) {
-                dodajUmjetnika();
+                if(dodajUmjetnika()){
                 return true;
+                } else {
+                    return false;
+                }
             } else if (radnik.getTipRadnika().equals("Administrator")) {
-                dodajAdministrativnogRadnika();
+               if(dodajAdministrativnogRadnika()){
                 return true;
-            } else {
-                return false;
+               } else {
+                   return false;
+               }
             }
         }
         return false;
@@ -583,9 +629,11 @@ public class DodajRadnikaController implements Initializable {
         cmbStatusRadnika.setVisible(false);
         cmbStatusRadnika.getSelectionModel().selectFirst();
         if (!PregledRadnikaController.dodajRadnika) {
+            
             tfJmb.setEditable(false);
             cmbTipRadnika.setVisible(false);
             if (PregledRadnikaController.tipRadnika.equals("Biletar")) {
+                     korisnickoImeIzabranogRadnika = ((Biletar)PregledRadnikaController.izabraniRadnik).getKorisnickoIme();
                 if (PregledRadnikaController.izabraniRadnik.isStatusRadnika()) {
                     cmbStatusRadnika.getSelectionModel().selectFirst();
                 } else {
@@ -606,6 +654,7 @@ public class DodajRadnikaController implements Initializable {
                 postavljanjeTextFieldovaZaUmjetnika();
 
             } else if (PregledRadnikaController.tipRadnika.equals("Administrator")) {
+                korisnickoImeIzabranogRadnika = ((AdministrativniRadnik)PregledRadnikaController.izabraniRadnik).getKorisnickoIme();
                 if (PregledRadnikaController.izabraniRadnik.isStatusRadnika()) {
                     cmbStatusRadnika.getSelectionModel().selectFirst();
                 } else {
@@ -653,14 +702,15 @@ public class DodajRadnikaController implements Initializable {
         boolean postoji = false;
         Connection connection = null;
         CallableStatement callableStatement = null;
-        ResultSet resultSet = null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call provjeraKorisnickogImena(?,?)}");
             callableStatement.setString(1, korisnickoIme);
             callableStatement.registerOutParameter(2, Types.BOOLEAN);
+
             callableStatement.executeQuery();
             postoji = callableStatement.getBoolean(2);
+            System.out.println("POOOOOSTOJI: " + postoji);
             if (postoji) {
                 return true;
             } else {
