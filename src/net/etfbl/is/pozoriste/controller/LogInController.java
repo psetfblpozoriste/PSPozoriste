@@ -73,7 +73,6 @@ public class LogInController implements Initializable {
     }
 
     private String postojiUBazi(String username, String passwordHash) {
-   // private boolean postojiUBazi(String username, String passwordHash) {
         boolean postoji = false;
         Connection connection = null;
         CallableStatement callableStatement = null;
@@ -81,16 +80,11 @@ public class LogInController implements Initializable {
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            //callableStatement = connection.prepareCall("{call provjeraLozinkeIKorisnickogImena(?,?)}");
             callableStatement = connection.prepareCall("{call provjeraLogovanja(?,?,?)}");
             callableStatement.setString(1, username);
             callableStatement.setString(2, passwordHash);
-            callableStatement.registerOutParameter(3, Types.BOOLEAN);
-
-            //resultSet = callableStatement.executeQuery();
+ 
             callableStatement.executeQuery();
-           // if (resultSet.next()) {
-                //postoji = resultSet.getBoolean("postojiUSistemu");
                 postoji = callableStatement.getBoolean(3);
                 System.out.println("KOPSAJAOG: "+postoji);
                 if(postoji){
@@ -103,22 +97,17 @@ public class LogInController implements Initializable {
                     if (resultSet.next()) {
                        tipKorisnika = resultSet.getString("tipKorisnika"); 
                     }
-                //tipKorisnika = resultSet.getString("tipKorisnika");
-                 
-               // System.out.println("POSOTJI:    "+tipKorisnika);
                 } else {
                    upozorenjeLogovanje();
 
                 }
                 return tipKorisnika;
-          //  }
         } catch (SQLException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionPool.getInstance().checkIn(connection);
         }
         return "";
-       // return postoji;
     }
 
     private String hashSHA256(String value) {

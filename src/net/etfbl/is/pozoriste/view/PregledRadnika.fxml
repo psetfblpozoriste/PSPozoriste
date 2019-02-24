@@ -7,31 +7,38 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledRadnikaController">
+<AnchorPane id="AnchorPane" prefHeight="656.0" prefWidth="1051.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledRadnikaController">
    <children>
-      <TableView fx:id="radniciTableView" layoutX="14.0" layoutY="154.0" prefHeight="200.0" prefWidth="584.0" />
-      <VBox layoutX="14.0" layoutY="14.0" prefHeight="140.0" prefWidth="130.0" spacing="20.0">
+      <TableView fx:id="radniciTableView" layoutX="14.0" layoutY="228.0" prefHeight="320.0" prefWidth="713.0" />
+      <VBox layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="249.0" spacing="20.0">
          <children>
-            <Button fx:id="bDodaj" mnemonicParsing="false" onAction="#dodajRadnikaAction" text="Dodaj">
+            <Button fx:id="bDodaj" mnemonicParsing="false" onAction="#dodajRadnikaAction" prefHeight="46.0" prefWidth="170.0" text="Dodaj">
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="bIzmjeni" mnemonicParsing="false" onAction="#izmijeniRadnikaAction" text="Izmjeni">
+            <Button fx:id="bIzmjeni" mnemonicParsing="false" onAction="#izmijeniRadnikaAction" prefHeight="46.0" prefWidth="170.0" text="Izmjeni">
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="bPretrazi" mnemonicParsing="false" onAction="#pretraziRadnikaAction" text="Pretrazi">
+            <Button fx:id="bPretrazi" mnemonicParsing="false" onAction="#pretraziRadnikaAction" prefHeight="46.0" prefWidth="170.0" text="Pretrazi">
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin>
             </Button>
          </children>
       </VBox>
-      <TextField fx:id="tfPretraga" layoutX="150.0" layoutY="102.0" prefHeight="25.0" prefWidth="262.0" promptText="Unesite JMB ..." />
-      <TextArea fx:id="taBiografija" layoutX="611.0" layoutY="154.0" prefHeight="200.0" prefWidth="219.0" />
-      <Button fx:id="bNazad" layoutX="14.0" layoutY="377.0" mnemonicParsing="false" onAction="#idiNazadNaAdminForm" text="Nazad" />
+      <TextField fx:id="tfPretraga" layoutX="263.0" layoutY="150.0" prefHeight="46.0" prefWidth="313.0" promptText="Unesite JMB ...">
+         <font>
+            <Font size="20.0" />
+         </font></TextField>
+      <TextArea fx:id="taBiografija" layoutX="746.0" layoutY="228.0" prefHeight="320.0" prefWidth="293.0" promptText="Unesite biografiju umjetnika.">
+         <font>
+            <Font size="20.0" />
+         </font></TextArea>
+      <Button fx:id="bNazad" layoutX="14.0" layoutY="586.0" mnemonicParsing="false" onAction="#idiNazadNaAdminForm" prefHeight="46.0" prefWidth="170.0" text="Nazad" />
    </children>
 </AnchorPane>

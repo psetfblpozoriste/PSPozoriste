@@ -17,10 +17,10 @@
             <TextField fx:id="tfIme" />
             <TextField fx:id="tfPrezime" />
             <TextField fx:id="tfJmb" />
-            <ComboBox fx:id="cmbStatusRadnika" prefWidth="150.0" />
             <TextField fx:id="tfKontakt" />
             <TextField fx:id="tfKorisnickoIme" />
             <PasswordField fx:id="tfPassword" />
+            <ComboBox fx:id="cmbStatusRadnika" prefWidth="150.0" />
          </children>
       </VBox>
       <Label fx:id="lBiografija" layoutX="372.0" layoutY="36.0" text="Biografija">
@@ -45,11 +45,6 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="lStatusRadnika" text="Status radnika">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
             <Label fx:id="lKontakt" text="Kontakt">
                <font>
                   <Font name="System Bold" size="15.0" />
@@ -61,6 +56,11 @@
                </font>
             </Label>
             <Label fx:id="lLozinka" text="Lozinka">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lStatusRadnika" text="Status radnika">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
