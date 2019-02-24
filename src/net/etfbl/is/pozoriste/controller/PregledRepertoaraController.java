@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.RepertoarDAO;
+import net.etfbl.is.pozoriste.model.dto.Igranje;
 import net.etfbl.is.pozoriste.model.dto.Repertoar;
 
 
@@ -48,13 +49,14 @@ public class PregledRepertoaraController implements Initializable {
             buttonNazad.setVisible(false);
             
         }
-        RepertoarDAO.getRepertoar(1).getIgranja().forEach(e -> System.out.println(e.getTermin()));
+        Repertoar repertoarZaPrikaz = RepertoarDAO.getRepertoar(1);
         buttonNazad.setOnAction(e -> buttonSetAction());
 
         if (!(brojPredstava == 0)) {
             vBox = new VBox();
-            for (int i = 0; i < 20; i++) {
-                Label naziv = new Label("Alisa u zemlji cuda termin                                                                               10.3 u 20:00");
+            for (int i = 0; i < repertoarZaPrikaz.getIgranja().size() ; i++) {
+                Igranje igranje = repertoarZaPrikaz.getIgranja().get(i);
+                Label naziv = new Label((igranje.getIdPredstave() != null ? igranje.getIdPredstave() : igranje.getIdGostujucePredstave() )+"                  "+igranje.getTermin().toString());
                 setLabel(naziv);
                 naziv.setOnMouseClicked(event -> {
                     if (event.getButton().equals(MouseButton.PRIMARY)) {
