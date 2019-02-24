@@ -71,6 +71,5 @@
       <ComboBox fx:id="cmbTipRadnika" layoutX="42.0" layoutY="21.0" onAction="#prikazPoljaNaOsnovuTipaRadnikaIzKomboBoksa" prefWidth="150.0" promptText="Tip radnika" />
       <Button fx:id="bOdustani" layoutX="409.0" layoutY="380.0" mnemonicParsing="false" onAction="#odustaniOdUnosaRadnikaAction" text="Odustani" />
       <Button fx:id="bPotvrdi" layoutX="528.0" layoutY="380.0" mnemonicParsing="false" onAction="#potvrdiUnosRadnikaAction" text="Potvrdi" />
-      <Label layoutX="51.0" layoutY="384.0" text="Poraditti na statusu radnika jer je boolean" />
    </children>
 </AnchorPane>

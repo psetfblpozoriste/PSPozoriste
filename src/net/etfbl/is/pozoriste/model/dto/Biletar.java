@@ -85,8 +85,6 @@ public class Biletar extends RadnikKojiKoristiSistem {
             hexString.append(hex);
         }
         return hexString.toString();
-    }
-    
-    
+    } 
 
 }

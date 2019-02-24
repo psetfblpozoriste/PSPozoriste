@@ -201,7 +201,6 @@ public class DodajRadnikaController implements Initializable {
             } else {
                 umjetnik.setStatusRadnika(false);
             }
-            //umjetnik.setStatusRadnika(true);
             umjetnik.setKontak(tfKontakt.getText());
             umjetnik.setBiografija(taBiografija.getText());
 
@@ -282,14 +281,10 @@ public class DodajRadnikaController implements Initializable {
         }
     }
 
-    /**
-     * Initializes the controller class.
-     */
     private void sakriPolja() {
         tfIme.setVisible(false);
         tfPrezime.setVisible(false);
         tfJmb.setVisible(false);
-        //tfStatusRadnika.setVisible(false);
         tfKontakt.setVisible(false);
         tfKorisnickoIme.setVisible(false);
         tfPassword.setVisible(false);
@@ -360,6 +355,7 @@ public class DodajRadnikaController implements Initializable {
         cmbStatusRadnika.getItems().addAll("Aktivan","Neaktivan");
         cmbTipRadnika.getItems().addAll("Biletar", "Umjetnik");
         cmbStatusRadnika.setVisible(false);
+        cmbStatusRadnika.getSelectionModel().selectFirst();
         if (!PregledRadnikaController.dodajRadnika) {
             cmbTipRadnika.setVisible(false);
             if (PregledRadnikaController.tipRadnika.equals("Biletar")) {
