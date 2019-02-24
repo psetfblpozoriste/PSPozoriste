@@ -36,7 +36,7 @@ public class IgranjeDAO {
                 Integer idS = resultSet.getInt("idScene");
                 Integer idGost = resultSet.getInt("idGostujucePredstave");
                 Integer idP = resultSet.getInt("idPredstave");
-                int idR = resultSet.getInt("idRepertoara");
+                Integer idR = resultSet.getInt("idRepertoara");
                 igranja.add(new Igranje(termin, idS, idP,idGost, idR));
             }
         } catch (SQLException sql) {

@@ -66,6 +66,7 @@ public class AdminController implements Initializable {
             Scene repertoarScene = new Scene(repertoarController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(repertoarScene);
+            window.setResizable(false);
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
