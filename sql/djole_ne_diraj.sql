@@ -18,7 +18,6 @@ delimiter $$
     end$$
 delimiter ;
 
-call provjeraLogovanja()
 delimiter $$
 	create procedure provjeraKorisnickogImena(in pkorisnickoIme varchar(64),out vpostojiUSistemu boolean )
     begin
