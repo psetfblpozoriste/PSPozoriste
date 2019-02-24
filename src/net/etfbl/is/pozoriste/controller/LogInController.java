@@ -57,14 +57,8 @@ public class LogInController implements Initializable {
     }
 
     private boolean provjeraAutentifikacije(String username, String password) {
-        System.out.println("PASSS: "+password);
         String passwordHash = hashSHA256(password);
-        System.out.println("1313PASS: "+passwordHash);
-        //if(postojiUBazi(username, passwordHash)){
-        //    return true;
-       // } else return false;
         String userType = postojiUBazi(username, passwordHash);
-        System.out.println("USER TYPE: "+userType);
         if ("".equals(userType)) {
             return false;
         }
@@ -77,7 +71,6 @@ public class LogInController implements Initializable {
         Connection connection = null;
         CallableStatement callableStatement = null;
         ResultSet resultSet = null;
-        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         try {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call provjeraLogovanja(?,?,?)}");
@@ -86,9 +79,7 @@ public class LogInController implements Initializable {
             callableStatement.registerOutParameter(3, Types.BOOLEAN);
             callableStatement.executeQuery();
                 postoji = callableStatement.getBoolean(3);
-                System.out.println("KOPSAJAOG: "+postoji);
                 if(postoji){
-                    System.out.println("POSTOJ!!!");
                     callableStatement = connection.prepareCall("{call provjeraLozinkeIKorisnickogImena(?,?)}");
                     callableStatement.setString(1, username);
                     callableStatement.setString(2, passwordHash);
@@ -99,7 +90,6 @@ public class LogInController implements Initializable {
                     }
                 } else {
                    upozorenjeLogovanje();
-
                 }
                 return tipKorisnika;
         } catch (SQLException ex) {
@@ -161,8 +151,6 @@ public class LogInController implements Initializable {
                 }
             }
             
-        } else {
-            upozorenjeKorisnik();
         }
     }
     private void upozorenjeLogovanje() {
