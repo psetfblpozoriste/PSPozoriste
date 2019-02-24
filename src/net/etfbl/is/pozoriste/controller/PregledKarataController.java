@@ -1,10 +1,16 @@
 package net.etfbl.is.pozoriste.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
@@ -39,6 +45,8 @@ public class PregledKarataController implements Initializable {
     @FXML // fx:id="buttonFullScrean"
     private Button buttonFullScrean; // Value injected by FXMLLoader
     
+    @FXML // fx:id="buttonNazad"
+    private Button buttonNazad; // Value injected by FXMLLoader
     
     public static Scena scenaZaPrikaz=null;
     
@@ -55,12 +63,25 @@ public class PregledKarataController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         postavi();
         buttonFullScrean.setOnAction(e -> ((Stage)buttonFullScrean.getScene().getWindow()).setFullScreen(true));
+        buttonNazad.setOnAction(e -> buttonNazadSetAction());
         for (int i = 0; i < RED; i++) {
             for (int j = 0; j < KOLONA; j++) {
 //                SjedisteDAO.dodavanjeSjedista(scenaZaPrikaz.getIdScene(), (i * KOLONA + j)+1);
             }
         }
         
+    }
+    
+     private void buttonNazadSetAction() {
+        try {
+            Parent pregledRepertoaraController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
+            Scene scene = new Scene(pregledRepertoaraController);
+            Stage window = (Stage) buttonNazad.getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(PregledKarataController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void postavi() {

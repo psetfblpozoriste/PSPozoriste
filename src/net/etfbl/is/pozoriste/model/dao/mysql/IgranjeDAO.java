@@ -38,8 +38,6 @@ public class IgranjeDAO {
                 Integer idP = resultSet.getInt("idPredstave");
                 int idR = resultSet.getInt("idRepertoara");
                 igranja.add(new Igranje(termin, idS, idP,idGost, idR));
-                System.out.println(igranja.get(0).getIdScene());
-                //bjekat2 != null ? objekat2 : null ,objekat3 != null ? (Int)objekat3 : null 
             }
         } catch (SQLException sql) {
             Logger.getLogger(IgranjeDAO.class.getName()).log(Level.SEVERE, null, sql);

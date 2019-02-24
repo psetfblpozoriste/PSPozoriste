@@ -11,6 +11,7 @@ package net.etfbl.is.pozoriste.model.dto;
  */
 public class Predstava {
     
+    private Integer id;
     private String naziv;
     private String opis;
     private String tip;
@@ -44,5 +45,15 @@ public class Predstava {
     public String getTip(){
         return tip;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    
     
 }

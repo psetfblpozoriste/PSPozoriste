@@ -20,6 +20,7 @@
                         <Button fx:id="buttonProdaja" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Prodaj" />
                         <ComboBox fx:id="comboRezervacije" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="150.0" />
                         <Button fx:id="buttonFullScrean" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Pun ekran" />
+                        <Button fx:id="buttonNazad" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="Nazad" />
                      </children>
                   </VBox>
                   <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="550.0" prefWidth="570.0">
