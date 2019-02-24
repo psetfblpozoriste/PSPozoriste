@@ -17,6 +17,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
+import net.etfbl.is.pozoriste.model.dao.mysql.GostujucaPredstavaDAO;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
 import net.etfbl.is.pozoriste.model.dto.Predstava;
 
@@ -62,9 +64,39 @@ public class PregledPredstavaController implements Initializable {
     
     public static ObservableList<Predstava> predstaveObservableList = FXCollections.observableArrayList();
     public static ObservableList<GostujucaPredstava> gostujucePredstaveObservableList = FXCollections.observableArrayList();
+    
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        gostujucePredstaveObservableList.addAll(GostujucaPredstavaDAO.gostujucePredstave());
     }    
     
+    
+    
+    private void ubaciKoloneUTabeluRadnik(ObservableList radnici) {
+        nazivGpColumn = new TableColumn("Naziv");
+        nazivGpColumn.setCellValueFactory(new PropertyValueFactory<>("naziv"));
+
+        tipGpColumn = new TableColumn("Tip");
+        tipGpColumn.setCellValueFactory(new PropertyValueFactory<>("tip"));
+
+        pisacColumn = new TableColumn("Pisac");
+        pisacColumn.setCellValueFactory(new PropertyValueFactory<>("pisac"));
+
+        reziserColumn = new TableColumn("Reziser");
+        reziserColumn.setCellValueFactory(new PropertyValueFactory<>("reziser"));
+
+        korisnickoImeColumn = new TableColumn("Korisnicko Ime");
+        korisnickoImeColumn.setCellValueFactory(new PropertyValueFactory<>("korisnickoIme"));
+        
+        zanimanjeColumn = new TableColumn("Zanimanje");
+        zanimanjeColumn.setCellValueFactory(new PropertyValueFactory<>("tipRadnika"));
+        
+        statusRadnikaColumn = new TableColumn("Status radnika");
+        statusRadnikaColumn.setCellValueFactory(new PropertyValueFactory<>("statusRadnika"));
+
+        radniciTableView.setItems(radniciObservableList);
+        radniciTableView.getColumns().addAll(jmbColumn,imeColumn, prezimeColumn,zanimanjeColumn,kontaktColumn, korisnickoImeColumn,statusRadnikaColumn);
+    }
 }
