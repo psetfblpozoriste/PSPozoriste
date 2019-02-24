@@ -46,13 +46,13 @@ public class AdminController implements Initializable {
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(radnikScene);
             
-            Screen screen = Screen.getPrimary();
+           /* Screen screen = Screen.getPrimary();
             Rectangle2D bounds = screen.getVisualBounds();
             window.setX(bounds.getMinX());
             window.setY(bounds.getMinY());
             window.setWidth(bounds.getWidth());
             window.setHeight(bounds.getHeight());
-            
+            */
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);

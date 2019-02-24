@@ -169,9 +169,10 @@ public class DodajRadnikaController implements Initializable {
                 admin.setStatusRadnika(false);
             }
             admin.setKontak(tfKontakt.getText());
-            if (postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
+            if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
                 admin.setKorisnickoIme(tfKorisnickoIme.getText());
             } else {
+                upozorenjeKorisnickoIme();
                 return false;
             }
             admin.setHash(tfPassword.getText());
@@ -258,10 +259,19 @@ public class DodajRadnikaController implements Initializable {
                 biletar.setStatusRadnika(false);
             }
             biletar.setKontak(tfKontakt.getText());
-            if (postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
+            
+            String korisnickoImeIzabranogRadnika = ((Biletar)PregledRadnikaController.izabraniRadnik).getKorisnickoIme();
+            System.out.println("------> <------"+korisnickoImeIzabranogRadnika);
+            System.out.println("----OO===="+tfKorisnickoIme.getText());
+            
+            if(!korisnickoImeIzabranogRadnika.equals(tfKorisnickoIme.getText())){
+                System.out.println("AAAAAA");
+            if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
                 biletar.setKorisnickoIme(tfKorisnickoIme.getText());
             } else {
+                upozorenjeKorisnickoIme();
                 return false;
+            }
             }
             String staraLozinka = tfPassword.getText();
             if(!PregledRadnikaController.dodajRadnika){
@@ -559,6 +569,7 @@ public class DodajRadnikaController implements Initializable {
         cmbStatusRadnika.setVisible(false);
         cmbStatusRadnika.getSelectionModel().selectFirst();
         if (!PregledRadnikaController.dodajRadnika) {
+            tfJmb.setEditable(false);
             cmbTipRadnika.setVisible(false);
             if (PregledRadnikaController.tipRadnika.equals("Biletar")) {
                 if (PregledRadnikaController.izabraniRadnik.isStatusRadnika()) {
@@ -637,10 +648,9 @@ public class DodajRadnikaController implements Initializable {
             callableStatement.executeQuery();
             postoji = callableStatement.getBoolean(2);
             if (postoji) {
-                upozorenjeKorisnickoIme();
-                return false;
-            } else {
                 return true;
+            } else {
+                return false;
 
             }
         } catch (SQLException ex) {
