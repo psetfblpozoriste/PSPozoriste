@@ -20,6 +20,7 @@
             <TextField fx:id="tfKontakt" />
             <TextField fx:id="tfKorisnickoIme" />
             <PasswordField fx:id="tfPassword" />
+            <TextField fx:id="tfNovaLozinka" />
             <ComboBox fx:id="cmbStatusRadnika" prefWidth="150.0" />
          </children>
       </VBox>
@@ -56,6 +57,11 @@
                </font>
             </Label>
             <Label fx:id="lLozinka" text="Lozinka">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lNovaLozinka" text="Nova lozinka">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
