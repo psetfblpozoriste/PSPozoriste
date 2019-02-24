@@ -38,5 +38,23 @@ delimiter ;
 
 
 
+delimiter $$
+create procedure dodavanjeRezervacije (in id int, in ime varchar(40), in termin date, in idScene int)
+begin
+	insert into rezervacija values(id,ime,termin,idScene);
+end$$
+delimiter ;
+
+
+delimiter $$
+create procedure dodavanjeRezervisanogSjedista (in brojSjedista int, in termin date, in idScene int, in idRezervacije int)
+begin
+	insert into rezervisano_sjediste values(idScene,brojSjedista,idRezervacije,termin);
+end$$
+delimiter ;
+
+insert into rezervacija
+values
+(0,"Moja rezervacija",'2019-7-3',1);
 
 call pregledReperoara(1);

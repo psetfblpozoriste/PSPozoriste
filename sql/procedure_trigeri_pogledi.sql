@@ -404,20 +404,7 @@ end$$
 delimiter ;
 
 
-delimiter $$
-create procedure dodavanjeRezervacije (in id int, in ime varchar(40), in termin date, in idScene int)
-begin
-	insert into rezervacija values(id,ime,termin,idScene);
-end$$
-delimiter ;
 
-
-delimiter $$
-create procedure dodavanjeRezervisanogSjedista (in brojSjedista int, in termin date, in idScene int, in idRezervacije int)
-begin
-	insert into rezervisano_sjediste values(idScene,brojSjedista,idRezervacije,termin);
-end$$
-delimiter ;
 
 delimiter $$
 create procedure otkazivanjeRezervacije (in id int)
@@ -435,14 +422,6 @@ begin
 end$$
 delimiter ;
 
-#doraditii=============================
-delimiter $$
-create procedure brisanjeKontakta (in idRadnik int,in kontakt varchar(20))
-begin
-
-end$$
-delimiter ;
-#=========================================================
 
 delimiter $$
 create procedure brisanjeSjedista (in idScene int,in brojSjedista int)

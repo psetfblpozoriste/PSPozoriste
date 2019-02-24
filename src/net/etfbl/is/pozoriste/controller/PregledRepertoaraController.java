@@ -149,6 +149,7 @@ public class PregledRepertoaraController implements Initializable {
         try {
             final Igranje temp = zeljenoIgranje;
             PregledKarataController.scenaZaPrikaz = new Scena(temp.getIdScene(), ScenaDAO.scene().stream().filter(e -> e.getIdScene().equals(temp.getIdScene())).findAny().get().getNazivScene());
+            PregledKarataController.terminPredstave = temp.getTermin();
             Parent pregledKarataController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledKarata.fxml"));
             Scene scene = new Scene(pregledKarataController);
             Stage stage = (Stage) buttonNazad.getScene().getWindow();

@@ -2,9 +2,11 @@ package net.etfbl.is.pozoriste.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +19,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import net.etfbl.is.pozoriste.model.dao.mysql.RezervacijaDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.RezervisanoSjedisteDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.SjedisteDAO;
+import net.etfbl.is.pozoriste.model.dto.RezervisanoSjediste;
 import net.etfbl.is.pozoriste.model.dto.Scena;
 import net.etfbl.is.pozoriste.model.dto.Sjediste;
 
@@ -51,6 +56,8 @@ public class PregledKarataController implements Initializable {
     private final Integer KOLONA = 10;
 
     public static Scena scenaZaPrikaz;
+    
+    public static Date terminPredstave;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -63,6 +70,9 @@ public class PregledKarataController implements Initializable {
                 }
             }
         }
+       // RezervisanoSjedisteDAO.sjedista(terminPredstave, scenaZaPrikaz.getIdScene()).forEach(e -> System.out.println(e.getBrojSjedista()));
+       
+       comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(e -> e.getIme()).collect(Collectors.toList()));
     }
 
     private void buttonNazadSetAction() {
@@ -90,16 +100,13 @@ public class PregledKarataController implements Initializable {
                 buttonMatrix[i][j].setDisable(false);
                 buttonMatrix[i][j].setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/Green.png"))));
                 buttonMatrix[i][j].setId(new Integer(i * KOLONA + j).toString());
-
-                /*buttonMatrix[i][j].setOnMousePressed(new EventHandler<javafx.scene.input.MouseEvent>() {
-                    @Override
-                    public void handle(javafx.scene.input.MouseEvent event) {
-                        System.out.println("rjg;odihgiljgd");
-                        
-                    }
-                });*/
+                
                 buttonMatrix[i][j].setOnMouseClicked(e -> {
-
+                    RezervisanoSjedisteDAO.addRezervisanoSjediste(new RezervisanoSjediste(
+                            scenaZaPrikaz.getIdScene(),
+                            1,
+                            1,
+                            terminPredstave));
                     ((Button) e.getSource()).setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/orange.png"))));
 
                 });
