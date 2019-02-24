@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -258,31 +259,34 @@ public class DodajRadnikaController implements Initializable {
             } else {
                 biletar.setStatusRadnika(false);
             }
+            biletar.setKorisnickoIme(tfKorisnickoIme.getText());
             biletar.setKontak(tfKontakt.getText());
-            
-            String korisnickoImeIzabranogRadnika = ((Biletar)PregledRadnikaController.izabraniRadnik).getKorisnickoIme();
-            System.out.println("------> <------"+korisnickoImeIzabranogRadnika);
-            System.out.println("----OO===="+tfKorisnickoIme.getText());
-            
-            if(!korisnickoImeIzabranogRadnika.equals(tfKorisnickoIme.getText())){
-                System.out.println("AAAAAA");
-            if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
-                biletar.setKorisnickoIme(tfKorisnickoIme.getText());
-            } else {
-                upozorenjeKorisnickoIme();
-                return false;
-            }
+            String korisnickoImeIzabranogRadnika = "";
+            if (!PregledRadnikaController.dodajRadnika) {
+                korisnickoImeIzabranogRadnika = ((Biletar) PregledRadnikaController.izabraniRadnik).getKorisnickoIme();
+                System.out.println("------> <------" + korisnickoImeIzabranogRadnika);
+                System.out.println("----OO====" + tfKorisnickoIme.getText());
+
+                if (!korisnickoImeIzabranogRadnika.equals(tfKorisnickoIme.getText())) {
+                    System.out.println("AAAAAA");
+                    if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
+                        biletar.setKorisnickoIme(tfKorisnickoIme.getText());
+                    } else {
+                        upozorenjeKorisnickoIme();
+                        return false;
+                    }
+                }
             }
             String staraLozinka = tfPassword.getText();
-            if(!PregledRadnikaController.dodajRadnika){
-            if(!postojiUBaziLozinka(biletar.hashSHA256(staraLozinka))){
-                upozorenjeLozinka();
+            if (!PregledRadnikaController.dodajRadnika) {
+                if (postojiUBaziLozinka(biletar.hashSHA256(staraLozinka))) {
+                    biletar.setHash(tfNovaLozinka.getText());
+                } else {
+                    upozorenjeStaraLozinkaNijeIspravna();
+                    return false;
+                }
             } else {
-                biletar.setHash(tfNovaLozinka.getText());
-            }
-            }
-            else{
-            biletar.setHash(tfPassword.getText());
+                biletar.setHash(tfPassword.getText());
             }
             biletar.setTipRadnika("Biletar");
             if (PregledRadnikaController.dodajRadnika) {
@@ -373,16 +377,22 @@ public class DodajRadnikaController implements Initializable {
             if (cmbTipRadnika.getValue().equals("Biletar")) {
                 if (dodajBiletara()) {
                     return true;
+                } else {
+                    return false;
                 }
             }
             if (cmbTipRadnika.getValue().equals("Umjetnik")) {
                 if (dodajUmjetnika()) {
                     return true;
+                } else {
+                    return false;
                 }
             }
             if (cmbTipRadnika.getValue().equals("Administrativni radnik")) {
                 if (dodajAdministrativnogRadnika()) {
                     return true;
+                } else {
+                    return false;
                 }
             }
 
@@ -397,6 +407,8 @@ public class DodajRadnikaController implements Initializable {
             } else if (radnik.getTipRadnika().equals("Administrator")) {
                 dodajAdministrativnogRadnika();
                 return true;
+            } else {
+                return false;
             }
         }
         return false;
@@ -464,10 +476,10 @@ public class DodajRadnikaController implements Initializable {
     }
 
     private void prikazRadnikaKojiKoristiSistem() {
-        if(PregledRadnikaController.dodajRadnika){
-        cmbStatusRadnika.setVisible(false);
+        if (PregledRadnikaController.dodajRadnika) {
+            cmbStatusRadnika.setVisible(false);
         } else {
-           cmbStatusRadnika.setVisible(true); 
+            cmbStatusRadnika.setVisible(true);
         }
         tfIme.setVisible(true);
         tfPrezime.setVisible(true);
@@ -475,27 +487,27 @@ public class DodajRadnikaController implements Initializable {
         tfKontakt.setVisible(true);
         tfKorisnickoIme.setVisible(true);
         tfPassword.setVisible(true);
-        if(PregledRadnikaController.dodajRadnika){
-         tfNovaLozinka.setVisible(false);
+        if (PregledRadnikaController.dodajRadnika) {
+            tfNovaLozinka.setVisible(false);
         } else {
-        tfNovaLozinka.setVisible(true);
+            tfNovaLozinka.setVisible(true);
         }
-        
+
         lIme.setVisible(true);
         lPrezime.setVisible(true);
         lJmb.setVisible(true);
-        if(PregledRadnikaController.dodajRadnika){
-        lStatusRadnika.setVisible(false);
+        if (PregledRadnikaController.dodajRadnika) {
+            lStatusRadnika.setVisible(false);
         } else {
-          lStatusRadnika.setVisible(true);  
+            lStatusRadnika.setVisible(true);
         }
         lKontakt.setVisible(true);
         lKorisnickoIme.setVisible(true);
         lLozinka.setVisible(true);
-        if(!PregledRadnikaController.dodajRadnika){
-        lLozinka.setText("Stara lozinka");
+        if (!PregledRadnikaController.dodajRadnika) {
+            lLozinka.setText("Stara lozinka");
         }
-        if(PregledRadnikaController.dodajRadnika){
+        if (PregledRadnikaController.dodajRadnika) {
             lNovaLozinka.setVisible(false);
         } else {
             lNovaLozinka.setVisible(true);
@@ -503,22 +515,22 @@ public class DodajRadnikaController implements Initializable {
     }
 
     private void prikazUmjetnika() {
-        if(PregledRadnikaController.dodajRadnika){
-        cmbStatusRadnika.setVisible(false);
+        if (PregledRadnikaController.dodajRadnika) {
+            cmbStatusRadnika.setVisible(false);
         } else {
-          cmbStatusRadnika.setVisible(true);  
+            cmbStatusRadnika.setVisible(true);
         }
         tfIme.setVisible(true);
         tfPrezime.setVisible(true);
         tfJmb.setVisible(true);
         tfKontakt.setVisible(true);
         taBiografija.setVisible(true);
-        
+
         lIme.setVisible(true);
         lPrezime.setVisible(true);
         lJmb.setVisible(true);
-        if(PregledRadnikaController.dodajRadnika){
-        lStatusRadnika.setVisible(false);
+        if (PregledRadnikaController.dodajRadnika) {
+            lStatusRadnika.setVisible(false);
         } else {
             lStatusRadnika.setVisible(true);
         }
@@ -553,7 +565,9 @@ public class DodajRadnikaController implements Initializable {
         tfJmb.setText(PregledRadnikaController.izabraniRadnik.getJmb());
         tfKontakt.setText(PregledRadnikaController.izabraniRadnik.getKontakt());
         if (PregledRadnikaController.izabraniRadnik instanceof Biletar) {
+            System.out.println("POSTAVIO!");
             tfKorisnickoIme.setText(((Biletar) PregledRadnikaController.izabraniRadnik).getKorisnickoIme());
+            System.out.println("ggg" + tfKorisnickoIme.getText());
         } else {
             tfKorisnickoIme.setText(((AdministrativniRadnik) PregledRadnikaController.izabraniRadnik).getKorisnickoIme());
         }
@@ -644,7 +658,7 @@ public class DodajRadnikaController implements Initializable {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call provjeraKorisnickogImena(?,?)}");
             callableStatement.setString(1, korisnickoIme);
-
+            callableStatement.registerOutParameter(2, Types.BOOLEAN);
             callableStatement.executeQuery();
             postoji = callableStatement.getBoolean(2);
             if (postoji) {
@@ -660,8 +674,8 @@ public class DodajRadnikaController implements Initializable {
         }
         return false;
     }
-    
-        private boolean postojiUBaziLozinka(String lozinka) {
+
+    private boolean postojiUBaziLozinka(String lozinka) {
         boolean postoji = false;
         Connection connection = null;
         CallableStatement callableStatement = null;
@@ -670,14 +684,13 @@ public class DodajRadnikaController implements Initializable {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call provjeraLozinke(?,?)}");
             callableStatement.setString(1, lozinka);
-
+            callableStatement.registerOutParameter(2, Types.BOOLEAN);
             callableStatement.executeQuery();
             postoji = callableStatement.getBoolean(2);
             if (postoji) {
-                upozorenjeKorisnickoIme();
-                return false;
-            } else {
                 return true;
+            } else {
+                return false;
             }
         } catch (SQLException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
@@ -741,16 +754,22 @@ public class DodajRadnikaController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText("Korisnicko ime vec postoji u bazi!");
         alert.showAndWait();
-        return;
     }
-    
-        private void upozorenjeLozinka() {
+
+    private void upozorenjeLozinka() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom unosa lozinka!");
         alert.setHeaderText(null);
         alert.setContentText("Lozinka vec postoji u bazi!");
         alert.showAndWait();
-        return;
+    }
+
+    private void upozorenjeStaraLozinkaNijeIspravna() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom unosa lozinka!");
+        alert.setHeaderText(null);
+        alert.setContentText("Neispravna stara lozinka!");
+        alert.showAndWait();
     }
 
 }

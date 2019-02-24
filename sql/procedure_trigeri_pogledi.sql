@@ -488,7 +488,7 @@ begin
 
     
     update radnik_koji_koristi_sistem
-    set radnik_koji_koristi_sistem.korisnickoIme=korisnickoIme,radnik_koji_koristi_sistem.heshLozinke=heshLozinke
+    set radnik_koji_koristi_sistem.korisnickoIme=korisnickoIme,radnik_koji_koristi_sistem.heshLozinke=heshLozinke,radnik_koji_koristi_sistem.aktivan = statusRadnika
     where radnik_koji_koristi_sistem.idRadnik=idRadnik;
 end$$
 delimiter ;
@@ -566,14 +566,14 @@ delimiter ;
 
 create view biltetari_info(Id,Ime,Prezime,JMB,StatusRadnika,Kontakt,KorisnickoIme,HashLozinke,TipKorisnika,ImaNalogStatus)as
 select r.idRadnik,r.ime,r.prezime,r.jmb,r.statusRadnika,r.kontakt,rS.korisnickoIme,rS.heshLozinke,rS.tipKorisnika,rS.aktivan
-from (radnik as r join radnik_koji_koristi_sistem as rS on r.idRadnik=rS.idRadnik) join biletar as b on r.idRadnik=b.idRadnik
-where r.statusRadnika = true;
+from (radnik as r join radnik_koji_koristi_sistem as rS on r.idRadnik=rS.idRadnik) join biletar as b on r.idRadnik=b.idRadnik;
+#where r.statusRadnika = true;
 
 #drop view umjetnici_info;
 create view umjetnici_info(Id,Ime,Prezime,JMB,StatusRadnika,Kontakt,Biografija)as
 select r.idRadnik,r.ime,r.prezime,r.jmb,r.statusRadnika,r.kontakt,u.biografija
-from radnik as r join umjetnik as u on r.idRadnik=u.idRadnik
-where r.statusRadnika = true;
+from radnik as r join umjetnik as u on r.idRadnik=u.idRadnik;
+#where r.statusRadnika = true;
 
 
 delimiter $$

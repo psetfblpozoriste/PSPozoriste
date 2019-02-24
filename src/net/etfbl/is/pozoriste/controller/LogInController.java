@@ -83,7 +83,7 @@ public class LogInController implements Initializable {
             callableStatement = connection.prepareCall("{call provjeraLogovanja(?,?,?)}");
             callableStatement.setString(1, username);
             callableStatement.setString(2, passwordHash);
- 
+            callableStatement.registerOutParameter(3, Types.BOOLEAN);
             callableStatement.executeQuery();
                 postoji = callableStatement.getBoolean(3);
                 System.out.println("KOPSAJAOG: "+postoji);
