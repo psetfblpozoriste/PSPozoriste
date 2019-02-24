@@ -6,13 +6,17 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="507.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledPredstavaController">
+<AnchorPane id="AnchorPane" prefHeight="558.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledPredstavaController">
    <children>
-      <TableView fx:id="tablePredstave" layoutX="4.0" layoutY="28.0" prefHeight="210.0" prefWidth="395.0" />
-      <ComboBox fx:id="comboBoxTip" layoutX="14.0" layoutY="468.0" prefHeight="25.0" prefWidth="189.0" />
-      <Button fx:id="buttonDodaj" layoutX="242.0" layoutY="468.0" mnemonicParsing="false" text="Dodaj" />
-      <TableView fx:id="tableGostujucePredstave" layoutX="4.0" layoutY="247.0" prefHeight="200.0" prefWidth="395.0" />
-      <TextArea fx:id="textAreaOpisPredstave" layoutX="446.0" layoutY="28.0" prefHeight="210.0" prefWidth="200.0" />
-      <TextArea fx:id="textAreaOpisGostujucePredstave" layoutX="446.0" layoutY="247.0" prefHeight="200.0" prefWidth="200.0" />
+      <TableView fx:id="tablePredstave" layoutX="14.0" layoutY="76.0" prefHeight="210.0" prefWidth="426.0" />
+      <ComboBox fx:id="comboBoxTip" layoutX="220.0" layoutY="28.0" prefHeight="25.0" prefWidth="189.0" />
+      <Button fx:id="buttonDodaj" layoutX="446.0" layoutY="28.0" mnemonicParsing="false" onAction="#dodajAction" text="Dodaj" />
+      <TableView fx:id="tableGostujucePredstave" layoutX="14.0" layoutY="304.0" prefHeight="232.0" prefWidth="426.0" />
+      <TextArea fx:id="textAreaOpisPredstave" layoutX="446.0" layoutY="76.0" prefHeight="174.0" prefWidth="200.0" />
+      <TextArea fx:id="textAreaOpisGostujucePredstave" layoutX="446.0" layoutY="304.0" prefHeight="104.0" prefWidth="200.0" />
+      <TextArea fx:id="textAreaGlumciGostujucePredstave" layoutX="446.0" layoutY="420.0" prefHeight="80.0" prefWidth="200.0" />
+      <Button fx:id="buttonIzmijeniGostujucuPredstavu" layoutX="446.0" layoutY="511.0" mnemonicParsing="false" onAction="#izmijeniGostujucuPredstavuAction" prefHeight="25.0" prefWidth="200.0" text="Izmijeni" />
+      <Button fx:id="buttonPregledaj" layoutX="446.0" layoutY="261.0" mnemonicParsing="false" onAction="#pregledajAction" prefHeight="25.0" prefWidth="102.0" text="Pregledaj" />
+      <Button fx:id="buttonIzmijeniPredstavu" layoutX="565.0" layoutY="261.0" mnemonicParsing="false" onAction="#izmijeniPredstavuAction" prefHeight="25.0" prefWidth="80.0" text="Izmijeni" />
    </children>
 </AnchorPane>

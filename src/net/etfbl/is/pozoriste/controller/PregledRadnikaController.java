@@ -117,6 +117,7 @@ public class PregledRadnikaController implements Initializable {
         }
     }
     
+
     
     @FXML
     void izmijeniRadnikaAction(ActionEvent event) {

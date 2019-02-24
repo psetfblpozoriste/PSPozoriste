@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import net.etfbl.is.pozoriste.model.dao.mysql.GostujucaPredstavaDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.PredstavaDAO;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
 import net.etfbl.is.pozoriste.model.dto.Predstava;
 
@@ -47,10 +49,22 @@ public class PregledPredstavaController implements Initializable {
     @FXML // fx:id="textAreaOpisGostujucePredstave"
     private TextArea textAreaOpisGostujucePredstave; // Value injected by FXMLLoader
 
+    @FXML // fx:id="textAreaGlumciGostujucePredstave"
+    private TextArea textAreaGlumciGostujucePredstave; // Value injected by FXMLLoader
+     
+    @FXML // fx:id="buttonIzmijeniGostujucuPredstavu"
+    private Button buttonIzmijeniGostujucuPredstavu; // Value injected by FXMLLoader
+
+    @FXML // fx:id="buttonPregledaj"
+    private Button buttonPregledaj; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="buttonIzmijeniPredstavu"
+    private Button buttonIzmijeniPredstavu; // Value injected by FXMLLoader
+    
     @FXML
-    private TableColumn<Predstava, String> nazivPColumn;
+    private TableColumn<Predstava, String> nazivColumn;
     @FXML
-    private TableColumn<Predstava, String> tipPColumn;
+    private TableColumn<Predstava, String> tipColumn;
     @FXML
     private TableColumn<GostujucaPredstava, String> nazivGpColumn;
     @FXML
@@ -59,22 +73,62 @@ public class PregledPredstavaController implements Initializable {
     private TableColumn<GostujucaPredstava, String> pisacColumn;
     @FXML
     private TableColumn<GostujucaPredstava, String> reziserColumn;
-    @FXML
-    private TableColumn<Predstava, String> glumciColumn;
+    
     
     public static ObservableList<Predstava> predstaveObservableList = FXCollections.observableArrayList();
     public static ObservableList<GostujucaPredstava> gostujucePredstaveObservableList = FXCollections.observableArrayList();
+    public static ObservableList<String> tipovi= FXCollections.observableArrayList();    
     
+    @FXML
+    void dodajAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void izmijeniGostujucuPredstavuAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void pregledajAction(ActionEvent event) {
+
+    }
     
+    @FXML
+    void izmijeniPredstavuAction(ActionEvent event) {
+
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tipovi.addAll("Predstava","Gostujuca predstava");
+        comboBoxTip.setItems(tipovi);
+        textAreaOpisPredstave.setEditable(false);
+        textAreaOpisGostujucePredstave.setEditable(false);
+        textAreaGlumciGostujucePredstave.setEditable(false);
         gostujucePredstaveObservableList.addAll(GostujucaPredstavaDAO.gostujucePredstave());
+        predstaveObservableList.addAll(PredstavaDAO.predstave());
+        ubaciKoloneUTabeluGostujucaPredstava(gostujucePredstaveObservableList);
+        ubaciKoloneUTabeluPredstava(predstaveObservableList);
+        tableGostujucePredstave.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                GostujucaPredstava gp= (GostujucaPredstava) tableGostujucePredstave.getSelectionModel().getSelectedItem();
+                textAreaOpisGostujucePredstave.setText(((GostujucaPredstava) tableGostujucePredstave.getSelectionModel().getSelectedItem()).getOpis());
+                textAreaGlumciGostujucePredstave.setText("Glumci:   "+((GostujucaPredstava) tableGostujucePredstave.getSelectionModel().getSelectedItem()).getGlumci());
+            }
+        });
+        tablePredstave.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                Predstava p= (Predstava) tablePredstave.getSelectionModel().getSelectedItem();
+                textAreaOpisPredstave.setText(((Predstava) tablePredstave.getSelectionModel().getSelectedItem()).getOpis());
+                
+            }
+        });
     }    
     
     
     
-    private void ubaciKoloneUTabeluRadnik(ObservableList radnici) {
+    private void ubaciKoloneUTabeluGostujucaPredstava(ObservableList gostujucePredstaveObservableList) {
         nazivGpColumn = new TableColumn("Naziv");
         nazivGpColumn.setCellValueFactory(new PropertyValueFactory<>("naziv"));
 
@@ -87,17 +141,22 @@ public class PregledPredstavaController implements Initializable {
         reziserColumn = new TableColumn("Reziser");
         reziserColumn.setCellValueFactory(new PropertyValueFactory<>("reziser"));
 
-        /*korisnickoImeColumn = new TableColumn("Korisnicko Ime");
-        korisnickoImeColumn.setCellValueFactory(new PropertyValueFactory<>("korisnickoIme"));
-        
-        zanimanjeColumn = new TableColumn("Zanimanje");
-        zanimanjeColumn.setCellValueFactory(new PropertyValueFactory<>("tipRadnika"));
-        
-        statusRadnikaColumn = new TableColumn("Status radnika");
-        statusRadnikaColumn.setCellValueFactory(new PropertyValueFactory<>("statusRadnika"));
+        tableGostujucePredstave.setItems(gostujucePredstaveObservableList);
+        tableGostujucePredstave.getColumns().addAll(nazivGpColumn,tipGpColumn,pisacColumn,reziserColumn);
+    
+    }
+    
+    private void ubaciKoloneUTabeluPredstava(ObservableList predstaveObservableList) {
+        nazivColumn = new TableColumn("Naziv");
+        nazivColumn.setCellValueFactory(new PropertyValueFactory<>("naziv"));
+        nazivColumn.setPrefWidth(210);
 
-        radniciTableView.setItems(radniciObservableList);
-        radniciTableView.getColumns().addAll(jmbColumn,imeColumn, prezimeColumn,zanimanjeColumn,kontaktColumn, korisnickoImeColumn,statusRadnikaColumn);
-    */
+        tipColumn = new TableColumn("Tip");
+        tipColumn.setCellValueFactory(new PropertyValueFactory<>("tip"));
+        tipColumn.setPrefWidth(210);
+        
+        tablePredstave.setItems(predstaveObservableList);
+        tablePredstave.getColumns().addAll(nazivColumn,tipColumn);
+    
     }
 }
