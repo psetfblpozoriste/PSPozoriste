@@ -87,7 +87,7 @@ public class PregledPredstavaController implements Initializable {
         reziserColumn = new TableColumn("Reziser");
         reziserColumn.setCellValueFactory(new PropertyValueFactory<>("reziser"));
 
-        korisnickoImeColumn = new TableColumn("Korisnicko Ime");
+        /*korisnickoImeColumn = new TableColumn("Korisnicko Ime");
         korisnickoImeColumn.setCellValueFactory(new PropertyValueFactory<>("korisnickoIme"));
         
         zanimanjeColumn = new TableColumn("Zanimanje");
@@ -98,5 +98,6 @@ public class PregledPredstavaController implements Initializable {
 
         radniciTableView.setItems(radniciObservableList);
         radniciTableView.getColumns().addAll(jmbColumn,imeColumn, prezimeColumn,zanimanjeColumn,kontaktColumn, korisnickoImeColumn,statusRadnikaColumn);
+    */
     }
 }
