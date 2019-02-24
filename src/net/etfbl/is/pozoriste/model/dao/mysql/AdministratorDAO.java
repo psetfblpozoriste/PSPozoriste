@@ -7,10 +7,13 @@ package net.etfbl.is.pozoriste.model.dao.mysql;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.etfbl.is.pozoriste.controller.PregledRadnikaController;
 import net.etfbl.is.pozoriste.model.dto.AdministrativniRadnik;
 
 /**
@@ -20,7 +23,7 @@ import net.etfbl.is.pozoriste.model.dto.AdministrativniRadnik;
 public class AdministratorDAO {
 
     public static void dodajAdministrativnogRadnika(AdministrativniRadnik admin) {
-        System.out.println("DODAVANJE BILETARA: " + admin.getHash());
+        System.out.println("DODAVANJE ADMINA: " + admin.getHash());
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
@@ -54,4 +57,39 @@ public class AdministratorDAO {
             }
         }
     }
+
+    public static void ubaciUTabeluRadnik() {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet rs = null;
+        AdministrativniRadnik admin;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            statement = connection.createStatement();
+            rs = statement.executeQuery("select * from admini_info");
+            while (rs.next()) {
+
+                admin = new AdministrativniRadnik(rs.getString("Ime"), rs.getString("Prezime")/*, rs.getString("OpisPosla")*/, rs.getString("JMB"), rs.getBoolean("StatusRadnika"), rs.getString("Kontakt"), rs.getString("KorisnickoIme"), rs.getString("HashLozinke"), rs.getString("TipKorisnika"));
+                admin.setIdRadnika(rs.getInt("Id"));
+                if (!PregledRadnikaController.radniciObservableList.contains(admin)) {
+                    PregledRadnikaController.radniciObservableList.add(admin);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PregledRadnikaController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PregledRadnikaController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
 }

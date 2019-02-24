@@ -22,10 +22,18 @@ public class AdministrativniRadnik extends RadnikKojiKoristiSistem {
 
     private String korisnickoIme = "";
 
-    private String tipRadnika = "Biletar";
+    private String tipRadnika = "AdministrativniRadnik";
+    
+    public AdministrativniRadnik(){
+        
+    }
 
-    public AdministrativniRadnik(String ime, String prezime, String jmb, boolean statusRadnika, String kontak) {
+    public AdministrativniRadnik(String ime, String prezime, String jmb, boolean statusRadnika, String kontak
+        ,String korisnickoIme, String hashLozinke, String tipKorisnika) {
         super(ime, prezime, jmb, statusRadnika, kontak);
+        this.korisnickoIme = korisnickoIme;
+        this.hash = hashLozinke;
+        this.tipRadnika = tipKorisnika;
     }
 
     public String getHash() {
