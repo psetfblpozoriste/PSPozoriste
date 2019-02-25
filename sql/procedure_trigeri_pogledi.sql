@@ -219,15 +219,6 @@ begin
 end$$
 delimiter ;
 
-delimiter $$
-create procedure pregledRezervisanihMjesta(in termin date, in idScene int)
-begin
-	select brojSjedista
-    from rezervisano_sjediste as r
-    where r.termin = termin and r.idScene = idScene; 
-end$$
-delimiter ;
-
 
 delimiter $$
 create procedure pregledProdatihKarata(in termin date, in idScene int)

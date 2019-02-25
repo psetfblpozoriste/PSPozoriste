@@ -79,9 +79,8 @@ public class RezervacijaDAO {
             callableStatement.setInt(4, rezervacija.getIdScene());
             callableStatement.registerOutParameter(5, Types.INTEGER);
 
-            resultSet = callableStatement.executeQuery();
-            if (resultSet.next()) {
-                rezervacija.setId(resultSet.getInt(5));
+            if (callableStatement.executeUpdate() == 0) {
+                rezervacija.setId(callableStatement.getInt(5));
                 rezervacijaDodata = rezervacija;
                 return rezervacijaDodata;
             }

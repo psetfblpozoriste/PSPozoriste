@@ -26,20 +26,21 @@ public class RezervisanoSjedisteDAO {
     
     public static List<RezervisanoSjediste> sjedista(Date termin,Integer idScene) {
         List<RezervisanoSjediste> sjedistaRezervisana = new ArrayList<>();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
+       Connection connection = null;
+        CallableStatement callableStatement = null;
         ResultSet resultSet = null;
-        String query = "SELECT * " + "FROM  rezervisano_sjediste" + "WHERE rezervisano_sjediste.termin="+termin.toString()+ "and rezervisano_sjediste.idScene="+idScene;
         
         try {
-            connection = ConnectionPool.getInstance().checkOut();
-            preparedStatement = connection.prepareStatement(query);
+           connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call pregledRezervisanihMjesta(?,?)}");
+            callableStatement.setDate(1, termin);
+            callableStatement.setInt(2, idScene);
             
-            resultSet = preparedStatement.executeQuery();
-
+            resultSet = callableStatement.executeQuery();
+            
             while (resultSet.next()) {
                RezervisanoSjediste rezervisanoSjediste = new RezervisanoSjediste(
-                    resultSet.getInt(0),resultSet.getInt(1),resultSet.getInt(2),resultSet.getDate(4)); 
+                    resultSet.getInt("idScene"),resultSet.getInt("brojSjedista"),resultSet.getInt("idRezervacije"),resultSet.getDate("termin")); 
                sjedistaRezervisana.add(rezervisanoSjediste);
             }
 
@@ -51,9 +52,9 @@ public class RezervisanoSjedisteDAO {
             if (connection != null) {
                 ConnectionPool.getInstance().checkIn(connection);
             }
-            if (preparedStatement != null) {
+            if (callableStatement != null) {
                 try {
-                    preparedStatement.close();
+                    callableStatement.close();
                 } catch (SQLException sql) {
                     Logger.getLogger(RezervisanoSjedisteDAO.class.getName()).log(Level.SEVERE, null, sql);
                 }

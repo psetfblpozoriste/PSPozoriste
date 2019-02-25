@@ -39,7 +39,7 @@ delimiter ;
 
 
 delimiter $$
-create procedure dodavanjeRezervacije (in id int, in ime varchar(40), in termin date, in idScene int,out idRezervacije int)
+create procedure dodavanjeRezervacije (in id int, in ime varchar(255), in termin date, in idScene int,out idRezervacije int)
 begin
 	insert into rezervacija values(id,ime,termin,idScene);
 	set idRezervacije=last_insert_id();
@@ -51,6 +51,16 @@ delimiter $$
 create procedure dodavanjeRezervisanogSjedista (in brojSjedista int, in termin date, in idScene int, in idRezervacije int)
 begin
 	insert into rezervisano_sjediste values(idScene,brojSjedista,idRezervacije,termin);
+end$$
+delimiter ;
+
+drop procedure if exists pregledRezervisanihMjesta;
+delimiter $$
+create procedure pregledRezervisanihMjesta(in termin date, in idScene int)
+begin
+	select *
+    from rezervisano_sjediste as r
+    where r.termin = termin and r.idScene = idScene; 
 end$$
 delimiter ;
 
