@@ -70,8 +70,8 @@ public class DodajPredstavuController implements Initializable {
     @FXML
     private TextArea textAreaGlumci;
 
-    @FXML
-    private Button buttonDodajAngazman;
+     @FXML
+    private Button buttonPregledajAngazman;
 
     @FXML
     private Button buttonOK;
@@ -86,8 +86,8 @@ public class DodajPredstavuController implements Initializable {
         domacaPredstava=domacaPr;
     }
 
-    @FXML
-    void dodajAngazmanAction(ActionEvent event) {
+     @FXML
+    void pregledajAngazmanAction(ActionEvent event) {
 
     }
 
@@ -137,7 +137,7 @@ public class DodajPredstavuController implements Initializable {
          textFieldReziser.setVisible(false);
          textAreaGlumci.setVisible(false);
          }else{
-         buttonDodajAngazman.setVisible(false);
+         buttonPregledajAngazman.setVisible(false);
          }
     }
     

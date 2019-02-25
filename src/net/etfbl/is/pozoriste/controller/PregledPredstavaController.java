@@ -68,6 +68,9 @@ public class PregledPredstavaController implements Initializable {
 
     @FXML // fx:id="buttonIzmijeniPredstavu"
     private Button buttonIzmijeniPredstavu; // Value injected by FXMLLoader
+    
+    @FXML
+    private Button buttonNazad;
 
     @FXML
     private TableColumn<Predstava, String> nazivColumn;
@@ -86,6 +89,10 @@ public class PregledPredstavaController implements Initializable {
     public static ObservableList<GostujucaPredstava> gostujucePredstaveObservableList = FXCollections.observableArrayList();
     public static ObservableList<String> tipovi = FXCollections.observableArrayList();
 
+    @FXML
+    void nazadAction(ActionEvent event) {
+
+    }
     @FXML
     void dodajAction(ActionEvent event) {
         String temp=comboBoxTip.getValue();
