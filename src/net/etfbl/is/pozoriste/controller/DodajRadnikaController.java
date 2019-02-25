@@ -204,15 +204,6 @@ public class DodajRadnikaController implements Initializable {
             } else {
                 admin.setHash(tfPassword.getText());
             }
-            
-            
-           /* if (!postojiUBaziKorisnickoIme(tfKorisnickoIme.getText())) {
-                admin.setKorisnickoIme(tfKorisnickoIme.getText());
-            } else {
-                upozorenjeKorisnickoIme();
-                return false;
-            }
-            admin.setHash(tfPassword.getText()); */
             admin.setTipRadnika("Administrator");
             if (PregledRadnikaController.dodajRadnika) {
                 AdministratorDAO.dodajAdministrativnogRadnika(admin);

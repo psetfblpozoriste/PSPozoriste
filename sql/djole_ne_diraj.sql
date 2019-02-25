@@ -49,7 +49,18 @@ select @postoji;
 
 select * from radnik_koji_koristi_sistem;
 select * from umjetnici_info;
+/*
+call dodavanjeAdministrativnogRadnika('Djordje','Palavestra','1234554321555',
+'065198900','djole','8b392d8575e5d482197f24340aba5d1b14eba2cc1007890274ec0f283303cb03','Administrator',@pero);
 
+call dodavanjeBiletara('Milica','Medan','4545456767678',
+'065777888','mina','9bb840df7f699d6547f49fd6f9ed17b2d9dd34148f0b01e798d7c51da897ea1a','Biletar',@pero);
+
+call dodavanjeUmjetnika('Tanja','Tica','1002003003001','066444676','ja sma tanja',@pero);
+
+call dodavanjeUmjetnika('Darko','Djuric','5002003003001','066554686','ja sma darko',@pero);
+*/
+/*
 create view biltetari_info(Id,Ime,Prezime,JMB,StatusRadnika,Kontakt,KorisnickoIme,HashLozinke,TipKorisnika,ImaNalogStatus)as
 select r.idRadnik,r.ime,r.prezime,r.jmb,r.statusRadnika,r.kontakt,rS.korisnickoIme,rS.heshLozinke,rS.tipKorisnika,rS.aktivan
 from (radnik as r join radnik_koji_koristi_sistem as rS on r.idRadnik=rS.idRadnik) join biletar as b on r.idRadnik=b.idRadnik;
@@ -75,3 +86,4 @@ begin
     where radnik_koji_koristi_sistem.idRadnik=idRadnik;
 end$$
 delimiter ;
+*/
