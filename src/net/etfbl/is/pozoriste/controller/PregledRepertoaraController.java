@@ -80,11 +80,12 @@ public class PregledRepertoaraController implements Initializable {
         if (!"Administrator".equals(LogInController.tipKorisnika)) {
             buttonNazad.setVisible(false);
             LinkedList<Repertoar> zadnji = new LinkedList<>(RepertoarDAO.repertoars());
+            System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
             repertoarZaPrikaz = zadnji.peekLast();
         }
         buttonNazad.setOnAction(e -> buttonSetAction());
 
-        if (!(brojPredstava == 0)) {
+        if (repertoarZaPrikaz != null && !repertoarZaPrikaz.getIgranja().isEmpty()) {
             VBox vBox = new VBox();
             final LinkedList<Predstava> predstave = new LinkedList<>();
             final LinkedList<GostujucaPredstava> gostujuce = new LinkedList<>();
@@ -129,7 +130,7 @@ public class PregledRepertoaraController implements Initializable {
                 vBox.getChildren().add(nazivLabel);
             }
             vBox.setMaxWidth(747);
-            System.out.println("fff"+vBox.getWidth());
+            System.out.println("fff" + vBox.getWidth());
             scrollPane.vvalueProperty().bind(vBox.heightProperty());
             scrollPane.setContent(vBox);
             if ("Administrator".equals(LogInController.tipKorisnika)) {
@@ -139,7 +140,7 @@ public class PregledRepertoaraController implements Initializable {
     }
 
     public static void incijalizacija(Repertoar repertoar) {
-       repertoarZaPrikaz = repertoar;
+        repertoarZaPrikaz = repertoar;
     }
 
     private void pregledRepertoara(Label label) {
@@ -178,8 +179,8 @@ public class PregledRepertoaraController implements Initializable {
         label.setPadding(new Insets(0, 0, 0, 10));
         if (Integer.parseInt(label.getId()) % 2 == 0) {
             label.setBackground(new Background(new BackgroundFill(Color.CYAN, CornerRadii.EMPTY, Insets.EMPTY)));
-        }else{
-             label.setBackground(new Background(new BackgroundFill(Color.YELLOWGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+        } else {
+            label.setBackground(new Background(new BackgroundFill(Color.YELLOWGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
         }
     }
 

@@ -24,6 +24,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.BIletarDAO;
@@ -58,6 +60,22 @@ public class PregledSvihRepertoaraController implements Initializable {
 
         sviRepertoariTableView.setItems(repertoariObservableList);
         sviRepertoariTableView.getColumns().addAll(datumColumn);
+
+        sviRepertoariTableView.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2 && e.getButton().compareTo(MouseButton.PRIMARY) == 0) {
+                Repertoar zaPrikaz = (Repertoar) sviRepertoariTableView.getSelectionModel().getSelectedItem();
+                try {
+                    PregledRepertoaraController.incijalizacija(zaPrikaz);
+                    Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
+                    Scene pregledRepertoara = new Scene(adminController);
+                    Stage window = (Stage) sviRepertoariTableView.getScene().getWindow();
+                    window.setScene(pregledRepertoara);
+                    window.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(PregledSvihRepertoaraController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     @FXML
