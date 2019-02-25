@@ -5,15 +5,23 @@
  */
 package net.etfbl.is.pozoriste.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  *
@@ -64,6 +72,9 @@ public class DodajPredstavuController implements Initializable {
     private Button buttonOK;
 
     @FXML
+    private Button bNazad;
+
+    @FXML
     void dodajAngazmanAction(ActionEvent event) {
 
     }
@@ -71,6 +82,21 @@ public class DodajPredstavuController implements Initializable {
     @FXML
     void okAction(ActionEvent event) {
 
+    }
+
+    @FXML
+    void nazadNaPregledPredstava(ActionEvent event) {
+        Parent dodajZaposlenogView;
+        try {
+            dodajZaposlenogView = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledPredstava.fxml"));
+
+            Scene dodajZaposlenogScene = new Scene(dodajZaposlenogView);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(dodajZaposlenogScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(DodajRadnikaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
