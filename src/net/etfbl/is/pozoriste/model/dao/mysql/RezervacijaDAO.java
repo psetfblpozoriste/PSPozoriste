@@ -66,7 +66,7 @@ public class RezervacijaDAO {
     }
     
     
-     public boolean addRezervacija(Rezervacija rezervacija) {
+     public static boolean addRezervacija(Rezervacija rezervacija) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         ResultSet resultSet = null;

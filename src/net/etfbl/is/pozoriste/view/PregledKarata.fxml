@@ -21,8 +21,8 @@
                   </GridPane>
                   <VBox alignment="CENTER_LEFT" prefHeight="550.0" prefWidth="198.0" spacing="15.0">
                      <children>
-                        <Button fx:id="buttonRezervacija" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Rezervisi" />
-                        <Button fx:id="buttonProdaja" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Prodaj" />
+                        <Button fx:id="buttonRezervacija" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="149.0" text="Rezervisi" />
+                        <Button fx:id="buttonProdaja" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" text="Prodaj" />
                         <ComboBox fx:id="comboRezervacije" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="150.0" />
                      </children>
                   </VBox>
@@ -30,6 +30,6 @@
             </HBox>
          </children>
       </VBox>
-      <Button fx:id="buttonNazad" layoutX="50.0" layoutY="590.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="Nazad" />
+      <Button fx:id="buttonNazad" layoutX="50.0" layoutY="590.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="149.0" text="Nazad" />
    </children>
 </AnchorPane>

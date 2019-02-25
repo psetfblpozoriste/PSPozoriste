@@ -56,13 +56,14 @@ public class PregledKarataController implements Initializable {
     private final Integer KOLONA = 10;
 
     public static Scena scenaZaPrikaz;
-    
+
     public static Date terminPredstave;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         postavi();
         buttonNazad.setOnAction(e -> buttonNazadSetAction());
+        buttonRezervacija.setOnAction(e -> buttonRezervacija());
         if (SjedisteDAO.sjedista(scenaZaPrikaz.getIdScene()).isEmpty()) {
             for (int i = 0; i < RED; i++) {
                 for (int j = 0; j < KOLONA; j++) {
@@ -70,9 +71,31 @@ public class PregledKarataController implements Initializable {
                 }
             }
         }
-       // RezervisanoSjedisteDAO.sjedista(terminPredstave, scenaZaPrikaz.getIdScene()).forEach(e -> System.out.println(e.getBrojSjedista()));
-       
-       comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(e -> e.getIme()).collect(Collectors.toList()));
+        comboRezervacije.getItems().addAll(comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList())));
+    }
+
+    private void buttonRezervacija() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRezervaciju.fxml"));
+        DodajRezervacijuController dodajRezervacijuController = null;
+        loader.setController(dodajRezervacijuController);
+        DodajRezervacijuController.termin = terminPredstave;
+        DodajRezervacijuController.idScene = scenaZaPrikaz.getIdScene();
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(PregledKarataController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+
+        stage.setTitle("Dodaj rezervaciju");
+        stage.getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/drama.png")));
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList())));
+        stage.setOnHiding(e -> comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList())));
+        stage.show();
     }
 
     private void buttonNazadSetAction() {
@@ -100,7 +123,7 @@ public class PregledKarataController implements Initializable {
                 buttonMatrix[i][j].setDisable(false);
                 buttonMatrix[i][j].setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/Green.png"))));
                 buttonMatrix[i][j].setId(new Integer(i * KOLONA + j).toString());
-                
+
                 buttonMatrix[i][j].setOnMouseClicked(e -> {
                     RezervisanoSjedisteDAO.addRezervisanoSjediste(new RezervisanoSjediste(
                             scenaZaPrikaz.getIdScene(),
