@@ -47,6 +47,11 @@ public class Repertoar {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Repertoar{" + "mjesecIGodina=" + mjesecIGodina + ", id=" + id + '}';
+    }
     
     
     

@@ -49,6 +49,34 @@ select @postoji;
 
 select * from radnik_koji_koristi_sistem;
 select * from umjetnici_info;
+
+select * from repertoar;
+
+drop procedure dodavanjeRepertoara;
+delimiter $$
+create procedure dodavanjeRepertoara (in mjesecIGodina date)
+begin
+	insert into repertoar values(0,CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01'));
+end$$
+delimiter ;
+
+call dodavanjeRepertoara('2019-05-05');
+call dodavanjeRepertoara('2019-07-07');
+call dodavanjeRepertoara('2019-09-12');
+call dodavanjeRepertoara('2019-10-23');
+/*
+drop trigger postaviPrviDanUMjesecu;
+create trigger postaviPrviDanUMjesecu after insert 
+on repertoar
+for each row
+update  repertoar
+set     mjesecIGodina = CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01') 
+#update repertoar
+#set mjesecIGodina = 'year(mjesecIGodina)-month(mjesecIGodina)-01'
+where id = new.id;
+*/
+insert into repertoar values (0,'2019-05-25');
+
 /*
 call dodavanjeAdministrativnogRadnika('Djordje','Palavestra','1234554321555',
 '065198900','djole','8b392d8575e5d482197f24340aba5d1b14eba2cc1007890274ec0f283303cb03','Administrator',@pero);

@@ -60,8 +60,20 @@ public class AdminController implements Initializable {
     }
 
     public void PregledRepertoaraAction(ActionEvent event) {
-        try {
+      /*  try {
             Parent repertoarController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
+
+            Scene repertoarScene = new Scene(repertoarController);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(repertoarScene);
+            window.setResizable(false);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              */
+        try {
+            Parent repertoarController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledSvihRepertoara.fxml"));
 
             Scene repertoarScene = new Scene(repertoarController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
