@@ -5,14 +5,17 @@
  */
 package net.etfbl.is.pozoriste.model.dao.mysql;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 import net.etfbl.is.pozoriste.controller.PregledPredstavaController;
 import net.etfbl.is.pozoriste.controller.PregledRadnikaController;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
@@ -56,5 +59,47 @@ public class GostujucaPredstavaDAO {
             }
         }
         return gostujucePredstave;
+    }
+    
+    public static void dodajGostujucuPredstavu(GostujucaPredstava gostujucaPredstava){
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        String poruka;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call dodajPredstavu(?,?,?,?,?,?,?,?)}");
+            callableStatement.setString(1, gostujucaPredstava.getNaziv());
+            callableStatement.setString(2, gostujucaPredstava.getOpis());
+            callableStatement.setString(3, gostujucaPredstava.getTip());
+            callableStatement.setString(4, gostujucaPredstava.getPisac());
+            callableStatement.setString(5, gostujucaPredstava.getReziser());
+            callableStatement.setString(6, gostujucaPredstava.getGlumci());
+            callableStatement.registerOutParameter(7,Types.VARCHAR);
+            callableStatement.registerOutParameter(8,Types.INTEGER);
+            callableStatement.executeQuery();
+            
+            gostujucaPredstava.setId(callableStatement.getInt(8));
+            poruka=callableStatement.getString(7);
+            if(poruka!=null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle(null);
+                alert.setHeaderText(null);
+                alert.setContentText(poruka);
+                alert.showAndWait();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 }

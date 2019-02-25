@@ -15,6 +15,14 @@ public class GostujucaPredstava {
         this.reziser=reziser;
         this.id=id;
     }
+    public GostujucaPredstava(String naziv,String opis,String tip,String pisac,String reziser,String glumci){
+        this.glumci=glumci;
+        this.naziv=naziv;
+        this.opis=opis;
+        this.tip=tip;
+        this.pisac=pisac;
+        this.reziser=reziser;
+    }
     public Integer getId() {
         return id;
     }

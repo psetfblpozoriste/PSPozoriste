@@ -1,13 +1,16 @@
 package net.etfbl.is.pozoriste.model.dao.mysql;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
 import net.etfbl.is.pozoriste.model.dto.Predstava;
 
 public class PredstavaDAO {
@@ -47,6 +50,45 @@ public class PredstavaDAO {
             }
         }
         return predstave;
+    }
+    
+    public static void dodajPredstavu(Predstava predstava){
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        String poruka;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call dodajPredstavu(?,?,?,?,?)}");
+            callableStatement.setString(1, predstava.getNaziv());
+            callableStatement.setString(2, predstava.getOpis());
+            callableStatement.setString(3, predstava.getTip());
+            callableStatement.registerOutParameter(4,Types.VARCHAR);
+            callableStatement.registerOutParameter(5,Types.INTEGER);
+            callableStatement.executeQuery();
+            
+            predstava.setId(callableStatement.getInt(5));
+            poruka=callableStatement.getString(4);
+            if(poruka!=null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle(null);
+                alert.setHeaderText(null);
+                alert.setContentText(poruka);
+                alert.showAndWait();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
 }
