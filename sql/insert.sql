@@ -45,6 +45,7 @@ values
 insert into igranje
 values
 ('2019-7-3',(select id from scena where scena.nazivScene="Petar Kocic"),(select id from gostujuca_predstava where gostujuca_predstava.naziv="Gostujuca4"),null,(select id from repertoar where repertoar.mjesecIGodina='2019-3-1')),
+('2019-7-18',(select id from scena where scena.nazivScene="Petar Kocic"),null,(select id from predstava where predstava.naziv="Predstava2"),(select id from repertoar where repertoar.mjesecIGodina='2019-3-1')),
 ('2019-7-15',(select id from scena where scena.nazivScene="Petar Kocic"),null,(select id from predstava where predstava.naziv="Predstava1"),(select id from repertoar where repertoar.mjesecIGodina='2019-3-1'));
 
 

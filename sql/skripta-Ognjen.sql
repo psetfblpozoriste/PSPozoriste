@@ -63,10 +63,3 @@ begin
     where r.termin = termin and r.idScene = idScene; 
 end$$
 delimiter ;
-
-
-insert into rezervacija
-values
-(0,"Moja rezervacija",'2019-7-3',1);
-
-call pregledReperoara(1);

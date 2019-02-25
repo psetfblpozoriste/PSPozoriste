@@ -170,6 +170,7 @@ public class PregledKarataController implements Initializable {
                         ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
                         alert.showAndWait();
                     }
+                    
                 });
                 gridPane.add(buttonMatrix[i][j], i, j);
 
@@ -192,6 +193,11 @@ public class PregledKarataController implements Initializable {
                 RezervisanoSjedisteDAO.addRezervisanoSjediste(new RezervisanoSjediste(scenaZaPrikaz.getIdScene(), Integer.parseInt(e.getId()), temp.getId(), temp.getTermin()));
             });
             rezervisanaSjedista.removeAll(rezervisanaSjedista);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Rezervisano na ime "+imeRezervacije, ButtonType.OK);
+            alert.setTitle("Informacija");
+            alert.setHeaderText("Informacija");
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/info.png")));
+            alert.showAndWait();
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Niste unjeli ni jednu rezervaciju", ButtonType.OK);
             alert.setTitle("Greska");
@@ -202,10 +208,18 @@ public class PregledKarataController implements Initializable {
     }
 
     private void obrisiRezervacijuButton() {
-        if (!comboRezervacije.getSelectionModel().isEmpty()) {
+        if (!comboRezervacije.getSelectionModel().isEmpty() && RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().filter(e -> e.getIme().equals(comboRezervacije.getSelectionModel().getSelectedItem())).findFirst().isPresent() ) {
             final String imeZaBrisati = comboRezervacije.getSelectionModel().getSelectedItem();
-            RezervacijaDAO.obrisiRezervaciju(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().filter(e -> e.getIme().equals(imeZaBrisati)).findFirst().get());
+            final Rezervacija rez = RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().filter(e -> e.getIme().equals(imeZaBrisati)).findFirst().get();
+            RezervacijaDAO.obrisiRezervaciju(rez);
             postavi();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Rezervacija obrisana", ButtonType.OK);
+            alert.setTitle("Informacija");
+            alert.setHeaderText("Informacija");
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/info.png")));
+            alert.showAndWait();
+            comboRezervacije.getItems().removeAll(comboRezervacije.getItems());
+            comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList()));
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Prvo izaberite rezerevaciju za brisanje", ButtonType.OK);
             alert.setTitle("Upozorenje");

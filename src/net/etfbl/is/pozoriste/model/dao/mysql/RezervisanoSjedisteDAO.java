@@ -8,7 +8,6 @@ package net.etfbl.is.pozoriste.model.dao.mysql;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ public class RezervisanoSjedisteDAO {
             callableStatement.setInt(2, idScene);
             
             resultSet = callableStatement.executeQuery();
-            
             while (resultSet.next()) {
                RezervisanoSjediste rezervisanoSjediste = new RezervisanoSjediste(
                     resultSet.getInt("idScene"),resultSet.getInt("brojSjedista"),resultSet.getInt("idRezervacije"),resultSet.getDate("termin")); 

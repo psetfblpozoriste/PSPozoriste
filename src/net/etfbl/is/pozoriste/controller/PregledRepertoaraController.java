@@ -80,7 +80,6 @@ public class PregledRepertoaraController implements Initializable {
         if (!"Administrator".equals(LogInController.tipKorisnika)) {
             buttonNazad.setVisible(false);
             LinkedList<Repertoar> zadnji = new LinkedList<>(RepertoarDAO.repertoars());
-            System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
             repertoarZaPrikaz = zadnji.peekLast();
         }
         buttonNazad.setOnAction(e -> buttonSetAction());
@@ -163,7 +162,7 @@ public class PregledRepertoaraController implements Initializable {
             Stage stage = (Stage) buttonNazad.getScene().getWindow();
             stage.getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/drama.png")));
             stage.setScene(scene);
-            stage.setTitle("Karte " + "za scenu " + predstavaSaKojomRadim);
+            stage.setTitle("Karte " + "za predstavu " + predstavaSaKojomRadim);
             stage.setResizable(false);
             stage.show();
         } catch (Exception ex) {
@@ -180,7 +179,7 @@ public class PregledRepertoaraController implements Initializable {
         if (Integer.parseInt(label.getId()) % 2 == 0) {
             label.setBackground(new Background(new BackgroundFill(Color.CYAN, CornerRadii.EMPTY, Insets.EMPTY)));
         } else {
-            label.setBackground(new Background(new BackgroundFill(Color.YELLOWGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+            label.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         }
     }
 

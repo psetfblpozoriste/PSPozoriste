@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import net.etfbl.is.pozoriste.controller.PregledKarataController;
 import net.etfbl.is.pozoriste.model.dto.Rezervacija;
 import net.etfbl.is.pozoriste.model.dto.RezervisanoSjediste;
 
@@ -101,21 +103,21 @@ public class RezervacijaDAO {
         return rezervacijaDodata;
     }
 
-    public static boolean obrisiRezervaciju(Rezervacija rezervacija) {
+    public static boolean obrisiRezervaciju(final Rezervacija rezervacija) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         ResultSet resultSet = null;
-        Rezervacija rezervacijaDodata = null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call otkazivanjeRezervacije(?)}");
             callableStatement.setInt(1, rezervacija.getId());
 
-            List<RezervisanoSjediste> rezervisanaSjedistaZaBrisanje = RezervisanoSjedisteDAO.sjedista(rezervacija.getTermin(), rezervacija.getId());
+            List<RezervisanoSjediste> rezervisanaSjedistaZaBrisanje = RezervisanoSjedisteDAO.sjedista(rezervacija.getTermin(), rezervacija.getIdScene()).stream().filter(e -> e.getIdRezervacije() == rezervacija.getId()).collect(Collectors.toList());
             rezervisanaSjedistaZaBrisanje.forEach(e -> {
                 RezervisanoSjedisteDAO.obrisiRezervisanoSjediste(e);
             });
-            callableStatement.executeUpdate();
+            
+            callableStatement.executeQuery();
            
         } catch (SQLException sql) {
             Logger.getLogger(RezervacijaDAO.class.getName()).log(Level.SEVERE, null, sql);
