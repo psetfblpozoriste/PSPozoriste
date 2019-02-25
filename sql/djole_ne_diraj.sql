@@ -60,6 +60,14 @@ begin
 end$$
 delimiter ;
 
+drop view repertoari_info;
+create view repertoari_info as
+select * from repertoar
+order by mjesecIGodina desc;
+#order by year(mjesecIGodina) desc ,month(mjesecIGodina) asc , day(mjesecIGodina) desc;
+
+select * from repertoari_info;
+
 call dodavanjeRepertoara('2019-05-05');
 call dodavanjeRepertoara('2019-07-07');
 call dodavanjeRepertoara('2019-09-12');

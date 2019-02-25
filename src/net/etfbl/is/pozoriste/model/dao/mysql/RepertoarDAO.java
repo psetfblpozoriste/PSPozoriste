@@ -60,7 +60,7 @@ public class RepertoarDAO {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
-        String query = "SELECT * " + "FROM  repertoar";
+        String query = "SELECT * " + "FROM  repertoari_info";
 
         try {
             connection = ConnectionPool.getInstance().checkOut();

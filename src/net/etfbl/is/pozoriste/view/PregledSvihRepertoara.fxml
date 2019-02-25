@@ -7,7 +7,7 @@
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledSvihRepertoaraController">
    <children>
       <Button fx:id="bNazad" layoutX="22.0" layoutY="350.0" mnemonicParsing="false" onAction="#nazadNaAdminFormu" text="Nazad" />
-      <Button fx:id="bDodajRepertoar" layoutX="483.0" layoutY="350.0" mnemonicParsing="false" onAction="#dodajIgranjaForma" text="Dodaj repertoar" />
+      <Button fx:id="bDodajRepertoar" layoutX="483.0" layoutY="350.0" mnemonicParsing="false" onAction="#dodajRepertoaraAction" text="Dodaj repertoar" />
       <TableView fx:id="sviRepertoariTableView" layoutX="26.0" layoutY="37.0" prefHeight="277.0" prefWidth="548.0" />
    </children>
 </AnchorPane>

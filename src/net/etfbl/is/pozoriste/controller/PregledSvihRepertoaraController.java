@@ -61,8 +61,17 @@ public class PregledSvihRepertoaraController implements Initializable {
     }
 
     @FXML
-    void dodajIgranjaForma(ActionEvent event) {
+    void dodajRepertoaraAction(ActionEvent event) {
+        try {
+            Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRepertoar.fxml"));
 
+            Scene dodajRadnikaScene = new Scene(adminController);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(dodajRadnikaScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

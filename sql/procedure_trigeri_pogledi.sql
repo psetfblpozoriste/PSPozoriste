@@ -579,3 +579,7 @@ create view admini_info(Id,Ime,Prezime,JMB,StatusRadnika,Kontakt,KorisnickoIme,H
 select r.idRadnik,r.ime,r.prezime,r.jmb,r.statusRadnika,r.kontakt,rS.korisnickoIme,rS.heshLozinke,rS.tipKorisnika,rS.aktivan
 from (radnik as r join radnik_koji_koristi_sistem as rS on r.idRadnik=rS.idRadnik) join administrativni_radnik as b on r.idRadnik=b.idRadnik
 where r.statusRadnika = true;
+
+create view repertoari_info as
+select * from repertoar
+order by mjesecIGodina desc;
