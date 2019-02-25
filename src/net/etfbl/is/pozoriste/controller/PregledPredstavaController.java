@@ -6,19 +6,27 @@
 package net.etfbl.is.pozoriste.controller;
 
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.GostujucaPredstavaDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.PredstavaDAO;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
@@ -81,7 +89,25 @@ public class PregledPredstavaController implements Initializable {
     
     @FXML
     void dodajAction(ActionEvent event) {
-
+        try {
+            Parent dodajPredstavuController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajPredstavu.fxml"));
+            Scene dodajPredstavuScene = new Scene(dodajPredstavuController);
+            Stage window;
+            window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            String temp=comboBoxTip.getValue();
+            System.out.println("temp: "+temp);
+            if("Predstava".equals(temp)){
+                DodajPredstavuController.setDomacaPredstava(true);
+            }else{
+                DodajPredstavuController.setDomacaPredstava(false);
+            }
+            window.setScene(dodajPredstavuScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(Exception ex){
+            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

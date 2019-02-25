@@ -20,6 +20,8 @@ import javafx.scene.control.TextField;
  * @author Tanja
  */
 public class DodajPredstavuController implements Initializable {
+
+    
     @FXML
     private Label labelNaziv;
 
@@ -61,6 +63,13 @@ public class DodajPredstavuController implements Initializable {
 
     @FXML
     private Button buttonOK;
+    
+    
+    private static boolean domacaPredstava;
+    
+    public static void setDomacaPredstava(boolean domacaPr){
+        domacaPredstava=domacaPr;
+    }
 
     @FXML
     void dodajAngazmanAction(ActionEvent event) {
@@ -75,5 +84,15 @@ public class DodajPredstavuController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+         if(domacaPredstava){
+            labelPisac.setVisible(false);
+            labelReziser.setVisible(false);
+            labelGlumci.setVisible(false);
+            textFieldPisac.setVisible(false);
+            textFieldReziser.setVisible(false);
+            textAreaGlumci.setVisible(false);
+        }else{
+            buttonDodajAngazman.setVisible(false);
+        }
     }
 }
