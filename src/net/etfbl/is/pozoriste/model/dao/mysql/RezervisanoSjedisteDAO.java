@@ -99,4 +99,43 @@ public class RezervisanoSjedisteDAO {
         }
         return false;
     }
+     
+     
+     
+     public static boolean obrisiRezervisanoSjediste(RezervisanoSjediste rezervisanoSjediste) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call brisanjeRezervisanogSjedista(?,?,?,?)}");
+            callableStatement.setInt(2, rezervisanoSjediste.getBrojSjedista());
+            callableStatement.setDate(4, rezervisanoSjediste.getTermin());
+            callableStatement.setInt(1, rezervisanoSjediste.getIdScene());
+            callableStatement.setInt(3, rezervisanoSjediste.getIdRezervacije());
+
+            int count = callableStatement.executeUpdate();
+            if (count <= 0) {
+                return false;
+            }
+        } catch (SQLException sql) {
+            Logger.getLogger(RezervisanoSjedisteDAO.class.getName()).log(Level.SEVERE, null, sql);
+        } catch (Exception e) {
+            Logger.getLogger(RezervisanoSjedisteDAO.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException sql) {
+                    Logger.getLogger(RezervisanoSjedisteDAO.class.getName()).log(Level.SEVERE, null, sql);
+                }
+            }
+        }
+        return false;
+    }
+     
+     
 }
