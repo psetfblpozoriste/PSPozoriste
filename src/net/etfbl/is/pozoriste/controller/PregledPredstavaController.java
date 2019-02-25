@@ -88,6 +88,12 @@ public class PregledPredstavaController implements Initializable {
 
     @FXML
     void dodajAction(ActionEvent event) {
+        String temp=comboBoxTip.getValue();
+        if("Predstava".equals(temp)){
+         DodajPredstavuController.setDomacaPredstava(true);
+        }else{
+         DodajPredstavuController.setDomacaPredstava(false);
+        }
         try {
             Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajPredstavu.fxml"));
 
@@ -99,25 +105,7 @@ public class PregledPredstavaController implements Initializable {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        /* try {
-         Parent dodajPredstavuController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajPredstavu.fxml"));
-         Scene dodajPredstavuScene = new Scene(dodajPredstavuController);
-         Stage window;
-         window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-         String temp=comboBoxTip.getValue();
-         System.out.println("temp: "+temp);
-         if("Predstava".equals(temp)){
-         DodajPredstavuController.setDomacaPredstava(true);
-         }else{
-         DodajPredstavuController.setDomacaPredstava(false);
-         }
-         window.setScene(dodajPredstavuScene);
-         window.show();
-         } catch (IOException ex) {
-         Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-         }catch(Exception ex){
-         Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
+        
     }
 
     @FXML

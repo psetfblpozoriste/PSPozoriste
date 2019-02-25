@@ -73,6 +73,13 @@ public class DodajPredstavuController implements Initializable {
 
     @FXML
     private Button bNazad;
+    
+    
+    private static boolean domacaPredstava;
+    
+    public static void setDomacaPredstava(boolean domacaPr){
+        domacaPredstava=domacaPr;
+    }
 
     @FXML
     void dodajAngazmanAction(ActionEvent event) {
@@ -101,7 +108,7 @@ public class DodajPredstavuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*   if(domacaPredstava){
+         if(domacaPredstava){
          labelPisac.setVisible(false);
          labelReziser.setVisible(false);
          labelGlumci.setVisible(false);
@@ -110,6 +117,6 @@ public class DodajPredstavuController implements Initializable {
          textAreaGlumci.setVisible(false);
          }else{
          buttonDodajAngazman.setVisible(false);
-         }*/
+         }
     }
 }
