@@ -42,11 +42,8 @@ public class DodajRepertoarController implements Initializable {
 
     @FXML
     private Button bDodajIgranje;
-
-   // @FXML
-    //private DatePicker dpTerminRepertoara;
     
-     @FXML
+    @FXML
     private ComboBox<Integer> cmbGodina;
 
     @FXML
@@ -54,21 +51,19 @@ public class DodajRepertoarController implements Initializable {
 
     @FXML
     private Button bNazad;
-
+    
+    public static Repertoar repertoar = null;
+    
     private boolean dodajRepertoar() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
         Calendar calendar = Calendar.getInstance();
-        //calendar.set(dpTerminRepertoara.getValue().getYear(), dpTerminRepertoara.getValue().getMonthValue() - 1, dpTerminRepertoara.getValue().getDayOfMonth());
-       // calendar.set(cmbGodina.getSelectionModel().getSelectedItem(), cmbDan.getSelectionModel().getSelectedItem(), 1);
-        // sdf.format(calendar.getTimeInMillis());
-        Repertoar repertoar = null;
+       // Repertoar repertoar = null;
         try {
             repertoar = new Repertoar(0,
     new java.sql.Date(sdf.parse(cmbGodina.getSelectionModel().getSelectedItem().toString()+"-"+cmbMjesec.getSelectionModel().getSelectedItem().toString()+"-1").getTime()));
         } catch (ParseException ex) {
             Logger.getLogger(DodajRepertoarController.class.getName()).log(Level.SEVERE, null, ex);
         }
-       //  new java.sql.Date(d.getTime());
         System.out.println("REPERTOAR: " + repertoar);
         final Repertoar simo = repertoar;
         if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(e -> e.getMjesecIGodina().getYear() == simo.getMjesecIGodina().getYear() && e.getMjesecIGodina().getMonth() == simo.getMjesecIGodina().getMonth() ).findAny().isPresent()) {
@@ -117,11 +112,9 @@ public class DodajRepertoarController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        for (Integer year = 1950; year <= Calendar.getInstance().get(Calendar.YEAR); year++) {
-            //cmbGodina.getItems().add(year.intValue());
            cmbGodina.getItems().add(year);
         }
         for (Integer month = 1; month <= 12; month++) {
-            //cmbMjesac.getItems().add(month.intValue());  }
             cmbMjesec.getItems().add(month);}
     }
 

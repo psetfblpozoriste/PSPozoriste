@@ -7,6 +7,8 @@ package net.etfbl.is.pozoriste.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
+import net.etfbl.is.pozoriste.model.dto.Igranje;
 
 /**
  * FXML Controller class
@@ -47,6 +50,22 @@ public class DodajIgranjeController implements Initializable {
     @FXML
     void dodajIgranjeAction(ActionEvent event) {
 
+    }
+
+    /*
+     Calendar calendar = Calendar.getInstance();
+     calendar.set(datePickerBan.getValue().getYear(), datePickerBan.getValue().getMonthValue() - 1
+     , datePickerBan.getValue().getDayOfMonth());
+     */
+    private boolean dodajIgranje() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
+
+        LinkedList<Igranje> novoIgranje = new LinkedList<>();
+        // posalji lisu igranja DodajRepertoarController.repertoar.setIgranja();
+       // novoIgranje.add(calendar.getTimeInMillis(),);
+        return false;
     }
 
     @FXML
@@ -79,7 +98,7 @@ public class DodajIgranjeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+
     }
 
 }

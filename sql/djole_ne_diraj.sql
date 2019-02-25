@@ -54,9 +54,10 @@ select * from repertoar;
 
 drop procedure dodavanjeRepertoara;
 delimiter $$
-create procedure dodavanjeRepertoara (in mjesecIGodina date)
+create procedure dodavanjeRepertoara (in mjesecIGodina date, out idRepertoara int)
 begin
 	insert into repertoar values(0,CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01'));
+    set idRepertoara = last_insert_id();
 end$$
 delimiter ;
 
@@ -68,10 +69,10 @@ order by mjesecIGodina desc;
 
 select * from repertoari_info;
 
-call dodavanjeRepertoara('2019-05-05');
-call dodavanjeRepertoara('2019-07-07');
-call dodavanjeRepertoara('2019-09-12');
-call dodavanjeRepertoara('2019-10-23');
+call dodavanjeRepertoara('2019-05-05',@pero);
+call dodavanjeRepertoara('2019-07-07',@pero);
+call dodavanjeRepertoara('2019-09-12',@pero);
+call dodavanjeRepertoara('2019-10-23',@pero);
 /*
 drop trigger postaviPrviDanUMjesecu;
 create trigger postaviPrviDanUMjesecu after insert 
@@ -83,7 +84,7 @@ set     mjesecIGodina = CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01')
 #set mjesecIGodina = 'year(mjesecIGodina)-month(mjesecIGodina)-01'
 where id = new.id;
 */
-insert into repertoar values (0,'2019-05-25');
+
 
 /*
 call dodavanjeAdministrativnogRadnika('Djordje','Palavestra','1234554321555',
