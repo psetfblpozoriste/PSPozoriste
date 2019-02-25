@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,11 +29,12 @@ public class RepertoarDAO {
         CallableStatement callableStatement = null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call dodavanjeRepertoar(?)}");
-            callableStatement.setDate(0, repertoar.getMjesecIGodina());
-            
+            callableStatement = connection.prepareCall("{call dodavanjeRepertoara(?,?)}");
+            callableStatement.setDate(1, repertoar.getMjesecIGodina());
+            callableStatement.registerOutParameter(2, Types.INTEGER);
 
             callableStatement.executeQuery();
+            repertoar.setId(callableStatement.getInt(2));
         } catch (SQLException ex) {
             Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
