@@ -44,9 +44,9 @@ public class DodajRezervacijuController implements Initializable {
 
     private void dodajButton() {
         String ime = textFiled.getText();
-        if (RezervacijaDAO.addRezervacija(new Rezervacija(0, ime, termin, idScene))) {
-            ((Stage) buttonDodaj.getScene().getWindow()).close();
-        }
+        PregledKarataController.rezervacije = RezervacijaDAO.addRezervacija(new Rezervacija(0, ime, termin, idScene));
+        ((Stage) buttonDodaj.getScene().getWindow()).close();
+        System.out.println("zatvaram");
 
     }
 

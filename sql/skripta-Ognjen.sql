@@ -39,9 +39,10 @@ delimiter ;
 
 
 delimiter $$
-create procedure dodavanjeRezervacije (in id int, in ime varchar(40), in termin date, in idScene int)
+create procedure dodavanjeRezervacije (in id int, in ime varchar(40), in termin date, in idScene int,out idRezervacije int)
 begin
 	insert into rezervacija values(id,ime,termin,idScene);
+	set idRezervacije=last_insert_id();
 end$$
 delimiter ;
 

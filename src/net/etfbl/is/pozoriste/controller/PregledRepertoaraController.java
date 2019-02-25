@@ -28,9 +28,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -116,13 +120,15 @@ public class PregledRepertoaraController implements Initializable {
                     stringZaPrikaz += format.format(igranje.getTermin());
                 }
                 Label nazivLabel = new Label(stringZaPrikaz);
-                setLabel(nazivLabel);
                 nazivLabel.setId(i.toString());
+                setLabel(nazivLabel);
                 if ("Biletar".equals(LogInController.tipKorisnika)) {
                     labelSetAction(nazivLabel);
                 }
                 vBox.getChildren().add(nazivLabel);
             }
+            vBox.setMaxWidth(747);
+            System.out.println("fff"+vBox.getWidth());
             scrollPane.vvalueProperty().bind(vBox.heightProperty());
             scrollPane.setContent(vBox);
             if ("Administrator".equals(LogInController.tipKorisnika)) {
@@ -139,8 +145,8 @@ public class PregledRepertoaraController implements Initializable {
         Igranje zeljenoIgranje = null;
         try {
             predstavaSaKojomRadim = label.getText().split(" ")[0];
-            String string = label.getText().split(" ")[Arrays.asList(label.getText().split(" ")).size()-1];
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm",Locale.GERMANY);
+            String string = label.getText().split(" ")[Arrays.asList(label.getText().split(" ")).size() - 1];
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm", Locale.GERMANY);
             Date date = format.parse(string);
             zeljenoIgranje = repertoarZaPrikaz.getIgranja().stream().filter(e -> e.getTermin().equals(date)).findFirst().get();
         } catch (Exception e) {
@@ -164,11 +170,16 @@ public class PregledRepertoaraController implements Initializable {
     }
 
     private void setLabel(Label label) {
-        label.setMinWidth(scrollPane.getWidth() - 2);
+        label.setMinWidth(747);
         label.setMinHeight(40);
         label.setFont(new Font(16));
         label.setStyle("-fx-font-weight: bold");
         label.setPadding(new Insets(0, 0, 0, 10));
+        if (Integer.parseInt(label.getId()) % 2 == 0) {
+            label.setBackground(new Background(new BackgroundFill(Color.CYAN, CornerRadii.EMPTY, Insets.EMPTY)));
+        }else{
+             label.setBackground(new Background(new BackgroundFill(Color.YELLOWGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
     }
 
     private void buttonSetAction() {

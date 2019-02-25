@@ -8,15 +8,14 @@ package net.etfbl.is.pozoriste.model.dao.mysql;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.etfbl.is.pozoriste.model.dto.Rezervacija;
-import net.etfbl.is.pozoriste.model.dto.RezervisanoSjediste;
 
 /**
  *
@@ -66,21 +65,25 @@ public class RezervacijaDAO {
     }
     
     
-     public static boolean addRezervacija(Rezervacija rezervacija) {
+     public static Rezervacija addRezervacija(Rezervacija rezervacija) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         ResultSet resultSet = null;
+        Rezervacija rezervacijaDodata = null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call dodavanjeRezervacije(?,?,?,?)}");
+            callableStatement = connection.prepareCall("{call dodavanjeRezervacije(?,?,?,?,?)}");
             callableStatement.setInt(1, rezervacija.getId());
             callableStatement.setString(2, rezervacija.getIme());
             callableStatement.setDate(3, rezervacija.getTermin());
             callableStatement.setInt(4, rezervacija.getIdScene());
+            callableStatement.registerOutParameter(5, Types.INTEGER);
 
-            int count = callableStatement.executeUpdate();
-            if (count <= 0) {
-                return false;
+            resultSet = callableStatement.executeQuery();
+            if (resultSet.next()) {
+                rezervacija.setId(resultSet.getInt(5));
+                rezervacijaDodata = rezervacija;
+                return rezervacijaDodata;
             }
         } catch (SQLException sql) {
             Logger.getLogger(RezervacijaDAO.class.getName()).log(Level.SEVERE, null, sql);
@@ -98,6 +101,6 @@ public class RezervacijaDAO {
                 }
             }
         }
-        return false;
+        return rezervacijaDodata;
     }
 }
