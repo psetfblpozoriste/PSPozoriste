@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="net.etfbl.is.pozoriste.view.DodajPredstavuController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="net.etfbl.is.pozoriste.controller.DodajPredstavuController">
    <children>
       <Label fx:id="labelNaziv" layoutX="22.0" layoutY="35.0" prefHeight="27.0" prefWidth="71.0" text="Naziv" />
       <Label fx:id="labelOpis" layoutX="22.0" layoutY="80.0" prefHeight="27.0" prefWidth="71.0" text="Opis" />
