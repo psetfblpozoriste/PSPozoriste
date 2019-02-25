@@ -73,14 +73,15 @@ public class PregledRepertoaraController implements Initializable {
 
     public static Scena scena;
 
-    private Repertoar repertoarZaPrikaz;
+    private static Repertoar repertoarZaPrikaz;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (!"Administrator".equals(LogInController.tipKorisnika)) {
             buttonNazad.setVisible(false);
+            LinkedList<Repertoar> zadnji = new LinkedList<>(RepertoarDAO.repertoars());
+            repertoarZaPrikaz = zadnji.peekLast();
         }
-        repertoarZaPrikaz = RepertoarDAO.getRepertoar(1);//ovde zvati repertoar
         buttonNazad.setOnAction(e -> buttonSetAction());
 
         if (!(brojPredstava == 0)) {
@@ -137,8 +138,8 @@ public class PregledRepertoaraController implements Initializable {
         }
     }
 
-    public static void incijalizacija(int brojRepertoara) {
-        brojPredstava = 2;
+    public static void incijalizacija(Repertoar repertoar) {
+       repertoarZaPrikaz = repertoar;
     }
 
     private void pregledRepertoara(Label label) {

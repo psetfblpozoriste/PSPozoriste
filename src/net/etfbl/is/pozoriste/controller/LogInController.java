@@ -141,7 +141,6 @@ public class LogInController implements Initializable {
             }else if("Biletar".equals(tipKorisnika)){
                                 try {
                     Parent pozoristeController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
-                    PregledRepertoaraController.incijalizacija(0);
                     Scene pozScene = new Scene(pozoristeController);
                     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     window.setScene(pozScene);
