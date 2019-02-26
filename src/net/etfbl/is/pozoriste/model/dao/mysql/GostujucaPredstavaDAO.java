@@ -67,7 +67,7 @@ public class GostujucaPredstavaDAO {
         String poruka;
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call dodajPredstavu(?,?,?,?,?,?,?,?)}");
+            callableStatement = connection.prepareCall("{call dodajGostujucuPredstavu(?,?,?,?,?,?,?,?)}");
             callableStatement.setString(1, gostujucaPredstava.getNaziv());
             callableStatement.setString(2, gostujucaPredstava.getOpis());
             callableStatement.setString(3, gostujucaPredstava.getTip());
@@ -78,8 +78,8 @@ public class GostujucaPredstavaDAO {
             callableStatement.registerOutParameter(8,Types.INTEGER);
             callableStatement.executeQuery();
             
-            gostujucaPredstava.setId(callableStatement.getInt(8));
             poruka=callableStatement.getString(7);
+            gostujucaPredstava.setId(callableStatement.getInt(8));
             if(poruka!=null){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(null);

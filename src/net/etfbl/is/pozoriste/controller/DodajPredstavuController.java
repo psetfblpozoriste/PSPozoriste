@@ -114,16 +114,16 @@ public class DodajPredstavuController implements Initializable {
 
     @FXML
     void nazadNaPregledPredstava(ActionEvent event) {
-        Parent dodajZaposlenogView;
-        try {
-            dodajZaposlenogView = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledPredstava.fxml"));
+        //Zasto mi tu duplira u tabeli?
+         try {
+            Parent predstavaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledPredstava.fxml"));
 
-            Scene dodajZaposlenogScene = new Scene(dodajZaposlenogView);
+            Scene predstavaScene = new Scene(predstavaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(dodajZaposlenogScene);
+            window.setScene(predstavaScene);
             window.show();
         } catch (IOException ex) {
-            Logger.getLogger(DodajRadnikaController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
