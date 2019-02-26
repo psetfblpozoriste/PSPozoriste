@@ -7,14 +7,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="251.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="net.etfbl.is.pozoriste.controller.DodajRezervacijuController">
+<AnchorPane id="AnchorPane" prefHeight="251.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.DodajRezervacijuController">
    <children>
       <VBox alignment="CENTER" layoutX="29.0" layoutY="29.0" prefHeight="120.0" prefWidth="542.0">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label prefHeight="40.0" prefWidth="150.0" text="Unesite naziv rezervacije" />
+                  <Label prefHeight="40.0" prefWidth="170.0" text="Unesite naziv rezervacije" />
                   <TextField fx:id="textFiled" prefHeight="40.0" prefWidth="306.0" />
                </children>
             </HBox>

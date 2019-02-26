@@ -390,7 +390,7 @@ delimiter ;
 delimiter $$
 create procedure dodavanjeKarte (in brojReda int, in brojSjedista int, in iznos float, in termin date, in idScene int)
 begin
-	insert into repertoar values(0,brojReda,brojSjedista,iznos,termin,idScene);
+	insert into karta values(0,brojReda,brojSjedista,iznos,termin,idScene);
 end$$
 delimiter ;
 
