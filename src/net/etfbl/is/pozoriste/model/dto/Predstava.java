@@ -10,39 +10,39 @@ package net.etfbl.is.pozoriste.model.dto;
  * @author Darko
  */
 public class Predstava {
-    
+
     private Integer id;
     private String naziv;
     private String opis;
     private String tip;
-    
-    public Predstava(String naziv, String opis, String tip){
-        this.naziv=naziv;
-        this.opis=opis;
-        this.tip=tip;
+
+    public Predstava(String naziv, String opis, String tip) {
+        this.naziv = naziv;
+        this.opis = opis;
+        this.tip = tip;
     }
-    
-    public void setNaziv(String naziv){
-        this.naziv=naziv;
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
     }
-    
-    public String getNaziv(){
+
+    public String getNaziv() {
         return naziv;
     }
-    
-    public void setOpis(String opis){
-        this.opis=opis;
+
+    public void setOpis(String opis) {
+        this.opis = opis;
     }
-    
-    public String getOpis(){
+
+    public String getOpis() {
         return opis;
     }
-    
-    public void setTip(String tip){
-        this.tip=tip;
+
+    public void setTip(String tip) {
+        this.tip = tip;
     }
-    
-    public String getTip(){
+
+    public String getTip() {
         return tip;
     }
 
@@ -53,7 +53,9 @@ public class Predstava {
     public void setId(Integer id) {
         this.id = id;
     }
-    
-    
-    
+
+    public String toString() {
+        return this.naziv;
+    }
+
 }

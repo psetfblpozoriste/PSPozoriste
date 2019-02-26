@@ -31,6 +31,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
+import net.etfbl.is.pozoriste.model.dao.mysql.GostujucaPredstavaDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.PredstavaDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.ScenaDAO;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
 import net.etfbl.is.pozoriste.model.dto.Igranje;
@@ -45,7 +47,7 @@ import net.etfbl.is.pozoriste.model.dto.Scena;
 public class DodajIgranjeController implements Initializable {
 
     @FXML
-    private ComboBox cmbPredstave;
+    private ComboBox<Object> cmbPredstave;
 
     @FXML
     private DatePicker dpTerminPredstave;
@@ -131,37 +133,8 @@ public class DodajIgranjeController implements Initializable {
     }
     
        private void ubaciUCMBPredstave() {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet rs = null;
-        try {
-            connection = ConnectionPool.getInstance().checkOut();
-            statement = connection.createStatement();
-            rs = statement.executeQuery("SELECT naziv,tip from predstava");
-            while (rs.next()) {
-                cmbPredstave.getItems().add(rs.getString("naziv") + ":" + rs.getString("tip"));
-               // mjesta.put(rs.getInt(1), rs.getString(2));
-            }
-            rs = statement.executeQuery("SELECT naziv,tip from gostujuca_predstava");
-            while (rs.next()) {
-                cmbPredstave.getItems().add("Gostujuca: "+rs.getString("naziv") + ":" + rs.getString("tip"));
-               // mjesta.put(rs.getInt(1), rs.getString(2));
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DodajIgranjeController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (connection != null) {
-                ConnectionPool.getInstance().checkIn(connection);
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(DodajIgranjeController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+           cmbPredstave.getItems().addAll(PredstavaDAO.predstave());
+           cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
     }
 
     @Override

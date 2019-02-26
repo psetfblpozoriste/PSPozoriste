@@ -79,6 +79,10 @@ public class GostujucaPredstava {
         this.glumci = glumci;
     }
     
+    public String toString(){
+        return this.naziv;
+    }
+    
     
     
 }
