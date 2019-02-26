@@ -70,7 +70,7 @@ public class DodajPredstavuController implements Initializable {
     @FXML
     private TextArea textAreaGlumci;
 
-     @FXML
+    @FXML
     private Button buttonPregledajAngazman;
 
     @FXML
@@ -78,44 +78,78 @@ public class DodajPredstavuController implements Initializable {
 
     @FXML
     private Button bNazad;
-    
-    
+
     private static boolean domacaPredstava;
-    
-    public static void setDomacaPredstava(boolean domacaPr){
-        domacaPredstava=domacaPr;
+    private static boolean dodavanje;
+    private static Object predstava;
+
+    public static void setPredstava(Object p) {
+        predstava = p;
     }
 
-     @FXML
-    void pregledajAngazmanAction(ActionEvent event) {
+    public static void setDomacaPredstava(boolean domacaPr) {
+        domacaPredstava = domacaPr;
+    }
 
+    public static void setDodavanje(boolean dodaj) {
+        dodavanje = dodaj;
+    }
+
+    @FXML
+    void pregledajAngazmanAction(ActionEvent event) {
+        if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty()) {
+            Predstava domaca = (Predstava) predstava;
+            domaca.setNaziv(textFieldNaziv.getText());
+            domaca.setOpis(textAreaOpis.getText());
+            domaca.setTip(textFieldTip.getText());
+            PredstavaDAO.azurirajPredstavu(domaca);
+        } else {
+            upozorenjePoljaSuPrazna();
+        }
+        otvoriAngazmane(event);
     }
 
     @FXML
     void okAction(ActionEvent event) {
-        if(domacaPredstava){
-            if(!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty()){
-                Predstava predstava=new Predstava(textFieldNaziv.getText(),textAreaOpis.getText(),textFieldTip.getText());
-                PredstavaDAO.dodajPredstavu(predstava);
-            }else{
+        if (dodavanje) {
+            if (domacaPredstava) {
+                if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty()) {
+                    Predstava predstava = new Predstava(textFieldNaziv.getText(), textAreaOpis.getText(), textFieldTip.getText());
+                    PredstavaDAO.dodajPredstavu(predstava);
+                } else {
+                    upozorenjePoljaSuPrazna();
+                }
+                otvoriAngazmane(event);
+            } else {
+                if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty() && !textAreaGlumci.getText().isEmpty() && !textFieldPisac.getText().isEmpty() && !textFieldReziser.getText().isEmpty()) {
+                    GostujucaPredstava gostujucaPredstava = new GostujucaPredstava(textFieldNaziv.getText(), textAreaOpis.getText(), textFieldTip.getText(), textFieldPisac.getText(), textFieldReziser.getText(), textAreaGlumci.getText());
+                    GostujucaPredstavaDAO.dodajGostujucuPredstavu(gostujucaPredstava);
+                } else {
+                    upozorenjePoljaSuPrazna();
+                }
+                nazadNaPregledPredstava(event);
+            }
+        } else {
+
+            if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty() && !textAreaGlumci.getText().isEmpty() && !textFieldPisac.getText().isEmpty() && !textFieldReziser.getText().isEmpty()) {
+                GostujucaPredstava gostujuca = (GostujucaPredstava) predstava;
+                gostujuca.setNaziv(textFieldNaziv.getText());
+                gostujuca.setOpis(textAreaOpis.getText());
+                gostujuca.setTip(textFieldTip.getText());  
+                gostujuca.setGlumci(textAreaGlumci.getText());
+                gostujuca.setPisac(textFieldPisac.getText());
+                gostujuca.setReziser(textFieldReziser.getText());
+                GostujucaPredstavaDAO.azurirajGostujucuPredstavu(gostujuca);
+            } else {
                 upozorenjePoljaSuPrazna();
             }
-        }else{
-            if(!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty() && !textAreaGlumci.getText().isEmpty() && !textFieldPisac.getText().isEmpty() && !textFieldReziser.getText().isEmpty()){
-                GostujucaPredstava gostujucaPredstava=new GostujucaPredstava(textFieldNaziv.getText(),textAreaOpis.getText(),textFieldTip.getText(),textFieldPisac.getText(),textFieldReziser.getText(),textAreaGlumci.getText());
-                GostujucaPredstavaDAO.dodajGostujucuPredstavu(gostujucaPredstava);
-            }else{
-                upozorenjePoljaSuPrazna();
-            }
+            nazadNaPregledPredstava(event);
         }
-        
-        nazadNaPregledPredstava(event);
     }
 
     @FXML
     void nazadNaPregledPredstava(ActionEvent event) {
-        //Zasto mi tu duplira u tabeli?
-         try {
+        try {
             Parent predstavaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledPredstava.fxml"));
 
             Scene predstavaScene = new Scene(predstavaController);
@@ -129,23 +163,63 @@ public class DodajPredstavuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         if(domacaPredstava){
-         labelPisac.setVisible(false);
-         labelReziser.setVisible(false);
-         labelGlumci.setVisible(false);
-         textFieldPisac.setVisible(false);
-         textFieldReziser.setVisible(false);
-         textAreaGlumci.setVisible(false);
-         }else{
-         buttonPregledajAngazman.setVisible(false);
-         }
+        if (dodavanje) {
+            if (domacaPredstava) {
+                labelPisac.setVisible(false);
+                labelReziser.setVisible(false);
+                labelGlumci.setVisible(false);
+                textFieldPisac.setVisible(false);
+                textFieldReziser.setVisible(false);
+                textAreaGlumci.setVisible(false);
+                buttonPregledajAngazman.setVisible(false);
+            } else {
+                buttonPregledajAngazman.setVisible(false);
+            }
+        } else {
+            if (domacaPredstava) {
+                labelPisac.setVisible(false);
+                labelReziser.setVisible(false);
+                labelGlumci.setVisible(false);
+                textFieldPisac.setVisible(false);
+                textFieldReziser.setVisible(false);
+                textAreaGlumci.setVisible(false);
+                buttonOK.setVisible(false);
+                Predstava domaca = (Predstava) predstava;
+                textFieldNaziv.setText(domaca.getNaziv());
+                textFieldTip.setText(domaca.getTip());
+                textAreaOpis.setText(domaca.getOpis());
+
+            } else {
+                buttonPregledajAngazman.setVisible(false);
+                GostujucaPredstava gostujuca = (GostujucaPredstava) predstava;
+                textFieldNaziv.setText(gostujuca.getNaziv());
+                textFieldTip.setText(gostujuca.getTip());
+                textAreaOpis.setText(gostujuca.getOpis());
+                textFieldPisac.setText(gostujuca.getPisac());
+                textFieldReziser.setText(gostujuca.getReziser());
+                textAreaGlumci.setText(gostujuca.getGlumci());
+            }
+        }
     }
-    
-     private void upozorenjePoljaSuPrazna() {
+
+    private void upozorenjePoljaSuPrazna() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom unosa podataka !");
         alert.setHeaderText(null);
         alert.setContentText("Polja su prazna.");
         alert.showAndWait();
+    }
+
+    private void otvoriAngazmane(ActionEvent event) {
+        try {
+            Parent predstavaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodavanjeAngazmana.fxml"));
+
+            Scene predstavaScene = new Scene(predstavaController);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(predstavaScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

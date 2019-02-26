@@ -91,4 +91,32 @@ public class PredstavaDAO {
         }
     }
 
+    public static void azurirajPredstavu(Predstava predstava){
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        String poruka;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call azuriranjePredstave(?,?,?,?)}");
+            callableStatement.setInt(1, predstava.getId());
+            callableStatement.setString(2, predstava.getNaziv());
+            callableStatement.setString(3, predstava.getOpis());
+            callableStatement.setString(4, predstava.getTip());
+            callableStatement.executeQuery();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }

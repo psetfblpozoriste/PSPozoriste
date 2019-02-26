@@ -68,7 +68,7 @@ public class PregledPredstavaController implements Initializable {
 
     @FXML // fx:id="buttonIzmijeniPredstavu"
     private Button buttonIzmijeniPredstavu; // Value injected by FXMLLoader
-    
+
     @FXML
     private Button buttonNazad;
 
@@ -93,31 +93,37 @@ public class PregledPredstavaController implements Initializable {
     void nazadAction(ActionEvent event) {
 
     }
+
     @FXML
     void dodajAction(ActionEvent event) {
-        String temp=comboBoxTip.getValue();
-        if("Predstava".equals(temp)){
-         DodajPredstavuController.setDomacaPredstava(true);
-        }else{
-         DodajPredstavuController.setDomacaPredstava(false);
+        String temp = comboBoxTip.getValue();
+        if ("Predstava".equals(temp)) {
+            DodajPredstavuController.setDomacaPredstava(true);
+            DodajPredstavuController.setDodavanje(true);
+            DodajPredstavuController.setPredstava(null);
+        } else {
+            DodajPredstavuController.setDomacaPredstava(false);
+            DodajPredstavuController.setDodavanje(true);
+            DodajPredstavuController.setPredstava(null);
         }
-        try {
-            Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajPredstavu.fxml"));
+        otvoriDodajPredstavu(event);
 
-            Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(dodajRadnikaScene);
-            window.show();
-        } catch (IOException ex) {
-            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        
     }
 
     @FXML
     void izmijeniGostujucuPredstavuAction(ActionEvent event) {
+        ObservableList<GostujucaPredstava> izabranaVrsta, predstaveObservableList;
+        predstaveObservableList = tableGostujucePredstave.getItems();
+        izabranaVrsta = tableGostujucePredstave.getSelectionModel().getSelectedItems();
+        GostujucaPredstava izabranaPredstava = (GostujucaPredstava) izabranaVrsta.get(0);
+        if (izabranaPredstava != null) {
+            DodajPredstavuController.setDodavanje(false);
+            DodajPredstavuController.setDomacaPredstava(false);
+            DodajPredstavuController.setPredstava(izabranaPredstava);
+            otvoriDodajPredstavu(event);
+        } else {
 
+        }
     }
 
     @FXML
@@ -127,7 +133,18 @@ public class PregledPredstavaController implements Initializable {
 
     @FXML
     void izmijeniPredstavuAction(ActionEvent event) {
+        ObservableList<Predstava> izabranaVrsta, predstaveObservableList;
+        predstaveObservableList = tablePredstave.getItems();
+        izabranaVrsta = tablePredstave.getSelectionModel().getSelectedItems();
+        Predstava izabranaPredstava = (Predstava) izabranaVrsta.get(0);
+        if (izabranaPredstava != null) {
+            DodajPredstavuController.setDodavanje(false);
+            DodajPredstavuController.setDomacaPredstava(true);
+            DodajPredstavuController.setPredstava(izabranaPredstava);
+            otvoriDodajPredstavu(event);
+        } else {
 
+        }
     }
 
     @Override
@@ -137,6 +154,8 @@ public class PregledPredstavaController implements Initializable {
         textAreaOpisPredstave.setEditable(false);
         textAreaOpisGostujucePredstave.setEditable(false);
         textAreaGlumciGostujucePredstave.setEditable(false);
+        gostujucePredstaveObservableList.clear();
+        predstaveObservableList.clear();
         gostujucePredstaveObservableList.addAll(GostujucaPredstavaDAO.gostujucePredstave());
         predstaveObservableList.addAll(PredstavaDAO.predstave());
         ubaciKoloneUTabeluGostujucaPredstava(gostujucePredstaveObservableList);
@@ -170,6 +189,7 @@ public class PregledPredstavaController implements Initializable {
         reziserColumn = new TableColumn("Reziser");
         reziserColumn.setCellValueFactory(new PropertyValueFactory<>("reziser"));
 
+        //tableGostujucePredstave.getItems().removeAll(tableGostujucePredstave.getItems());
         tableGostujucePredstave.setItems(gostujucePredstaveObservableList);
         tableGostujucePredstave.getColumns().addAll(nazivGpColumn, tipGpColumn, pisacColumn, reziserColumn);
 
@@ -184,8 +204,22 @@ public class PregledPredstavaController implements Initializable {
         tipColumn.setCellValueFactory(new PropertyValueFactory<>("tip"));
         tipColumn.setPrefWidth(210);
 
+        //tablePredstave.getItems().removeAll(tablePredstave.getItems());
         tablePredstave.setItems(predstaveObservableList);
         tablePredstave.getColumns().addAll(nazivColumn, tipColumn);
 
+    }
+
+    private void otvoriDodajPredstavu(ActionEvent event) {
+        try {
+            Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajPredstavu.fxml"));
+
+            Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(dodajRadnikaScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
