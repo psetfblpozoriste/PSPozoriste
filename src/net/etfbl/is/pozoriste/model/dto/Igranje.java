@@ -12,19 +12,18 @@ import java.sql.Date;
  * @author Ognjen
  */
 public class Igranje {
-    
+
     private Date termin;
-    
+
     private Integer idScene;
-    
+
     private Integer idPredstave;
-    
+
     private Integer idGostujucePredstave;
-    
+
     private Integer idRepertoara;
-    
-    
-    public Igranje(Date termin,Integer idScene,Integer idPredstave,Integer idGostujucePredstave,Integer idRepertoara){
+
+    public Igranje(Date termin, Integer idScene, Integer idPredstave, Integer idGostujucePredstave, Integer idRepertoara) {
         this.termin = termin;
         this.idScene = idScene;
         this.idPredstave = idPredstave;
@@ -71,9 +70,10 @@ public class Igranje {
     public void setIdRepertoara(Integer idRepertoara) {
         this.idRepertoara = idRepertoara;
     }
-    
-    
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "Igranje{" + "termin=" + termin + ", idScene=" + idScene + ", idPredstave=" + idPredstave + ", idGostujucePredstave=" + idGostujucePredstave + ", idRepertoara=" + idRepertoara + '}';
+    }
+
 }

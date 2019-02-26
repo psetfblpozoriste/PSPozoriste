@@ -30,6 +30,11 @@ public class Scena {
     public void setNazivScene(String nazivScene) {
         this.nazivScene = nazivScene;
     }
+
+    @Override
+    public String toString() {
+        return "Scena{" + "idScene=" + idScene + ", nazivScene=" + nazivScene + '}';
+    }
     
     
     

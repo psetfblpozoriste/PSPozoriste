@@ -73,6 +73,10 @@ call dodavanjeRepertoara('2019-05-05',@pero);
 call dodavanjeRepertoara('2019-07-07',@pero);
 call dodavanjeRepertoara('2019-09-12',@pero);
 call dodavanjeRepertoara('2019-10-23',@pero);
+
+select * from predstava;
+select * from gostujuca_predstava;
+
 /*
 drop trigger postaviPrviDanUMjesecu;
 create trigger postaviPrviDanUMjesecu after insert 

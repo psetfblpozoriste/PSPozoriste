@@ -18,7 +18,7 @@ public class Repertoar {
     
     private Integer id;
     
-    private LinkedList<Igranje> igranja;
+    private LinkedList<Igranje> igranja = new LinkedList<>();
     
     public Repertoar(Integer id,Date mjesecIGodina){
         this.mjesecIGodina=mjesecIGodina;
@@ -39,6 +39,7 @@ public class Repertoar {
     public void setIgranja(LinkedList<Igranje> igranja) {
         this.igranja = igranja;
     }
+    
 
     public int getId() {
         return id;
