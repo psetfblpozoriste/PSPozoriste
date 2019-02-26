@@ -70,26 +70,16 @@ public class DodajIgranjeController implements Initializable {
            return;
        }
     }
-
     private boolean dodajIgranje() {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println("KALENDAR PRVI" + sdf.format(new Date(calendar.getTimeInMillis())));
-
         sdf.format(new Date(calendar.getInstance().getTimeInMillis()));
-
-        System.out.println("KALENDAR: " + calendar);
-
-        //LinkedList<Igranje> novoIgranje = new LinkedList<>();
         List<Scena> scena = ScenaDAO.scene();
-        System.out.println("SCENA: " + scena);
-        System.out.println("ZADNJI REPERTOAR ID: " + DodajRepertoarController.repertoar.getId());
 
         Igranje novoIgranje = new Igranje(new Date(calendar.getTimeInMillis()), scena.get(0).getIdScene(), (cmbPredstave.getSelectionModel().getSelectedItem() instanceof Predstava) ? ((Predstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, (cmbPredstave.getSelectionModel().getSelectedItem() instanceof GostujucaPredstava) ? ((GostujucaPredstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, DodajRepertoarController.repertoar.getId());
-        System.out.println("NOVO IGRANJE: " + novoIgranje);
         LinkedList<Igranje> svaIgranja = new LinkedList<>();
         svaIgranja = IgranjeDAO.getIgranja(DodajRepertoarController.repertoar.getId());
         System.out.println("SVA IGRANJA: ");
@@ -97,7 +87,6 @@ public class DodajIgranjeController implements Initializable {
         System.out.println("------------------------------------");
 
         if (!svaIgranja.stream().filter(x -> sdf.format(x.getTermin()).equals(sdf.format(novoIgranje.getTermin()))).findAny().isPresent()) {
-            System.out.println("PROSLO: " + novoIgranje);
             IgranjeDAO.dodajIgranje(novoIgranje);
             return true;
         } else {
