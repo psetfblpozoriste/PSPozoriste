@@ -1,12 +1,5 @@
 use pozoriste_is;
 
-select * from biletar;
-select * from biltetari_info;
-call azuriranjeUmjetnika('OGNJEN','OGNJEN','1231231239876',3,true,'bla');
-select * from umjetnici_info;
-select * from radnik_koji_koristi_sistem;
-
-delete  from radnik_koji_koristi_sistem where idRadnik=3;
 drop procedure provjeraLogovanja;
 delimiter $$
 	create procedure provjeraLogovanja(in pkorisnickoIme varchar(64),in psifra varchar(64),out vpostojiUSistemu boolean )
@@ -28,8 +21,6 @@ delimiter $$
     end$$
 delimiter ;
 
-call provjeraKorisnickogImena('hulk',@postojiKorisnickoIme);
-select @postojiKorisnickoIme;
 
 delimiter $$
 	create procedure provjeraLozinke(in pLozinka varchar(64),out vpostojiUSistemu boolean )
@@ -41,14 +32,6 @@ delimiter $$
     end$$
 delimiter ;
 
-call provjeraLozinke('8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',@postojiLozinka);
-select @postojiLozinka;
-
-call provjeraLogovanja ('fafa','fafa',@posotji);
-select @postoji;
-
-select * from radnik_koji_koristi_sistem;
-select * from umjetnici_info;
 
 select * from repertoar;
 
@@ -58,6 +41,8 @@ create procedure dodavanjeRepertoara (in mjesecIGodina date, out idRepertoara in
 begin
 	insert into repertoar values(0,CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01'));
     set idRepertoara = last_insert_id();
+    update repertoar set mjesecIGodina = date_add(CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01'),interval 1 month)
+    where repertoar.id = idRepertoara;
 end$$
 delimiter ;
 
@@ -68,14 +53,13 @@ order by mjesecIGodina desc;
 #order by year(mjesecIGodina) desc ,month(mjesecIGodina) asc , day(mjesecIGodina) desc;
 
 select * from repertoari_info;
+select * from repertoar;
 
-call dodavanjeRepertoara('2019-05-05',@pero);
-call dodavanjeRepertoara('2019-07-07',@pero);
-call dodavanjeRepertoara('2019-09-12',@pero);
-call dodavanjeRepertoara('2019-10-23',@pero);
 
-select * from predstava;
-select * from gostujuca_predstava;
+
+select * from repertoari_info;
+#select * from predstava;
+#select * from gostujuca_predstava;
 
 /*
 drop trigger postaviPrviDanUMjesecu;

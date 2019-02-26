@@ -19,6 +19,9 @@ public class Repertoar {
     private Integer id;
     
     private LinkedList<Igranje> igranja = new LinkedList<>();
+
+    public Repertoar() {
+    }
     
     public Repertoar(Integer id,Date mjesecIGodina){
         this.mjesecIGodina=mjesecIGodina;
@@ -51,11 +54,9 @@ public class Repertoar {
 
     @Override
     public String toString() {
-        return "Repertoar{" + "mjesecIGodina=" + mjesecIGodina + ", id=" + id + '}';
+        return "Repertoar{" + "mjesecIGodina=" + mjesecIGodina + ", id=" + id + ", igranja=" + igranja + '}';
     }
     
-    
-    
-    
+        
     
 }

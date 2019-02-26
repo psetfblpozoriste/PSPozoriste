@@ -10,16 +10,48 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.etfbl.is.pozoriste.model.dto.Igranje;
+import net.etfbl.is.pozoriste.model.dto.Repertoar;
 
 /**
  *
  * @author Ognjen
  */
 public class IgranjeDAO {
+    
+        public static void dodajIgranje(Igranje igranje) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call dodavanjeIgranja(?,?,?,?,?)}");
+            callableStatement.setDate(1, igranje.getTermin());
+            callableStatement.setInt(2, igranje.getIdScene());
+            callableStatement.setObject(3, igranje.getIdGostujucePredstave());
+            callableStatement.setObject(4, igranje.getIdPredstave());
+            callableStatement.setInt(5, igranje.getIdRepertoara());
+
+            callableStatement.executeQuery();
+  
+        } catch (SQLException ex) {
+            Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 
     public static LinkedList<Igranje> getIgranja(int idRepertoara) {
         Connection connection = null;

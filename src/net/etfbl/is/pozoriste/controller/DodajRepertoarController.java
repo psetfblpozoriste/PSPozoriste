@@ -29,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.RepertoarDAO;
 import net.etfbl.is.pozoriste.model.dto.Repertoar;
+import java.util.Calendar;
 
 /**
  * FXML Controller class
@@ -42,7 +43,7 @@ public class DodajRepertoarController implements Initializable {
 
     @FXML
     private Button bDodajIgranje;
-    
+
     @FXML
     private ComboBox<Integer> cmbGodina;
 
@@ -51,22 +52,25 @@ public class DodajRepertoarController implements Initializable {
 
     @FXML
     private Button bNazad;
-    
+
     public static Repertoar repertoar = null;
-    
+
     private boolean dodajRepertoar() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
-       // Repertoar repertoar = null;
         try {
+            Integer mjesec = (cmbMjesec.getSelectionModel().getSelectedItem()+1);
+            Integer godina = cmbGodina.getSelectionModel().getSelectedItem();
             repertoar = new Repertoar(0,
-    new java.sql.Date(sdf.parse(cmbGodina.getSelectionModel().getSelectedItem().toString()+"-"+cmbMjesec.getSelectionModel().getSelectedItem().toString()+"-1").getTime()));
+         new java.sql.Date(sdf.parse(cmbGodina.getSelectionModel().getSelectedItem().toString()
+         + "-" +Integer.valueOf(cmbMjesec.getSelectionModel().getSelectedItem()).toString()+"-1").getTime()));
         } catch (ParseException ex) {
             Logger.getLogger(DodajRepertoarController.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println("REPERTOAR: " + repertoar);
         final Repertoar simo = repertoar;
-        if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(e -> e.getMjesecIGodina().getYear() == simo.getMjesecIGodina().getYear() && e.getMjesecIGodina().getMonth() == simo.getMjesecIGodina().getMonth() ).findAny().isPresent()) {
+        if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(e -> e.getMjesecIGodina().getYear() == simo.getMjesecIGodina().getYear()
+        && e.getMjesecIGodina().getMonth() == simo.getMjesecIGodina().getMonth()).findAny().isPresent()) {
             RepertoarDAO.dodajRepertoar(repertoar);
             return true;
         } else {
@@ -111,11 +115,17 @@ public class DodajRepertoarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       for (Integer year = 1950; year <= Calendar.getInstance().get(Calendar.YEAR); year++) {
-           cmbGodina.getItems().add(year);
+        //for (Integer year = 1950; year <= Calendar.getInstance().get(Calendar.YEAR); year++) {
+        // cmbGodina.getItems().add(year);
+        cmbGodina.getItems().add(Calendar.getInstance().get(Calendar.YEAR));
+        //}
+        // for (Integer month = 1; month <= 12; month++) {
+        for (Integer mjesec = (Calendar.getInstance().get(Calendar.MONTH) + 1); mjesec <= 12; mjesec++) {
+            cmbMjesec.getItems().add(mjesec);
         }
-        for (Integer month = 1; month <= 12; month++) {
-            cmbMjesec.getItems().add(month);}
+        
+        System.out.println("SPISAK SVIH REPERTOARA: ");
+        RepertoarDAO.repertoars().stream().forEach(System.out::println);
     }
 
     private void upozorenjeRepertoar() {

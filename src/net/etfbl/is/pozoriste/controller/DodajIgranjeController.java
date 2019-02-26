@@ -26,13 +26,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
 import net.etfbl.is.pozoriste.model.dao.mysql.GostujucaPredstavaDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.IgranjeDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.PredstavaDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.RepertoarDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.ScenaDAO;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
 import net.etfbl.is.pozoriste.model.dto.Igranje;
@@ -63,45 +66,44 @@ public class DodajIgranjeController implements Initializable {
 
     @FXML
     void dodajIgranjeAction(ActionEvent event) {
-        dodajIgranje();
+       if(!dodajIgranje()){
+           return;
+       }
     }
 
-    /*
-     Calendar calendar = Calendar.getInstance();
-     calendar.set(datePickerBan.getValue().getYear(), datePickerBan.getValue().getMonthValue() - 1
-     , datePickerBan.getValue().getDayOfMonth());
-     */
     private boolean dodajIgranje() {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println("KALENDAR PRVI"+sdf.format(new Date(calendar.getTimeInMillis())));
-        
-        System.out.println("KALENDAR: "+calendar);
-        
-        LinkedList<Igranje> novoIgranje = new LinkedList<>();
+        System.out.println("KALENDAR PRVI" + sdf.format(new Date(calendar.getTimeInMillis())));
+
+        sdf.format(new Date(calendar.getInstance().getTimeInMillis()));
+
+        System.out.println("KALENDAR: " + calendar);
+
+        //LinkedList<Igranje> novoIgranje = new LinkedList<>();
         List<Scena> scena = ScenaDAO.scene();
-        System.out.println("SCENA: "+scena);
-        System.out.println("REPERTOAR ID: "+DodajRepertoarController.repertoar.getId());
-        novoIgranje.add(new Igranje(new Date(calendar.getTimeInMillis()),scena.get(0).getIdScene()
-        ,(cmbPredstave.getSelectionModel().getSelectedItem() instanceof Predstava)? ((Predstava)cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null
-        ,(cmbPredstave.getSelectionModel().getSelectedItem() instanceof GostujucaPredstava)? ((GostujucaPredstava)cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null
-        ,DodajRepertoarController.repertoar.getId()));
-        // posalji lisu igranja DodajRepertoarController.repertoar.setIgranja();
-       // novoIgranje.add(calendar.getTimeInMillis(),);
-        //return false;
-        DodajRepertoarController.repertoar.getIgranja().add(new Igranje(new Date(calendar.getTimeInMillis()),scena.get(0).getIdScene()
-        ,(cmbPredstave.getSelectionModel().getSelectedItem() instanceof Predstava)? ((Predstava)cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null
-        ,(cmbPredstave.getSelectionModel().getSelectedItem() instanceof GostujucaPredstava)? ((GostujucaPredstava)cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null
-        ,DodajRepertoarController.repertoar.getId()));      //.setIgranja(novoIgranje);
-       
-        System.out.println("SVA IGRANJA ZA REPERTOAR: ");
-        DodajRepertoarController.repertoar.getIgranja().stream().forEach(System.out::println);
-        System.out.println("IGRANJE: ");
-        novoIgranje.stream().forEach(System.out::println);
-        return true; // false ako je termin vez zauzet :D
+        System.out.println("SCENA: " + scena);
+        System.out.println("ZADNJI REPERTOAR ID: " + DodajRepertoarController.repertoar.getId());
+
+        Igranje novoIgranje = new Igranje(new Date(calendar.getTimeInMillis()), scena.get(0).getIdScene(), (cmbPredstave.getSelectionModel().getSelectedItem() instanceof Predstava) ? ((Predstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, (cmbPredstave.getSelectionModel().getSelectedItem() instanceof GostujucaPredstava) ? ((GostujucaPredstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, DodajRepertoarController.repertoar.getId());
+        System.out.println("NOVO IGRANJE: " + novoIgranje);
+        LinkedList<Igranje> svaIgranja = new LinkedList<>();
+        svaIgranja = IgranjeDAO.getIgranja(DodajRepertoarController.repertoar.getId());
+        System.out.println("SVA IGRANJA: ");
+        svaIgranja.forEach(System.out::println);
+        System.out.println("------------------------------------");
+
+        if (!svaIgranja.stream().filter(x -> sdf.format(x.getTermin()).equals(sdf.format(novoIgranje.getTermin()))).findAny().isPresent()) {
+            System.out.println("PROSLO: " + novoIgranje);
+            IgranjeDAO.dodajIgranje(novoIgranje);
+            return true;
+        } else {
+            upozorenjeRepertoar();
+            return false;
+        }
     }
 
     @FXML
@@ -131,15 +133,24 @@ public class DodajIgranjeController implements Initializable {
             Logger.getLogger(DodajIgranjeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-       private void ubaciUCMBPredstave() {
-           cmbPredstave.getItems().addAll(PredstavaDAO.predstave());
-           cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
+
+    private void ubaciUCMBPredstave() {
+        cmbPredstave.getItems().addAll(PredstavaDAO.predstave());
+        cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
+    }
+
+    private void upozorenjeRepertoar() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom dodavanja repertoara !");
+        alert.setHeaderText(null);
+        alert.setContentText("Repertoar postoji u bazi");
+        alert.showAndWait();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ubaciUCMBPredstave();
+
     }
 
 }
