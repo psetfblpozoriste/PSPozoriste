@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -71,9 +72,6 @@ public class PregledKarataController implements Initializable {
     @FXML // fx:id="comboBoxKarte"
     private ComboBox<Karta> comboBoxKarte; // Value injected by FXMLLoader
 
-    @FXML // fx:id="labelTime"
-    private Label labelTime; // Value injected by FXMLLoader
-
     private final Integer RED = 10;
 
     private final Integer KOLONA = 10;
@@ -109,6 +107,8 @@ public class PregledKarataController implements Initializable {
         comboRezervacije.getItems().removeAll(comboRezervacije.getItems());
         comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList()));
         comboRezervacije.getItems().remove("true");
+        
+
     }
 
     /*

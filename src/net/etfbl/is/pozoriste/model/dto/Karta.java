@@ -5,7 +5,6 @@
  */
 package net.etfbl.is.pozoriste.model.dto;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Calendar;
 
@@ -15,14 +14,13 @@ import java.util.Calendar;
  */
 public class Karta {
     
-    
     private Integer id;
     
     private Integer brojReda;
     
     private Integer brojSjedista;
     
-    private float iznos = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().get(Calendar.WEDNESDAY) ? 2.0f : 3.0f;  
+    private float iznos = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY ? 2.0f : 3.0f;  
     
     private Date termin;
     

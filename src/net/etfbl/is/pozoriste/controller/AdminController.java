@@ -1,5 +1,6 @@
 package net.etfbl.is.pozoriste.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
@@ -33,9 +35,22 @@ public class AdminController implements Initializable {
     @FXML
     private Button bPregledRepertoara;
 
+    @FXML // fx:id="buttonStatistika"
+    private Button buttonStatistika; // Value injected by FXMLLoader
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ConnectionPool.getInstance();//da otvori odmah konekciju ka bazi 
+        buttonStatistika.setOnAction(e -> izaberiFolderZaStatistiku());
+    }
+
+    private void izaberiFolderZaStatistiku() {
+        final DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        directoryChooser.setTitle("Izaberite lokaciju izvjestaja");
+        File folder = directoryChooser.showDialog((Stage) buttonStatistika.getScene().getWindow());
+        IzvjestajProdatihKarataController k = new IzvjestajProdatihKarataController(folder);
+        k.metoda();
     }
 
     public void PregledRadnikaAction(ActionEvent event) {
@@ -45,14 +60,14 @@ public class AdminController implements Initializable {
             Scene radnikScene = new Scene(radnikController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(radnikScene);
-            
-           /* Screen screen = Screen.getPrimary();
+
+            /* Screen screen = Screen.getPrimary();
             Rectangle2D bounds = screen.getVisualBounds();
             window.setX(bounds.getMinX());
             window.setY(bounds.getMinY());
             window.setWidth(bounds.getWidth());
             window.setHeight(bounds.getHeight());
-            */
+             */
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,7 +75,7 @@ public class AdminController implements Initializable {
     }
 
     public void PregledRepertoaraAction(ActionEvent event) {
-      /*  try {
+        /*  try {
             Parent repertoarController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
 
             Scene repertoarScene = new Scene(repertoarController);
@@ -71,7 +86,7 @@ public class AdminController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
-              */
+         */
         try {
             Parent repertoarController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledSvihRepertoara.fxml"));
 
@@ -97,6 +112,5 @@ public class AdminController implements Initializable {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
 }
