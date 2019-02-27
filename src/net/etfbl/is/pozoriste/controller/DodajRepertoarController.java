@@ -54,28 +54,73 @@ public class DodajRepertoarController implements Initializable {
     private Button bNazad;
 
     public static Repertoar repertoar = null;
+    public static Integer mjesecRepertoara;
+    public static Integer godinaRepertoara;
 
     private boolean dodajRepertoar() {
+
+        if (cmbGodina.getSelectionModel().isEmpty() || cmbMjesec.getSelectionModel().isEmpty()) {
+            upozorenjeTermin();
+            return false;
+        }
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
         try {
-            Integer mjesec = (cmbMjesec.getSelectionModel().getSelectedItem()+1);
+            Integer mjesec = (cmbMjesec.getSelectionModel().getSelectedItem() + 1);
             Integer godina = cmbGodina.getSelectionModel().getSelectedItem();
-            repertoar = new Repertoar(0,
-         new java.sql.Date(sdf.parse(cmbGodina.getSelectionModel().getSelectedItem().toString()
-         + "-" +Integer.valueOf(cmbMjesec.getSelectionModel().getSelectedItem()).toString()+"-1").getTime()));
+            mjesecRepertoara = mjesec;
+            godinaRepertoara = godina;
+
+            if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
+                repertoar = new Repertoar(0,
+                        new java.sql.Date(sdf.parse(cmbGodina.getSelectionModel().getSelectedItem().toString()
+                                        + "-" + Integer.valueOf(cmbMjesec.getSelectionModel().getSelectedItem()).toString() + "-1").getTime()));
+            } else {
+                repertoar = new Repertoar();
+                repertoar.setId(PregledSvihRepertoaraController.izabraniRepertoar.getId());
+                repertoar.setMjesecIGodina(new java.sql.Date(sdf.parse(cmbGodina.getSelectionModel().getSelectedItem().toString()
+                        + "-" + Integer.valueOf(cmbMjesec.getSelectionModel().getSelectedItem()).toString() + "-1").getTime()));
+                repertoar.setIgranja(PregledSvihRepertoaraController.izabraniRepertoar.getIgranja());
+                System.out.println("IZMJENJENI REPERTOAR: " + repertoar);
+            }
         } catch (ParseException ex) {
             Logger.getLogger(DodajRepertoarController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("REPERTOAR: " + repertoar);
+
         final Repertoar simo = repertoar;
-        if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(e -> e.getMjesecIGodina().getYear() == simo.getMjesecIGodina().getYear()
-        && e.getMjesecIGodina().getMonth() == simo.getMjesecIGodina().getMonth()).findAny().isPresent()) {
-            RepertoarDAO.dodajRepertoar(repertoar);
-            return true;
+
+        if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
+             if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
+                    .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
+                //if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
+                RepertoarDAO.dodajRepertoar(repertoar);
+                return true;
+                // } //else {
+                //  RepertoarDAO.izmjeniRepertoar(repertoar);
+                //  return true;
+                //  }
+            } //else 
+            else {
+                upozorenjeRepertoar();
+                return false;
+            }
         } else {
-            upozorenjeRepertoar();
-            return false;
+            System.out.println("SIMO: "+simo.getMjesecIGodina());
+            System.out.println("IZABRANI: "+PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina());
+            if(sdf.format(simo.getMjesecIGodina()).equals(sdf.format(PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina()))) {
+                RepertoarDAO.izmjeniRepertoar(repertoar);
+                return true;
+            }  
+            else if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
+                    .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
+                RepertoarDAO.izmjeniRepertoar(repertoar);
+                return true;
+            } else {
+                upozorenjeRepertoar();
+                return false;
+            }
+
         }
     }
 
@@ -123,9 +168,17 @@ public class DodajRepertoarController implements Initializable {
         for (Integer mjesec = (Calendar.getInstance().get(Calendar.MONTH) + 1); mjesec <= 12; mjesec++) {
             cmbMjesec.getItems().add(mjesec);
         }
-        
-        System.out.println("SPISAK SVIH REPERTOARA: ");
-        RepertoarDAO.repertoars().stream().forEach(System.out::println);
+        if (PregledSvihRepertoaraController.izmjenaRepertoara) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            String datum = sdf.format(PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina());
+            String godinaIzabranogRepertoara = datum.split("-")[0];
+            String mjesecIzabranogRepertoara = datum.split("-")[1];
+
+            cmbGodina.getSelectionModel().select(Integer.valueOf(godinaIzabranogRepertoara));
+            cmbMjesec.getSelectionModel().select(Integer.valueOf(mjesecIzabranogRepertoara));
+        }
+
     }
 
     private void upozorenjeRepertoar() {
@@ -133,6 +186,14 @@ public class DodajRepertoarController implements Initializable {
         alert.setTitle("Greska prilikom dodavanja repertoara !");
         alert.setHeaderText(null);
         alert.setContentText("Repertoar postoji u bazi");
+        alert.showAndWait();
+    }
+
+    private void upozorenjeTermin() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom dodavanja repertoara !");
+        alert.setHeaderText(null);
+        alert.setContentText("Izaberite termin");
         alert.showAndWait();
     }
 

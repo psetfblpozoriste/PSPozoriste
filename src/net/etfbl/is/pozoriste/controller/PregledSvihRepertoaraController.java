@@ -8,6 +8,7 @@ package net.etfbl.is.pozoriste.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -53,6 +55,37 @@ public class PregledSvihRepertoaraController implements Initializable {
 
     @FXML
     private TableView sviRepertoariTableView;
+    @FXML
+    private Button bIzmjeniRepertoar;
+
+    public static boolean izmjenaRepertoara = false;
+
+    public static Repertoar izabraniRepertoar = null;
+
+    @FXML
+    void IzmjeniRepertoarAction(ActionEvent event) {
+        izmjenaRepertoara = true;
+        ObservableList<Repertoar> izabranaVrsta, repertoariObservaleList;
+        repertoariObservaleList = sviRepertoariTableView.getItems();
+        izabranaVrsta = sviRepertoariTableView.getSelectionModel().getSelectedItems();
+        izabraniRepertoar = (Repertoar) izabranaVrsta.get(0);
+        if (izabraniRepertoar != null) {
+
+            try {
+                Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRepertoar.fxml"));
+
+                Scene dodajRadnikaScene = new Scene(adminController);
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(dodajRadnikaScene);
+                window.show();
+            } catch (IOException ex) {
+                Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            upozorenjeRepertoar();
+            return;
+        }
+    }
 
     private void ubaciKoloneUTabeluRadnik(ObservableList repertoari) {
         datumColumn = new TableColumn("Pregled svih repertoara");
@@ -63,9 +96,12 @@ public class PregledSvihRepertoaraController implements Initializable {
 
         sviRepertoariTableView.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2 && e.getButton().compareTo(MouseButton.PRIMARY) == 0) {
-                Repertoar zaPrikaz = (Repertoar) sviRepertoariTableView.getSelectionModel().getSelectedItem();
+                final Repertoar zaPrikaz = (Repertoar) sviRepertoariTableView.getSelectionModel().getSelectedItem();
                 try {
-                    PregledRepertoaraController.incijalizacija(zaPrikaz);
+                    Optional<Repertoar> dobaviSvjeze = RepertoarDAO.repertoars().stream().filter(r -> r.getId() == zaPrikaz.getId()).findAny();
+                    if (dobaviSvjeze.isPresent()) {
+                        PregledRepertoaraController.incijalizacija(dobaviSvjeze.get());
+                    }
                     Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
                     Scene pregledRepertoara = new Scene(adminController);
                     Stage window = (Stage) sviRepertoariTableView.getScene().getWindow();
@@ -80,6 +116,7 @@ public class PregledSvihRepertoaraController implements Initializable {
 
     @FXML
     void dodajRepertoaraAction(ActionEvent event) {
+        izmjenaRepertoara = false;
         try {
             Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRepertoar.fxml"));
 
@@ -110,9 +147,16 @@ public class PregledSvihRepertoaraController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         repertoariObservableList.removeAll(repertoariObservableList);
         repertoariObservableList.addAll(RepertoarDAO.repertoars());
-        repertoariObservableList.stream().forEach(System.out::println);
         ubaciKoloneUTabeluRadnik(repertoariObservableList);
         datumColumn.prefWidthProperty().bind(sviRepertoariTableView.widthProperty().divide(1));
+    }
+
+    private void upozorenjeRepertoar() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom izbora repertoara !");
+        alert.setHeaderText(null);
+        alert.setContentText("Izaberite repertoar");
+        alert.showAndWait();
     }
 
 }

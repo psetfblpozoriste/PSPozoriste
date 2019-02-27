@@ -9,5 +9,6 @@
       <Button fx:id="bNazad" layoutX="22.0" layoutY="350.0" mnemonicParsing="false" onAction="#nazadNaAdminFormu" text="Nazad" />
       <Button fx:id="bDodajRepertoar" layoutX="483.0" layoutY="350.0" mnemonicParsing="false" onAction="#dodajRepertoaraAction" text="Dodaj repertoar" />
       <TableView fx:id="sviRepertoariTableView" layoutX="26.0" layoutY="37.0" prefHeight="277.0" prefWidth="548.0" />
+      <Button fx:id="bIzmjeniRepertoar" layoutX="348.0" layoutY="350.0" mnemonicParsing="false" onAction="#IzmjeniRepertoarAction" text="Izmjeni repertoar" />
    </children>
 </AnchorPane>

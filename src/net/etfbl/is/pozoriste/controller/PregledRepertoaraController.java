@@ -88,15 +88,17 @@ public class PregledRepertoaraController implements Initializable {
             VBox vBox = new VBox();
             final LinkedList<Predstava> predstave = new LinkedList<>();
             final LinkedList<GostujucaPredstava> gostujuce = new LinkedList<>();
-            List<Integer> nadji = repertoarZaPrikaz.getIgranja().stream().mapToInt(e -> (e.getIdPredstave() != null ? e.getIdPredstave() : e.getIdGostujucePredstave())).boxed().collect(Collectors.toList());
+            List<Integer> nadji = repertoarZaPrikaz.getIgranja().stream().mapToInt(e -> (e.getIdPredstave() != 0 ? e.getIdPredstave() : e.getIdGostujucePredstave())).boxed().collect(Collectors.toList());
             PredstavaDAO.predstave().stream().forEach(e -> {
                 if (nadji.stream().filter(p -> p == e.getId()).findFirst().isPresent()) {
                     predstave.add(e);
+                    System.out.println(e);
                 }
             });
             GostujucaPredstavaDAO.gostujucePredstave().stream().forEach(e -> {
                 if (nadji.stream().filter(p -> p == e.getId()).findFirst().isPresent()) {
                     gostujuce.add(e);
+                    System.out.println(e);
                 }
             });
             repertoarZaPrikaz.getIgranja().sort(Comparator.comparing(e -> e.getTermin()));

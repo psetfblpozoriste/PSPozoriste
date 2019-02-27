@@ -61,36 +61,51 @@ public class DodajIgranjeController implements Initializable {
     @FXML
     private Button bZavrsi;
 
-    @FXML
-    private Button bNazad;
 
     @FXML
     void dodajIgranjeAction(ActionEvent event) {
-       if(!dodajIgranje()){
-           return;
-       }
+        if (!dodajIgranje()) {
+            return;
+        }
     }
+
+
+
     private boolean dodajIgranje() {
+
+        if (cmbPredstave.getSelectionModel().isEmpty()) {
+            upozorenjeIzaberitePredstavu();
+            return false;
+        }
+
+        if (dpTerminPredstave.getValue() == null) {
+            upozorenjeTermin();
+            return false;
+        }
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar kalendarRepertoar = Calendar.getInstance();
+        if (dpTerminPredstave.getValue().getYear() != DodajRepertoarController.godinaRepertoara
+                || ((dpTerminPredstave.getValue().getMonthValue()) != (DodajRepertoarController.mjesecRepertoara - 1))) {
+            upozorenjeTerminPredstave();
+            return false;
+        }
+
         sdf.format(new Date(calendar.getInstance().getTimeInMillis()));
         List<Scena> scena = ScenaDAO.scene();
 
         Igranje novoIgranje = new Igranje(new Date(calendar.getTimeInMillis()), scena.get(0).getIdScene(), (cmbPredstave.getSelectionModel().getSelectedItem() instanceof Predstava) ? ((Predstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, (cmbPredstave.getSelectionModel().getSelectedItem() instanceof GostujucaPredstava) ? ((GostujucaPredstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, DodajRepertoarController.repertoar.getId());
         LinkedList<Igranje> svaIgranja = new LinkedList<>();
         svaIgranja = IgranjeDAO.getIgranja(DodajRepertoarController.repertoar.getId());
-        System.out.println("SVA IGRANJA: ");
-        svaIgranja.forEach(System.out::println);
-        System.out.println("------------------------------------");
 
         if (!svaIgranja.stream().filter(x -> sdf.format(x.getTermin()).equals(sdf.format(novoIgranje.getTermin()))).findAny().isPresent()) {
             IgranjeDAO.dodajIgranje(novoIgranje);
             return true;
         } else {
-            upozorenjeRepertoar();
+            upozorenjePredstavaSeVecIgraNaTajDan();
             return false;
         }
     }
@@ -128,11 +143,35 @@ public class DodajIgranjeController implements Initializable {
         cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
     }
 
-    private void upozorenjeRepertoar() {
+    private void upozorenjePredstavaSeVecIgraNaTajDan() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Greska prilikom dodavanja repertoara !");
+        alert.setTitle("Greska prilikom dodavanja predstave !");
         alert.setHeaderText(null);
-        alert.setContentText("Repertoar postoji u bazi");
+        alert.setContentText("Termin popunjen izaberite drugi!");
+        alert.showAndWait();
+    }
+
+    private void upozorenjeTerminPredstave() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom dodavanja predstave !");
+        alert.setHeaderText(null);
+        alert.setContentText("Pogresan termin , prilagodite igranje predstave odgovarajucem repertoaru!");
+        alert.showAndWait();
+    }
+
+    private void upozorenjeTermin() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom izbora termina !");
+        alert.setHeaderText(null);
+        alert.setContentText("Izaberite termin");
+        alert.showAndWait();
+    }
+
+    private void upozorenjeIzaberitePredstavu() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom izbora predstave !");
+        alert.setHeaderText(null);
+        alert.setContentText("Izaberite predstavu!");
         alert.showAndWait();
     }
 

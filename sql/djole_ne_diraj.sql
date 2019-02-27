@@ -53,11 +53,18 @@ order by mjesecIGodina desc;
 #order by year(mjesecIGodina) desc ,month(mjesecIGodina) asc , day(mjesecIGodina) desc;
 
 select * from repertoari_info;
-select * from repertoar;
+
+drop procedure azuriranjeRepertoara;
+delimiter $$
+create procedure azuriranjeRepertoara (in id int, in mjesecIGodina date)
+begin
+	update repertoar set mjesecIGodina = date_add(CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01'),interval 1 month)
+    where repertoar.id = id;
+end$$
+delimiter ;
 
 
 
-select * from repertoari_info;
 #select * from predstava;
 #select * from gostujuca_predstava;
 

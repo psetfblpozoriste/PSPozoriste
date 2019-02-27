@@ -11,6 +11,5 @@
       <DatePicker fx:id="dpTerminPredstave" layoutX="181.0" layoutY="24.0" promptText="izaberite termin" />
       <Button fx:id="bDodaj" layoutX="388.0" layoutY="24.0" mnemonicParsing="false" onAction="#dodajIgranjeAction" text="Dodaj" />
       <Button fx:id="bZavrsi" layoutX="481.0" layoutY="24.0" mnemonicParsing="false" onAction="#zavrsiDodavanjeRepertoara" text="Zavrsi" />
-      <Button fx:id="bNazad" layoutX="14.0" layoutY="167.0" mnemonicParsing="false" onAction="#nazadNaDodajRepertoar" text="Nazad" />
    </children>
 </AnchorPane>
