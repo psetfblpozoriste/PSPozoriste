@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -91,7 +92,16 @@ public class PregledPredstavaController implements Initializable {
 
     @FXML
     void nazadAction(ActionEvent event) {
+         try {
+            Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/Admin.fxml"));
 
+            Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(dodajRadnikaScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -121,14 +131,31 @@ public class PregledPredstavaController implements Initializable {
             DodajPredstavuController.setDomacaPredstava(false);
             DodajPredstavuController.setPredstava(izabranaPredstava);
             otvoriDodajPredstavu(event);
-        } else {
-
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Nije selektovana predstava!");
+            alert.showAndWait();
         }
     }
 
     @FXML
     void pregledajAction(ActionEvent event) {
-
+        ObservableList<Predstava> izabranaVrsta, predstaveObservableList;
+        predstaveObservableList = tablePredstave.getItems();
+        izabranaVrsta = tablePredstave.getSelectionModel().getSelectedItems();
+        Predstava izabranaPredstava = (Predstava) izabranaVrsta.get(0);
+        if (izabranaPredstava != null) {
+            DodavanjeAngazmanaController.setPredstava(izabranaPredstava);
+            otvoriAngazmane(event);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Nije selektovana predstava!");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -142,8 +169,12 @@ public class PregledPredstavaController implements Initializable {
             DodajPredstavuController.setDomacaPredstava(true);
             DodajPredstavuController.setPredstava(izabranaPredstava);
             otvoriDodajPredstavu(event);
-        } else {
-
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(null);
+            alert.setHeaderText(null);
+            alert.setContentText("Nije selektovana predstava!");
+            alert.showAndWait();
         }
     }
 
@@ -211,6 +242,19 @@ public class PregledPredstavaController implements Initializable {
     private void otvoriDodajPredstavu(ActionEvent event) {
         try {
             Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajPredstavu.fxml"));
+
+            Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(dodajRadnikaScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void otvoriAngazmane(ActionEvent event){
+        try {
+            Parent dodajRadnikaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodavanjeAngazmana.fxml"));
 
             Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

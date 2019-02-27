@@ -25,11 +25,16 @@ end$$
 delimiter ;
 
 
-delimiter $$
-create procedure vratiUmjetnike()
-begin
-	select r.idRadnik,r.ime,r.prezime,r.jmb,r.statusRadnika,r.kontakt,u.biografija
-    from radnik as r,umjetnik as u
-    where r.id in(select id from u);
-end$$
-delimiter ;
+create view vratiUmjetnike as
+select radnik.idRadnik,radnik.ime,radnik.prezime,radnik.jmb,radnik.statusRadnika,radnik.kontakt,umjetnik.biografija
+from radnik join umjetnik on radnik.idRadnik=umjetnik.idRadnik
+where radnik.idRadnik in(select idRadnik from umjetnik);
+
+
+create view pregledVrstaAngazmana as
+select id,naziv
+from vrsta_angazmana;
+
+insert into vrsta_angazmana values(0,Glumac);
+insert into vrsta_angazmana values(0,Reziser);
+insert into vrsta_angazmana values(0,Sufler);

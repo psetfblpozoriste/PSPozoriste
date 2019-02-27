@@ -103,10 +103,11 @@ public class DodajPredstavuController implements Initializable {
             domaca.setOpis(textAreaOpis.getText());
             domaca.setTip(textFieldTip.getText());
             PredstavaDAO.azurirajPredstavu(domaca);
+            DodavanjeAngazmanaController.setPredstava(domaca);
+            otvoriAngazmane(event);
         } else {
             upozorenjePoljaSuPrazna();
         }
-        otvoriAngazmane(event);
     }
 
     @FXML
@@ -116,18 +117,19 @@ public class DodajPredstavuController implements Initializable {
                 if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty()) {
                     Predstava predstava = new Predstava(textFieldNaziv.getText(), textAreaOpis.getText(), textFieldTip.getText());
                     PredstavaDAO.dodajPredstavu(predstava);
+                    DodavanjeAngazmanaController.setPredstava(predstava);
+                    otvoriAngazmane(event);
                 } else {
                     upozorenjePoljaSuPrazna();
                 }
-                otvoriAngazmane(event);
             } else {
                 if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty() && !textAreaGlumci.getText().isEmpty() && !textFieldPisac.getText().isEmpty() && !textFieldReziser.getText().isEmpty()) {
                     GostujucaPredstava gostujucaPredstava = new GostujucaPredstava(textFieldNaziv.getText(), textAreaOpis.getText(), textFieldTip.getText(), textFieldPisac.getText(), textFieldReziser.getText(), textAreaGlumci.getText());
                     GostujucaPredstavaDAO.dodajGostujucuPredstavu(gostujucaPredstava);
+                    nazadNaPregledPredstava(event);
                 } else {
                     upozorenjePoljaSuPrazna();
                 }
-                nazadNaPregledPredstava(event);
             }
         } else {
 
@@ -140,10 +142,10 @@ public class DodajPredstavuController implements Initializable {
                 gostujuca.setPisac(textFieldPisac.getText());
                 gostujuca.setReziser(textFieldReziser.getText());
                 GostujucaPredstavaDAO.azurirajGostujucuPredstavu(gostujuca);
+                nazadNaPregledPredstava(event);
             } else {
                 upozorenjePoljaSuPrazna();
             }
-            nazadNaPregledPredstava(event);
         }
     }
 

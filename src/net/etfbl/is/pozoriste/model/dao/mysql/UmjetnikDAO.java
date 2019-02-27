@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -137,29 +138,34 @@ public class UmjetnikDAO {
     public static List<Umjetnik> umjetnici() {
         List<Umjetnik> umjetnici = new ArrayList<>();
         Connection connection = null;
-        CallableStatement callableStatement = null;
+        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+
+        String query = "SELECT * " + "FROM  vratiUmjetnike";
+
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call vratiUmjetnike()}");
-            resultSet = callableStatement.executeQuery();
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Umjetnik umjetnik = new Umjetnik(resultSet.getString("ime"), resultSet.getString("prezime"), resultSet.getString("jmb"), resultSet.getBoolean("statusRadnik"), resultSet.getString("kontakt"),resultSet.getString("biografija"));
+                Umjetnik umjetnik = new Umjetnik(resultSet.getString("ime"), resultSet.getString("prezime"), resultSet.getString("jmb"), resultSet.getBoolean("statusRadnika"), resultSet.getString("kontakt"), resultSet.getString("biografija"));
                 umjetnik.setIdRadnika(resultSet.getInt("idRadnik"));
                 umjetnici.add(umjetnik);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException sql) {
+            Logger.getLogger(PredstavaDAO.class.getName()).log(Level.SEVERE, null, sql);
+        } catch (Exception e) {
+            Logger.getLogger(PredstavaDAO.class.getName()).log(Level.SEVERE, null, e);
         } finally {
             if (connection != null) {
                 ConnectionPool.getInstance().checkIn(connection);
             }
-            if (callableStatement != null) {
+            if (preparedStatement != null) {
                 try {
-                    callableStatement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(AngazmanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    preparedStatement.close();
+                } catch (SQLException sql) {
+                    Logger.getLogger(PredstavaDAO.class.getName()).log(Level.SEVERE, null, sql);
                 }
             }
         }

@@ -8,6 +8,8 @@ package net.etfbl.is.pozoriste.controller;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import net.etfbl.is.pozoriste.model.dao.mysql.UmjetnikDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.VrstaAngazmanaDAO;
 import net.etfbl.is.pozoriste.model.dto.Angazman;
 import net.etfbl.is.pozoriste.model.dto.Predstava;
 import net.etfbl.is.pozoriste.model.dto.Umjetnik;
@@ -33,10 +37,10 @@ import net.etfbl.is.pozoriste.model.dto.VrstaAngazmana;
 public class DodavanjeAngazmanaController implements Initializable {
 
     @FXML
-    private ComboBox<VrstaAngazmana> comboBoxVrstaAngazmana;
+    private ComboBox<String> comboBoxVrstaAngazmana;
 
     @FXML
-    private ComboBox<Umjetnik> comboBoxUmjetnik;
+    private ComboBox<String> comboBoxUmjetnik;
 
     @FXML
     private DatePicker datePickerDatumOd;
@@ -84,7 +88,8 @@ public class DodavanjeAngazmanaController implements Initializable {
 
     
     public static ObservableList<Angazman> angazmani = FXCollections.observableArrayList();
-    
+    public static ObservableList<Umjetnik> umjetnici = FXCollections.observableArrayList();
+    public static ObservableList<VrstaAngazmana> vrste = FXCollections.observableArrayList();
     private boolean izmjena=false;
     private static Predstava predstava;
     public static void setPredstava(Predstava p){
@@ -147,9 +152,25 @@ public class DodavanjeAngazmanaController implements Initializable {
         labelDatumDo.setVisible(false);
         datePickerDatumDo.setVisible(false);
         
-        ObservableList<Umjetnik> umjetnici = FXCollections.observableArrayList();
+        umjetnici.addAll(UmjetnikDAO.umjetnici());
+        ObservableList<String> pomocno = FXCollections.observableArrayList();
+        for(Umjetnik u:umjetnici){
+            String pom=u.getIme()+" "+u.getPrezime();
+            pomocno.add(pom);
+        }
+        comboBoxUmjetnik.getItems().removeAll(comboBoxUmjetnik.getItems());
+        comboBoxUmjetnik.setItems(pomocno);
+        
+        vrste.addAll(VrstaAngazmanaDAO.vrsteAngazmana());
+        ObservableList<String> pomocni = FXCollections.observableArrayList();
+        for(VrstaAngazmana v:vrste){
+            pomocno.add(v.getNaziv());
+        }
+        comboBoxVrstaAngazmana.getItems().removeAll(comboBoxVrstaAngazmana.getItems());
+        comboBoxVrstaAngazmana.setItems(pomocni);
         
         
+        ubaciKoloneUTabeluAngazmana(angazmani);
         
     }    
     
