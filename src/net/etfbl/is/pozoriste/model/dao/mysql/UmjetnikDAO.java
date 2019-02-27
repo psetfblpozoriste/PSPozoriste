@@ -14,12 +14,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import net.etfbl.is.pozoriste.controller.PregledRadnikaController;
+import net.etfbl.is.pozoriste.model.dto.Angazman;
 import net.etfbl.is.pozoriste.model.dto.Biletar;
 import net.etfbl.is.pozoriste.model.dto.Radnik;
 import net.etfbl.is.pozoriste.model.dto.Umjetnik;
@@ -44,7 +47,7 @@ public class UmjetnikDAO {
             callableStatement.registerOutParameter(6, Types.INTEGER);
 
             callableStatement.executeQuery();
-            
+
             umjetnik.setIdRadnika(callableStatement.getInt(6));
         } catch (SQLException ex) {
             Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,7 +66,7 @@ public class UmjetnikDAO {
     }
 
     public static void ubaciUTabeluRadnik() {
-        
+
         System.out.println("BLA BLA BLA BLA");
         Connection connection = null;
         Statement statement = null;
@@ -97,8 +100,8 @@ public class UmjetnikDAO {
             }
         }
     }
-    
-       public static void izmjeniUmjetnika(Umjetnik umjetnik) {
+
+    public static void izmjeniUmjetnika(Umjetnik umjetnik) {
 
         System.out.println("IZMJENA UMJETNIKA");
         Connection connection = null;
@@ -111,9 +114,8 @@ public class UmjetnikDAO {
             callableStatement.setString(2, umjetnik.getPrezime());
             callableStatement.setString(3, umjetnik.getJmb());
             callableStatement.setInt(4, umjetnik.getIdRadnika());
-            callableStatement.setBoolean(5,umjetnik.isStatusRadnika());
+            callableStatement.setBoolean(5, umjetnik.isStatusRadnika());
             callableStatement.setString(6, umjetnik.getBiografija());
-
 
             callableStatement.executeQuery();
         } catch (SQLException ex) {
@@ -131,5 +133,36 @@ public class UmjetnikDAO {
             }
         }
     }
-    
+
+    public static List<Umjetnik> umjetnici() {
+        List<Umjetnik> umjetnici = new ArrayList<>();
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call vratiUmjetnike()}");
+            resultSet = callableStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Umjetnik umjetnik = new Umjetnik(resultSet.getString("ime"), resultSet.getString("prezime"), resultSet.getString("jmb"), resultSet.getBoolean("statusRadnik"), resultSet.getString("kontakt"),resultSet.getString("biografija"));
+                umjetnik.setIdRadnika(resultSet.getInt("idRadnik"));
+                umjetnici.add(umjetnik);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AngazmanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return umjetnici;
+    }
 }

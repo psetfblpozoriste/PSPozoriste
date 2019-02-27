@@ -189,7 +189,6 @@ public class PregledPredstavaController implements Initializable {
         reziserColumn = new TableColumn("Reziser");
         reziserColumn.setCellValueFactory(new PropertyValueFactory<>("reziser"));
 
-        //tableGostujucePredstave.getItems().removeAll(tableGostujucePredstave.getItems());
         tableGostujucePredstave.setItems(gostujucePredstaveObservableList);
         tableGostujucePredstave.getColumns().addAll(nazivGpColumn, tipGpColumn, pisacColumn, reziserColumn);
 
@@ -204,7 +203,6 @@ public class PregledPredstavaController implements Initializable {
         tipColumn.setCellValueFactory(new PropertyValueFactory<>("tip"));
         tipColumn.setPrefWidth(210);
 
-        //tablePredstave.getItems().removeAll(tablePredstave.getItems());
         tablePredstave.setItems(predstaveObservableList);
         tablePredstave.getColumns().addAll(nazivColumn, tipColumn);
 
