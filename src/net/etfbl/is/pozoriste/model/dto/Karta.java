@@ -16,17 +16,17 @@ import java.util.Calendar;
 public class Karta {
     
     
-    public Integer id;
+    private Integer id;
     
-    public Integer brojReda;
+    private Integer brojReda;
     
-    public Integer brojSjedista;
+    private Integer brojSjedista;
     
-    public float iznos = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().get(Calendar.WEDNESDAY) ? 2.0f : 3.0f;  
+    private float iznos = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.getInstance().get(Calendar.WEDNESDAY) ? 2.0f : 3.0f;  
     
-    public Date termin;
+    private Date termin;
     
-    public Integer idScene;
+    private Integer idScene;
     
     
     public Karta(Integer id,Integer brojReda,Integer brojSjedista,Date termin,Integer idScene){
@@ -84,6 +84,13 @@ public class Karta {
     public void setIdScene(Integer idScene) {
         this.idScene = idScene;
     }
+
+    @Override
+    public String toString() {
+        return "Red " + (this.brojReda+1) + " , Sjediste " + (this.brojSjedista+1);
+    }
+    
+    
     
     
     

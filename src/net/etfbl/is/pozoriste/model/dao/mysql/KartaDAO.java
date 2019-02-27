@@ -93,5 +93,36 @@ public class KartaDAO {
         }
         return true;
     }
+    
+    
+    public static boolean obrisiKartu(final int idKarte){
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call storniranjeKarte(?)}");
+            callableStatement.setInt(1, idKarte);
+            
+            callableStatement.executeQuery();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(KartaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(KartaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(KartaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return true;
+    }
+    
 
 }

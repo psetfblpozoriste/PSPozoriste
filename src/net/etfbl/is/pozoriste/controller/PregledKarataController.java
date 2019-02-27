@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -63,6 +65,15 @@ public class PregledKarataController implements Initializable {
     @FXML // fx:id="buttonObrisiRezervaciju"
     private Button buttonObrisiRezervaciju; // Value injected by FXMLLoader
 
+    @FXML // fx:id="buttonStorniraj"
+    private Button buttonStorniraj; // Value injected by FXMLLoader
+
+    @FXML // fx:id="comboBoxKarte"
+    private ComboBox<Karta> comboBoxKarte; // Value injected by FXMLLoader
+
+    @FXML // fx:id="labelTime"
+    private Label labelTime; // Value injected by FXMLLoader
+
     private final Integer RED = 10;
 
     private final Integer KOLONA = 10;
@@ -84,6 +95,10 @@ public class PregledKarataController implements Initializable {
         buttonNazad.setOnAction(e -> buttonNazadSetAction());
         buttonObrisiRezervaciju.setOnAction(e -> obrisiRezervacijuButton());
         buttonRezervisi.setOnAction(e -> buttonRezervisi());
+        buttonStorniraj.setOnAction(e -> buttonStornirajProdaju());
+
+        comboBoxKarte.getItems().removeAll(comboBoxKarte.getItems());
+        comboBoxKarte.getItems().addAll(KartaDAO.karte().stream().filter(e -> e.getIdScene() == scenaZaPrikaz.getIdScene() && e.getTermin().equals(terminPredstave)).collect(Collectors.toList()));
         if (SjedisteDAO.sjedista(scenaZaPrikaz.getIdScene()).isEmpty()) {
             for (int i = 0; i < RED; i++) {
                 for (int j = 0; j < KOLONA; j++) {
@@ -153,7 +168,8 @@ public class PregledKarataController implements Initializable {
             for (int j = 0; j < KOLONA; j++) {
                 buttonMatrix[i][j] = new Button();
                 buttonMatrix[i][j].setDisable(false);
-                final int brojSjedista = i * KOLONA + j;
+                final Integer brojSjedista = i * KOLONA + j;
+                buttonMatrix[i][j].setId(brojSjedista.toString());
 
                 if (karteProdate.stream().filter(k -> k.getBrojSjedista() == brojSjedista && k.getTermin().equals(terminPredstave)).findAny().isPresent()
                         && !listRezervisanih.stream().filter(e -> e.getBrojSjedista().equals(brojSjedista)).findAny().isPresent()) {
@@ -182,10 +198,8 @@ public class PregledKarataController implements Initializable {
                             .findAny().isPresent() && !rezervisanaSjedista.contains(((Button) e.getSource()))) {
                         rezervisanaSjedista.add((Button) e.getSource());
                         ((Button) e.getSource()).setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/orange.png"))));
-                        System.out.println("stavljam ga na narandzasto");
                         return;
                     } else if (rezervisanaSjedista.contains(((Button) e.getSource()))) {
-                        System.out.println("stavljam na zeleno");
                         ((Button) e.getSource()).setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/Green.png"))));
                         rezervisanaSjedista.remove(((Button) e.getSource()));
                         return;
@@ -194,13 +208,14 @@ public class PregledKarataController implements Initializable {
                 if (gridPane.getChildren().size() > brojSjedista) {
                     gridPane.getChildren().remove(gridPane.getChildren().get(brojSjedista));
                 }
-                gridPane.add(buttonMatrix[i][j], i, j);
-                // gridPane.requestLayout();
-
+                gridPane.add(buttonMatrix[i][j], j, i);
             }
         }
         comboRezervacije.getItems().removeAll(comboRezervacije.getItems());
         comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList()));
+
+        comboBoxKarte.getItems().removeAll(comboBoxKarte.getItems());
+        comboBoxKarte.getItems().addAll(KartaDAO.karte().stream().filter(e -> e.getIdScene() == scenaZaPrikaz.getIdScene() && e.getTermin().equals(terminPredstave)).collect(Collectors.toList()));
     }
 
     private void buttonRezervisi() {
@@ -229,16 +244,16 @@ public class PregledKarataController implements Initializable {
                 comboRezervacije.getItems().removeAll(comboRezervacije.getItems());
                 comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList()));
                 ((Stage) buttonRezervisi.getScene().getWindow()).getScene().getRoot().getChildrenUnmodifiable().forEach(w -> w.setDisable(false));
+                rezervisanaSjedista.removeAll(rezervisanaSjedista);
                 postavi();
-                System.out.println("postavio");
             });
 
             stage.setOnHiding(e -> {
                 comboRezervacije.getItems().removeAll(comboRezervacije.getItems());
                 comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList()));
                 ((Stage) buttonRezervisi.getScene().getWindow()).getScene().getRoot().getChildrenUnmodifiable().forEach(w -> w.setDisable(false));
+                rezervisanaSjedista.removeAll(rezervisanaSjedista);
                 postavi();
-                System.out.println("postavio");
             });
             stage.show();
 
@@ -275,21 +290,79 @@ public class PregledKarataController implements Initializable {
     }
 
     private void prodaj() {
-        if (!comboRezervacije.getSelectionModel().isEmpty()) {
-            final String zaProdaju = comboRezervacije.getSelectionModel().getSelectedItem();
-            final Rezervacija rezervacija = RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().filter(e -> e.getIme().equals(zaProdaju)).findFirst().get();
-            List<RezervisanoSjediste> sjedista = RezervisanoSjedisteDAO.sjedista(terminPredstave, scenaZaPrikaz.getIdScene()).stream().filter(e -> e.getIdRezervacije() == rezervacija.getId()).collect(Collectors.toList());
+        if (!comboRezervacije.getSelectionModel().isEmpty() && rezervisanaSjedista.isEmpty()) {
+            prodajRezervaciju();
+            return;
+        }
 
-            sjedista.forEach(e -> {
-                Karta k = new Karta(0, (int) e.getBrojSjedista() / 10, e.getBrojSjedista(), e.getTermin(), e.getIdScene());
+        if (!comboRezervacije.getSelectionModel().isEmpty() && !rezervisanaSjedista.isEmpty()) {
+            final String rez = comboRezervacije.getSelectionModel().getSelectedItem();
+            ButtonType obicnaProdaja = new ButtonType("Prodaja novih" + System.lineSeparator() + "karata");
+            ButtonType prodajaRezervacije = new ButtonType("Prodaja selektovane" + System.lineSeparator() + "rezervacije");
+            ButtonType odustani = new ButtonType("Odustani" + System.lineSeparator());
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Prodati", odustani, prodajaRezervacije, obicnaProdaja);
+            alert.setTitle("Upozorenje");
+            alert.setHeaderText("Selektovana je i rezervacija " + rez + " ,pa molimo izaberite tip prodaje");
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == odustani) {
+                rezervisanaSjedista.removeAll(rezervisanaSjedista);
+                postavi();
+            } else if (result.get() == prodajaRezervacije) {
+                prodajRezervaciju();
+            } else if (result.get() == obicnaProdaja) {
+                rezervisanaSjedista.forEach(e -> {
+                    Karta k = new Karta(0, (Integer.valueOf(e.getId())) / 10, Integer.valueOf(e.getId()), terminPredstave, scenaZaPrikaz.getIdScene());
+                    KartaDAO.dodajKartu(k);
+                });
+                rezervisanaSjedista.removeAll(rezervisanaSjedista);
+                postavi();
+            }
+
+        } else if (comboRezervacije.getSelectionModel().isEmpty() && !rezervisanaSjedista.isEmpty()) {
+            rezervisanaSjedista.forEach(e -> {
+                Karta k = new Karta(0, (Integer.valueOf(e.getId())) / 10, Integer.valueOf(e.getId()), terminPredstave, scenaZaPrikaz.getIdScene());
                 KartaDAO.dodajKartu(k);
             });
-            sjedista.forEach(e -> {
-                RezervisanoSjedisteDAO.obrisiRezervisanoSjediste(e);
-            });
-            RezervacijaDAO.obrisiRezervaciju(rezervacija);
+            rezervisanaSjedista.removeAll(rezervisanaSjedista);
             postavi();
         }
+    }
+
+    private void buttonStornirajProdaju() {
+        if (comboBoxKarte.getSelectionModel().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Prvo izaberite kartu za storniranje", ButtonType.OK);
+            alert.setTitle("Upozorenje");
+            alert.setHeaderText("Upozorenje");
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
+            alert.showAndWait();
+            return;
+        }
+        if (!comboBoxKarte.getSelectionModel().isEmpty()) {
+            KartaDAO.obrisiKartu(comboBoxKarte.getSelectionModel().getSelectedItem().getId());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Karta uspjesno stornirana", ButtonType.OK);
+            alert.setTitle("Informacija");
+            alert.setHeaderText("Informacija");
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/drama.png")));
+            alert.showAndWait();
+            postavi();
+        }
+    }
+
+    private void prodajRezervaciju() {
+        final String zaProdaju = comboRezervacije.getSelectionModel().getSelectedItem();
+        final Rezervacija rezervacija = RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().filter(e -> e.getIme().equals(zaProdaju)).findFirst().get();
+        List<RezervisanoSjediste> sjedista = RezervisanoSjedisteDAO.sjedista(terminPredstave, scenaZaPrikaz.getIdScene()).stream().filter(e -> e.getIdRezervacije() == rezervacija.getId()).collect(Collectors.toList());
+
+        sjedista.forEach(e -> {
+            Karta k = new Karta(0, (int) e.getBrojSjedista() / 10, e.getBrojSjedista(), e.getTermin(), e.getIdScene());
+            KartaDAO.dodajKartu(k);
+        });
+        sjedista.forEach(e -> {
+            RezervisanoSjedisteDAO.obrisiRezervisanoSjediste(e);
+        });
+        RezervacijaDAO.obrisiRezervaciju(rezervacija);
+        postavi();
     }
 
 }
