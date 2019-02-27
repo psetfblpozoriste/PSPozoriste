@@ -5,16 +5,23 @@
  */
 package net.etfbl.is.pozoriste.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -22,6 +29,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import net.etfbl.is.pozoriste.model.dao.mysql.AngazmanDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.UmjetnikDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.VrstaAngazmanaDAO;
 import net.etfbl.is.pozoriste.model.dto.Angazman;
@@ -140,12 +149,21 @@ public class DodavanjeAngazmanaController implements Initializable {
 
     @FXML
     void dodajVrstuAngazmanaAction(ActionEvent event) {
-
+        
     }
     
     @FXML
     void okAction(ActionEvent event) {
+        try {
+            Parent predstavaController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledPredstava.fxml"));
 
+            Scene predstavaScene = new Scene(predstavaController);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(predstavaScene);
+            window.show();
+        } catch (IOException ex) {
+            Logger.getLogger(DodavanjeAngazmanaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -164,12 +182,12 @@ public class DodavanjeAngazmanaController implements Initializable {
         vrste.addAll(VrstaAngazmanaDAO.vrsteAngazmana());
         ObservableList<String> pomocni = FXCollections.observableArrayList();
         for(VrstaAngazmana v:vrste){
-            pomocno.add(v.getNaziv());
+            pomocni.add(v.getNaziv());
         }
         comboBoxVrstaAngazmana.getItems().removeAll(comboBoxVrstaAngazmana.getItems());
         comboBoxVrstaAngazmana.setItems(pomocni);
         
-        
+        angazmani.addAll(AngazmanDAO.angazmani(predstava));
         ubaciKoloneUTabeluAngazmana(angazmani);
         
     }    

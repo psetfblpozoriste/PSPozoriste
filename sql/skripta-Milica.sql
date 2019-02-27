@@ -35,6 +35,31 @@ create view pregledVrstaAngazmana as
 select id,naziv
 from vrsta_angazmana;
 
-insert into vrsta_angazmana values(0,Glumac);
-insert into vrsta_angazmana values(0,Reziser);
-insert into vrsta_angazmana values(0,Sufler);
+
+drop procedure if exists pregledAngazmana;
+delimiter $$
+CREATE PROCEDURE pregledAngazmana (in id int)
+BEGIN
+	select radnik.ime,radnik.prezime,vrsta_angazmana.naziv,angazman.datumOd,angazman.datumDo
+    from ((angazman join radnik on angazman.idUmjetnika=radnik.idRadnik)join vrsta_angazmana 
+    on angazman.idVrsteAngazmana=vrsta_angazmana.id)
+    where angazman.idPredstave=id;
+END$$
+delimiter ;
+
+drop procedure if exists dodavanjeAngazmana;
+delimiter $$
+create procedure dodavanjeAngazmana (in idPredstave varchar(20),in idUmjetnika int,
+in idVrstaAngazmana int,in datumOd date)
+begin
+
+    insert into angazman values (datumOd,null,idUmjetnika,idPredstave,idVrstaAngazmana); 
+end$$
+delimiter ;
+
+
+insert into vrsta_angazmana values(0,"Glumac");
+insert into vrsta_angazmana values(0,"Reziser");
+insert into vrsta_angazmana values(0,"Sufler");
+insert into angazman values(curdate(),null,5,1,1);
+call dodavanjeAngazmana(1,6,1,curdate());
