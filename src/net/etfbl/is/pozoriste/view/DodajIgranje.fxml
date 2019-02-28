@@ -10,18 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="679.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.DodajIgranjeController">
+<AnchorPane id="AnchorPane" prefHeight="151.0" prefWidth="887.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.DodajIgranjeController">
    <children>
-      <VBox layoutX="14.0" layoutY="7.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+      <VBox layoutX="14.0" layoutY="7.0" prefHeight="200.0" prefWidth="120.0" spacing="40.0" AnchorPane.leftAnchor="30.0">
          <children>
-            <Label text="Dodaj igranje">
+            <Label style="-fx-font-family: &quot;Tempus Sans ITC&quot;;" text="Dodaj igranje">
                <font>
-                  <Font name="System Bold" size="15.0" />
+                  <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="lUkloniIgranje" text="Ukloni igranje">
+            <Label fx:id="lUkloniIgranje" style="-fx-font-family: &quot;Tempus Sans ITC&quot;;" text="Ukloni igranje">
                <font>
-                  <Font name="System Bold" size="15.0" />
+                  <Font name="System Bold" size="20.0" />
                </font>
             </Label>
          </children>
@@ -29,29 +29,35 @@
             <Insets top="10.0" />
          </padding>
       </VBox>
-      <VBox layoutX="125.0" layoutY="7.0" prefHeight="200.0" prefWidth="204.0" spacing="10.0">
+      <VBox layoutX="165.0" layoutY="7.0" prefHeight="200.0" prefWidth="158.0" spacing="30.0">
          <children>
-            <ComboBox fx:id="cmbPredstave" prefWidth="150.0" />
-            <ComboBox fx:id="cmbIgranjaZaRepertoar" prefWidth="150.0" />
+            <ComboBox fx:id="cmbPredstave" prefHeight="40.0" prefWidth="170.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;;" />
+            <ComboBox fx:id="cmbIgranjaZaRepertoar" prefHeight="40.0" prefWidth="170.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;;" />
          </children>
          <padding>
             <Insets top="10.0" />
          </padding>
       </VBox>
-      <HBox layoutX="302.0" layoutY="7.0" prefHeight="40.0" prefWidth="302.0" spacing="10.0">
+      <HBox layoutX="357.0" layoutY="7.0" prefHeight="56.0" prefWidth="487.0" spacing="30.0" AnchorPane.leftAnchor="357.0" AnchorPane.rightAnchor="30.0">
          <padding>
             <Insets top="10.0" />
          </padding>
          <children>
-            <DatePicker fx:id="dpTerminPredstave" promptText="izaberite termin" />
-            <Button fx:id="bDodaj" mnemonicParsing="false" onAction="#dodajIgranjeAction" text="Dodaj" />
-            <Button fx:id="bZavrsi" mnemonicParsing="false" onAction="#zavrsiDodavanjeRepertoara" text="Zavrsi" />
+            <DatePicker fx:id="dpTerminPredstave" prefHeight="40.0" prefWidth="170.0" promptText="izaberite termin" style="-fx-font-family: &quot;Tempus Sans ITC&quot;;" />
+            <Button fx:id="bDodaj" mnemonicParsing="false" onAction="#dodajIgranjeAction" prefHeight="40.0" prefWidth="150.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;;" text="Dodaj">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
+            <Button fx:id="bZavrsi" mnemonicParsing="false" onAction="#zavrsiDodavanjeRepertoara" prefHeight="40.0" prefWidth="150.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;;" text="Završi">
+               <font>
+                  <Font size="18.0" />
+               </font></Button>
          </children>
       </HBox>
-      <HBox layoutX="302.0" layoutY="47.0" prefHeight="32.0" prefWidth="302.0">
-         <children>
-            <Button fx:id="bUkloni" mnemonicParsing="false" onAction="#ukloniPredstavuAction" text="Ukloni" />
-         </children>
-      </HBox>
+      <HBox layoutX="392.0" layoutY="117.0" prefHeight="32.0" prefWidth="302.0" />
+      <Button fx:id="bUkloni" layoutX="357.0" layoutY="87.0" mnemonicParsing="false" onAction="#ukloniPredstavuAction" prefHeight="40.0" prefWidth="150.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;;" text="Ukloni">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
    </children>
 </AnchorPane>
