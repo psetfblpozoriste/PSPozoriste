@@ -53,6 +53,14 @@ public class DodajRezervacijuController implements Initializable {
     }
 
     private void dodajButton() {
+        if (textFiled.getText().length() >= 20) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Unos predugacak", ButtonType.OK);
+            alert.setTitle("Upozorenje");
+            alert.setHeaderText("Upozorenje");
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
+            alert.showAndWait();
+            return;
+        }
         String ime = textFiled.getText();
         PregledKarataController.naKogaGlasiRezervacija = textFiled.getText();
         PregledKarataController.rezervacije = RezervacijaDAO.addRezervacija(new Rezervacija(0, ime, termin, idScene));

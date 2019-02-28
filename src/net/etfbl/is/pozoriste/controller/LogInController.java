@@ -142,6 +142,7 @@ public class LogInController implements Initializable {
                     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                     window.setTitle("Administrator");
+                    window.setResizable(false);
 
                     window.setScene(pozScene);
                     window.show();
@@ -154,6 +155,7 @@ public class LogInController implements Initializable {
                     Scene pozScene = new Scene(pozoristeController);
                     Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     window.setTitle("Biletar");
+                    window.setResizable(false);
                     window.setScene(pozScene);
                     window.show();
                 } catch (IOException ex) {
