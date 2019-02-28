@@ -170,6 +170,8 @@ public class DodajPredstavuController implements Initializable {
             Scene predstavaScene = new Scene(predstavaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(predstavaScene);
+            window.setResizable(false);
+            window.setTitle("Predstave");
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
@@ -232,6 +234,8 @@ public class DodajPredstavuController implements Initializable {
             Scene predstavaScene = new Scene(predstavaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(predstavaScene);
+            window.setResizable(false);
+            window.setTitle("Angazman");
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);

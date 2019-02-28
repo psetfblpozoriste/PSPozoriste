@@ -228,6 +228,8 @@ public class DodavanjeAngazmanaController implements Initializable {
             Scene predstavaScene = new Scene(predstavaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(predstavaScene);
+            window.setResizable(false);
+            window.setTitle("Vrsta angazmana");
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(DodavanjeAngazmanaController.class.getName()).log(Level.SEVERE, null, ex);

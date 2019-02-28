@@ -98,6 +98,8 @@ public class PregledPredstavaController implements Initializable {
             Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(dodajRadnikaScene);
+            window.setResizable(false);
+            window.setTitle("Administrator");
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -246,6 +248,8 @@ public class PregledPredstavaController implements Initializable {
             Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(dodajRadnikaScene);
+            window.setResizable(false);
+            window.setTitle("Predstava");
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -259,6 +263,8 @@ public class PregledPredstavaController implements Initializable {
             Scene dodajRadnikaScene = new Scene(dodajRadnikaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(dodajRadnikaScene);
+            window.setResizable(false);
+            window.setTitle("Angazman");
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);
