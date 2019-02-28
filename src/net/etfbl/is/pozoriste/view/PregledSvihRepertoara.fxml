@@ -4,11 +4,11 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledSvihRepertoaraController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="652.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.PregledSvihRepertoaraController">
    <children>
-      <Button fx:id="bNazad" layoutX="22.0" layoutY="350.0" mnemonicParsing="false" onAction="#nazadNaAdminFormu" text="Nazad" />
-      <Button fx:id="bDodajRepertoar" layoutX="483.0" layoutY="350.0" mnemonicParsing="false" onAction="#dodajRepertoaraAction" text="Dodaj repertoar" />
-      <TableView fx:id="sviRepertoariTableView" layoutX="26.0" layoutY="37.0" prefHeight="277.0" prefWidth="548.0" />
-      <Button fx:id="bIzmjeniRepertoar" layoutX="348.0" layoutY="350.0" mnemonicParsing="false" onAction="#IzmjeniRepertoarAction" text="Izmjeni repertoar" />
+      <Button fx:id="bNazad" layoutX="22.0" layoutY="350.0" mnemonicParsing="false" onAction="#nazadNaAdminFormu" prefHeight="38.0" prefWidth="157.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;; -fx-font-size: 18;" text="Nazad" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="25.0" />
+      <Button fx:id="bDodajRepertoar" layoutX="483.0" layoutY="350.0" mnemonicParsing="false" onAction="#dodajRepertoaraAction" prefHeight="38.0" prefWidth="157.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;; -fx-font-size: 18;" text="Dodaj repertoar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="25.0" />
+      <TableView fx:id="sviRepertoariTableView" layoutX="26.0" layoutY="37.0" prefHeight="277.0" prefWidth="548.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;; -fx-font-size: 18;" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" />
+      <Button fx:id="bIzmjeniRepertoar" layoutX="301.0" layoutY="347.0" mnemonicParsing="false" onAction="#IzmjeniRepertoarAction" prefHeight="38.0" prefWidth="157.0" style="-fx-font-family: &quot;Tempus Sans ITC&quot;; -fx-font-size: 18;" text="Izmjeni repertoar" AnchorPane.bottomAnchor="15.0" />
    </children>
 </AnchorPane>
