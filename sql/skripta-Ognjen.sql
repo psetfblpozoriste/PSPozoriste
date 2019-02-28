@@ -63,3 +63,11 @@ begin
     where r.termin = termin and r.idScene = idScene; 
 end$$
 delimiter ;
+
+
+insert into predstava
+values
+(0,"Predstava sa ČĆ đ Š Ž","jako moćna predstava","Komedija sa SĐŽ");
+insert into igranje values
+('2019-7-16',(select id from scena where scena.nazivScene="Petar Kočić"),null,(select id from predstava where predstava.naziv="Predstava sa ČĆ đ Š Ž"),(select id from repertoar where repertoar.mjesecIGodina='2019-3-1'));
+

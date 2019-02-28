@@ -30,7 +30,7 @@ values
 
 insert into scena
 values
-(0,"Petar Kocic");
+(0,"Petar Kočić");
 
 
 insert into repertoar

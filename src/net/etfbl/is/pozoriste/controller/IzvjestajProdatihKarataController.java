@@ -125,11 +125,11 @@ public class IzvjestajProdatihKarataController {
         List<Predstava> listaPredstava = PredstavaDAO.predstave();
         List<GostujucaPredstava> gostujucePredstava = GostujucaPredstavaDAO.gostujucePredstave();
 
-        PdfPTable table = new PdfPTable(4);//broj kolona imace 4 kolone
+        PdfPTable table = new PdfPTable(5);//broj kolona imace 4 kolone
 
         // the cell object
         PdfPCell celija1 = new PdfPCell(new Phrase("Statistika prodatih karata po repertoarima", font));
-        celija1.setColspan(4);
+        celija1.setColspan(5);
         celija1.setRowspan(1);
         celija1.setCalculatedHeight(10);
         celija1.setBackgroundColor(BaseColor.LIGHT_GRAY);
@@ -190,6 +190,18 @@ public class IzvjestajProdatihKarataController {
                 celija4.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(celija4);
 
+                Long brojProdatihKarata = new Long(0);
+                if (!karte.isEmpty()) {
+                    brojProdatihKarata = karte.stream().count();
+                }
+                PdfPCell celija6 = new PdfPCell(new Phrase(brojProdatihKarata.toString(), font));
+                celija6.setRowspan(1);
+                celija6.setCalculatedHeight(10);
+                celija6.setColspan(1);
+                celija6.setVerticalAlignment(Element.ALIGN_CENTER);
+                celija6.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(celija6);
+
                 String cijenaUkupno = "";
                 if (!karte.isEmpty()) {
                     cijenaUkupno = String.format("%.2f", karte.stream().mapToDouble(e -> (double) e.getIznos()).sum());
@@ -205,6 +217,51 @@ public class IzvjestajProdatihKarataController {
                 table.addCell(celija5);
             }
         };
+
+        PdfPCell celija7 = new PdfPCell(new Phrase("Repertoar", font));
+        celija7.setColspan(1);
+        celija7.setRowspan(1);
+        celija7.setCalculatedHeight(10);
+        celija7.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        celija7.setVerticalAlignment(Element.ALIGN_CENTER);
+        celija7.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(celija7);
+
+        PdfPCell celija8 = new PdfPCell(new Phrase("Naziv predstave", font));
+        celija8.setColspan(1);
+        celija8.setRowspan(1);
+        celija8.setCalculatedHeight(10);
+        celija8.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        celija8.setVerticalAlignment(Element.ALIGN_CENTER);
+        celija8.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(celija8);
+
+        PdfPCell celija9 = new PdfPCell(new Phrase("Cijena karte", font));
+        celija9.setColspan(1);
+        celija9.setRowspan(1);
+        celija9.setCalculatedHeight(10);
+        celija9.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        celija9.setVerticalAlignment(Element.ALIGN_CENTER);
+        celija9.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(celija9);
+
+        PdfPCell celija10 = new PdfPCell(new Phrase("Broj prodatih karata", font));
+        celija10.setColspan(1);
+        celija10.setRowspan(1);
+        celija10.setCalculatedHeight(10);
+        celija10.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        celija10.setVerticalAlignment(Element.ALIGN_CENTER);
+        celija10.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(celija10);
+
+        PdfPCell celija11 = new PdfPCell(new Phrase("Ukupan iznos", font));
+        celija11.setColspan(1);
+        celija11.setRowspan(1);
+        celija11.setCalculatedHeight(10);
+        celija11.setBackgroundColor(BaseColor.LIGHT_GRAY);
+        celija11.setVerticalAlignment(Element.ALIGN_CENTER);
+        celija11.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(celija11);
 
         listaRepertoara.forEach(r);
         document.add(table);
