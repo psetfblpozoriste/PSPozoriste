@@ -119,6 +119,7 @@ public class DodajPredstavuController implements Initializable {
                     PredstavaDAO.dodajPredstavu(predstava);
                     DodavanjeAngazmanaController.setPredstava(predstava);
                     otvoriAngazmane(event);
+                    
                 } else {
                     upozorenjePoljaSuPrazna();
                 }

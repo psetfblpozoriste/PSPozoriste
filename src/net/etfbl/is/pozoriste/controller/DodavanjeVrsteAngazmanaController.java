@@ -38,18 +38,11 @@ public class DodavanjeVrsteAngazmanaController implements Initializable {
     @FXML
     private Button buttonOk;
 
-    private static ObservableList<Node> djeca;
-
-
-    public static void setDjeca(ObservableList<Node> d) {
-        djeca = d;
-    }
     
     
     @FXML
     void okAction(ActionEvent event) {
         VrstaAngazmanaDAO.dodajAngazman(textFieldNaziv.getText());
-        //djeca.forEach(k -> k.setDisable(true));
         ((Stage) buttonOk.getScene().getWindow()).close();
     }
     @Override

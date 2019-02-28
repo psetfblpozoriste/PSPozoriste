@@ -206,7 +206,17 @@ public class DodavanjeAngazmanaController implements Initializable {
             comboBoxVrstaAngazmana.getItems().removeAll(comboBoxVrstaAngazmana.getItems());
             comboBoxVrstaAngazmana.setItems(pomocni);
         });
-        DodavanjeVrsteAngazmanaController.setDjeca(((Stage) tableAngazmani.getScene().getWindow()).getScene().getRoot().getChildrenUnmodifiable());
+        stage.setOnHiding(e -> {
+            ((Stage) tableAngazmani.getScene().getWindow()).getScene().getRoot().getChildrenUnmodifiable().forEach(k -> k.setDisable(false));
+            vrste.clear();
+            vrste.addAll(VrstaAngazmanaDAO.vrsteAngazmana());
+            ObservableList<String> pomocni = FXCollections.observableArrayList();
+            vrste.forEach((v) -> {
+                pomocni.add(v.getNaziv());
+            });
+            comboBoxVrstaAngazmana.getItems().removeAll(comboBoxVrstaAngazmana.getItems());
+            comboBoxVrstaAngazmana.setItems(pomocni);
+        });
         stage.show();
     }
 

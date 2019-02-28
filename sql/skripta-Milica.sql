@@ -1,5 +1,6 @@
 use pozoriste_is;
 
+drop procedure if exists dodajPredstavu;
 delimiter $$
 create procedure dodajPredstavu (in naziv varchar(64) , in opis text, in tip varchar(20),out poruka varchar(255),out id int)
 begin
@@ -12,6 +13,7 @@ begin
 end$$
 delimiter ;
 
+drop procedure if exists dodajGostujucuPredstavu;
 delimiter $$
 create procedure dodajGostujucuPredstavu (in naziv varchar(40), in opis text, in tip varchar(20), in pisac varchar(20), in reziser varchar(20), in glumci text,out poruka varchar(255),out id int )
 begin
@@ -24,13 +26,13 @@ begin
 end$$
 delimiter ;
 
-
+drop view if exists vratiUmjetnike;
 create view vratiUmjetnike as
 select radnik.idRadnik,radnik.ime,radnik.prezime,radnik.jmb,radnik.statusRadnika,radnik.kontakt,umjetnik.biografija
 from radnik join umjetnik on radnik.idRadnik=umjetnik.idRadnik
 where radnik.idRadnik in(select idRadnik from umjetnik);
 
-
+drop view if exists pregledVrstaAngazmana;
 create view pregledVrstaAngazmana as
 select id,naziv
 from vrsta_angazmana;
@@ -67,9 +69,5 @@ begin
 end$$
 delimiter ;
 
-insert into vrsta_angazmana values(0,"Glumac");
-insert into vrsta_angazmana values(0,"Reziser");
-insert into vrsta_angazmana values(0,"Sufler");
-insert into angazman values(curdate(),null,5,1,1);
-call dodavanjeAngazmana(1,6,1,curdate());
-call azuriranjeAngazmana(1,6,1,curdate(),curdate());
+
+call azuriranjeAngazmana(1,1,6,'2019-02-28','2019-10-10');

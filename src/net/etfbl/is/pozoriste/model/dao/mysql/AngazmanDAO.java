@@ -90,9 +90,9 @@ public class AngazmanDAO {
         try {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call azuriranjeAngazmana(?,?,?,?,?)}");
-            callableStatement.setInt(1, idPredstave);
-            callableStatement.setInt(2, idUmjetnika);
-            callableStatement.setInt(3, idVrstaAngazmana);
+            callableStatement.setInt(1, idVrstaAngazmana);
+            callableStatement.setInt(2, idPredstave);
+            callableStatement.setInt(3, idUmjetnika);
             callableStatement.setDate(4, datumOd);
             callableStatement.setDate(5, datumDo);
             callableStatement.executeQuery();
