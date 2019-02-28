@@ -125,5 +125,36 @@ public class AdministratorDAO {
             }
         }
     }
+    
+    
+     public static Integer vratiId(String korisnickoIme) {
+         Integer id=null;
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        ResultSet resultSet=null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call idAdmina(?)}");
+
+            callableStatement.setString(1, korisnickoIme);
+
+            resultSet=callableStatement.executeQuery();
+            id=resultSet.getInt(0);
+        } catch (SQLException ex) {
+            Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return id;
+    }
 
 }

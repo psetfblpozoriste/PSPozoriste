@@ -23,9 +23,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import net.etfbl.is.pozoriste.model.dao.mysql.AzuriranjeDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.GostujucaPredstavaDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.KreiranjeDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.PredstavaDAO;
+import net.etfbl.is.pozoriste.model.dto.Azuriranje;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
+import net.etfbl.is.pozoriste.model.dto.Kreiranje;
 import net.etfbl.is.pozoriste.model.dto.Predstava;
 
 /**
@@ -103,6 +107,8 @@ public class DodajPredstavuController implements Initializable {
             domaca.setOpis(textAreaOpis.getText());
             domaca.setTip(textFieldTip.getText());
             PredstavaDAO.azurirajPredstavu(domaca);
+            Azuriranje azuriranje=new Azuriranje(domaca.getId(),null,null,LogInController.idLogovanog);
+            AzuriranjeDAO.dodajAzuriranje(azuriranje);
             DodavanjeAngazmanaController.setPredstava(domaca);
             otvoriAngazmane(event);
         } else {
@@ -117,6 +123,8 @@ public class DodajPredstavuController implements Initializable {
                 if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty()) {
                     Predstava predstava = new Predstava(textFieldNaziv.getText(), textAreaOpis.getText(), textFieldTip.getText());
                     PredstavaDAO.dodajPredstavu(predstava);
+                    Kreiranje kreiranje=new Kreiranje(predstava.getId(),null,null,LogInController.idLogovanog);
+                    KreiranjeDAO.dodajKreiranje(kreiranje);
                     DodavanjeAngazmanaController.setPredstava(predstava);
                     otvoriAngazmane(event);
                     
@@ -127,6 +135,8 @@ public class DodajPredstavuController implements Initializable {
                 if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty() && !textAreaGlumci.getText().isEmpty() && !textFieldPisac.getText().isEmpty() && !textFieldReziser.getText().isEmpty()) {
                     GostujucaPredstava gostujucaPredstava = new GostujucaPredstava(textFieldNaziv.getText(), textAreaOpis.getText(), textFieldTip.getText(), textFieldPisac.getText(), textFieldReziser.getText(), textAreaGlumci.getText());
                     GostujucaPredstavaDAO.dodajGostujucuPredstavu(gostujucaPredstava);
+                    Kreiranje kreiranje=new Kreiranje(null,null,gostujucaPredstava.getId(),LogInController.idLogovanog);
+                    KreiranjeDAO.dodajKreiranje(kreiranje);
                     nazadNaPregledPredstava(event);
                 } else {
                     upozorenjePoljaSuPrazna();
@@ -143,6 +153,8 @@ public class DodajPredstavuController implements Initializable {
                 gostujuca.setPisac(textFieldPisac.getText());
                 gostujuca.setReziser(textFieldReziser.getText());
                 GostujucaPredstavaDAO.azurirajGostujucuPredstavu(gostujuca);
+                Azuriranje azuriranje=new Azuriranje(null,null,gostujuca.getId(),LogInController.idLogovanog);
+                AzuriranjeDAO.dodajAzuriranje(azuriranje);
                 nazadNaPregledPredstava(event);
             } else {
                 upozorenjePoljaSuPrazna();

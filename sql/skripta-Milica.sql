@@ -69,5 +69,12 @@ begin
 end$$
 delimiter ;
 
-
-call azuriranjeAngazmana(1,1,6,'2019-02-28','2019-10-10');
+drop procedure if exists idAdmina;
+delimiter $$
+create procedure idAdmina(in korisniskoIme varchar(20) )
+begin
+	select radnik.idRadnik
+    from radnik_koji_koristi_sistem join radnik on radnik_koji_koristi_sistem.idRadnik=radnik.idRadnik
+    where radnik_koji_koristi_sistem.korisniskoIme = korisniskoIme;
+end$$
+delimiter ;

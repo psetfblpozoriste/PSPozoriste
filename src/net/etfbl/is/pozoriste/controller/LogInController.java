@@ -27,6 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import net.etfbl.is.pozoriste.model.dao.mysql.AdministratorDAO;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
 
@@ -54,6 +55,8 @@ public class LogInController implements Initializable {
     @FXML
     private Label lSifra;
 
+    public static Integer idLogovanog=null;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lKorisnik.setGraphic(new ImageView(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/rsz_korisnik.png"))));
@@ -130,6 +133,7 @@ public class LogInController implements Initializable {
     @FXML
     void potvrdaAction(ActionEvent event) throws IOException {
         if (provjeraAutentifikacije(tfKorisnickoIme.getText(), tfLozinka.getText())) {
+            idLogovanog=AdministratorDAO.vratiId(tfKorisnickoIme.getText());
             if ("Administrator".equals(tipKorisnika)) {
                 try {
                     Parent pozoristeController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/Admin.fxml"));

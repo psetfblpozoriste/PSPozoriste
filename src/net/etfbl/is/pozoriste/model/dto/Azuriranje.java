@@ -30,12 +30,10 @@ public class Azuriranje {
         return datum;
     }
     
-    public Azuriranje(Integer id, Integer idPredstave, Integer idRepertoara, Integer idRadnik, Integer idGostujucePredstave, Date datum) {
-        this.id = id;
+    public Azuriranje(Integer idPredstave, Integer idRepertoara, Integer idGostujucePredstave, Integer idRadnik) {
         this.idPredstave = idPredstave;
         this.idRepertoara = idRepertoara;
         this.idRadnik = idRadnik;
         this.idGostujucePredstave = idGostujucePredstave;
-        this.datum = datum;
     }
 }

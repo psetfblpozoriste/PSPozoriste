@@ -30,6 +30,10 @@ import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.RepertoarDAO;
 import net.etfbl.is.pozoriste.model.dto.Repertoar;
 import java.util.Calendar;
+import net.etfbl.is.pozoriste.model.dao.mysql.AzuriranjeDAO;
+import net.etfbl.is.pozoriste.model.dao.mysql.KreiranjeDAO;
+import net.etfbl.is.pozoriste.model.dto.Azuriranje;
+import net.etfbl.is.pozoriste.model.dto.Kreiranje;
 
 /**
  * FXML Controller class
@@ -95,6 +99,8 @@ public class DodajRepertoarController implements Initializable {
                     .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
                 //if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
                 RepertoarDAO.dodajRepertoar(repertoar);
+                Kreiranje kreiranje=new Kreiranje(null,repertoar.getId(),null,LogInController.idLogovanog);
+                KreiranjeDAO.dodajKreiranje(kreiranje);
                 return true;
                 // } //else {
                 //  RepertoarDAO.izmjeniRepertoar(repertoar);
@@ -108,6 +114,8 @@ public class DodajRepertoarController implements Initializable {
         } else {
           //  if (sdf.format(simo.getMjesecIGodina()).equals(sdf.format(PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina()))) {
                 RepertoarDAO.izmjeniRepertoar(repertoar);
+                Azuriranje azuriranje=new Azuriranje(null,repertoar.getId(),null,LogInController.idLogovanog);
+                AzuriranjeDAO.dodajAzuriranje(azuriranje);
                 return true;
            // } else if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
            //         .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {

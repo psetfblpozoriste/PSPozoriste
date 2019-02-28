@@ -30,13 +30,11 @@ public class Kreiranje {
         return datum;
     }
 
-    public Kreiranje(Integer id, Integer idPredstave, Integer idRepertoara, Integer idRadnik, Integer idGostujucePredstave, Date datum) {
-        this.id = id;
+    public Kreiranje(Integer idPredstave, Integer idRepertoara, Integer idGostujucePredstave, Integer idRadnik) {
         this.idPredstave = idPredstave;
         this.idRepertoara = idRepertoara;
         this.idRadnik = idRadnik;
         this.idGostujucePredstave = idGostujucePredstave;
-        this.datum = datum;
     }
     
 }
