@@ -37,14 +37,14 @@ import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
  */
 public class LogInController implements Initializable {
 
-    @FXML // fx:id="tfKorisnickoIme"
-    private TextField tfKorisnickoIme; // Value injected by FXMLLoader
+    @FXML 
+    private TextField tfKorisnickoIme; 
 
-    @FXML // fx:id="tfLozinka"
-    private TextField tfLozinka; // Value injected by FXMLLoader
+    @FXML 
+    private TextField tfLozinka; 
 
-    @FXML // fx:id="bPotvrda"
-    private Button bPotvrda; // Value injected by FXMLLoader
+    @FXML 
+    private Button bPotvrda; 
 
     public static String tipKorisnika = "";
 
@@ -66,7 +66,6 @@ public class LogInController implements Initializable {
         if ("".equals(userType)) {
             return false;
         }
-        System.out.println("POSALO!!!");
         return true;
     }
 
