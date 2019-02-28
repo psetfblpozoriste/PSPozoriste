@@ -16,9 +16,9 @@ public class AzuriranjeDAO {
         try {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call dodavanjeAzuriranja(?,?,?,?)}");
-            callableStatement.setInt(1, azuriranje.getIdPredstave());
-            callableStatement.setInt(2, azuriranje.getIdRepertoara());
-            callableStatement.setInt(3, azuriranje.getIdGostujucePredstave());
+            callableStatement.setObject(1, azuriranje.getIdPredstave());
+            callableStatement.setObject(2, azuriranje.getIdRepertoara());
+            callableStatement.setObject(3, azuriranje.getIdGostujucePredstave());
             callableStatement.setInt(4, azuriranje.getIdRadnik());
             
             callableStatement.executeQuery();

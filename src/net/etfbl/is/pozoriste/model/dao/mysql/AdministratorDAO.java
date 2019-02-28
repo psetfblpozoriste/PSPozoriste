@@ -91,10 +91,10 @@ public class AdministratorDAO {
             }
         }
     }
-    
+
     public static void izmjeniAdministratora(AdministrativniRadnik admin) {
-        System.out.println("IZMJENA ADMINA : : : "+admin.getHash());
-        System.out.println("BILETAR ID : "+admin.getIdRadnika());
+        System.out.println("IZMJENA ADMINA : : : " + admin.getHash());
+        System.out.println("BILETAR ID : " + admin.getIdRadnika());
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
@@ -125,22 +125,21 @@ public class AdministratorDAO {
             }
         }
     }
-    
-    
-     public static Integer vratiId(String korisnickoIme) {
-         Integer id=null;
+
+    public static Integer vratiId(String korisnickoIme) {
+        Integer id = null;
         Connection connection = null;
         CallableStatement callableStatement = null;
-        ResultSet resultSet=null;
+        ResultSet resultSet = null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call idAdmina(?,?)}");
 
             callableStatement.setString(1, korisnickoIme);
             callableStatement.registerOutParameter(2, Types.INTEGER);
-            
+
             callableStatement.executeQuery();
-            id=callableStatement.getInt(2);
+            id = callableStatement.getInt(2);
         } catch (SQLException ex) {
             Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

@@ -40,35 +40,35 @@ import net.etfbl.is.pozoriste.model.dto.Predstava;
  */
 public class PregledPredstavaController implements Initializable {
 
-    @FXML // fx:id="tablePredstave"
-    private TableView<Predstava> tablePredstave; // Value injected by FXMLLoader
+    @FXML 
+    private TableView<Predstava> tablePredstave; 
 
-    @FXML // fx:id="comboBoxTip"
-    private ComboBox<String> comboBoxTip; // Value injected by FXMLLoader
+    @FXML 
+    private ComboBox<String> comboBoxTip; 
 
-    @FXML // fx:id="buttonDodaj"
-    private Button buttonDodaj; // Value injected by FXMLLoader
+    @FXML 
+    private Button buttonDodaj; 
 
-    @FXML // fx:id="tableGostujucePredstave"
-    private TableView<GostujucaPredstava> tableGostujucePredstave; // Value injected by FXMLLoader
+    @FXML 
+    private TableView<GostujucaPredstava> tableGostujucePredstave; 
 
-    @FXML // fx:id="textAreaOpisPredstave"
-    private TextArea textAreaOpisPredstave; // Value injected by FXMLLoader
+    @FXML 
+    private TextArea textAreaOpisPredstave; 
 
-    @FXML // fx:id="textAreaOpisGostujucePredstave"
-    private TextArea textAreaOpisGostujucePredstave; // Value injected by FXMLLoader
+    @FXML 
+    private TextArea textAreaOpisGostujucePredstave; 
 
-    @FXML // fx:id="textAreaGlumciGostujucePredstave"
-    private TextArea textAreaGlumciGostujucePredstave; // Value injected by FXMLLoader
+    @FXML 
+    private TextArea textAreaGlumciGostujucePredstave; 
 
-    @FXML // fx:id="buttonIzmijeniGostujucuPredstavu"
-    private Button buttonIzmijeniGostujucuPredstavu; // Value injected by FXMLLoader
+    @FXML 
+    private Button buttonIzmijeniGostujucuPredstavu; 
 
-    @FXML // fx:id="buttonPregledaj"
-    private Button buttonPregledaj; // Value injected by FXMLLoader
+    @FXML 
+    private Button buttonPregledaj; 
 
-    @FXML // fx:id="buttonIzmijeniPredstavu"
-    private Button buttonIzmijeniPredstavu; // Value injected by FXMLLoader
+    @FXML 
+    private Button buttonIzmijeniPredstavu; 
 
     @FXML
     private Button buttonNazad;

@@ -27,9 +27,9 @@ public class KreiranjeDAO {
         try {
             connection = ConnectionPool.getInstance().checkOut();
             callableStatement = connection.prepareCall("{call dodavanjeKreiranja(?,?,?,?)}");
-            callableStatement.setInt(1, kreiranje.getIdPredstave());
-            callableStatement.setInt(2, kreiranje.getIdRepertoara());
-            callableStatement.setInt(3, kreiranje.getIdGostujucePredstave());
+            callableStatement.setObject(1, kreiranje.getIdPredstave());
+            callableStatement.setObject(2, kreiranje.getIdRepertoara());
+            callableStatement.setObject(3, kreiranje.getIdGostujucePredstave());
             callableStatement.setInt(4, kreiranje.getIdRadnik());
             
             callableStatement.executeQuery();

@@ -715,7 +715,6 @@ public class DodajRadnikaController implements Initializable {
 
             callableStatement.executeQuery();
             postoji = callableStatement.getBoolean(2);
-            System.out.println("POOOOOSTOJI: " + postoji);
             if (postoji) {
                 return true;
             } else {

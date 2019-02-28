@@ -99,7 +99,8 @@ public class DodajRepertoarController implements Initializable {
                     .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
                 //if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
                 RepertoarDAO.dodajRepertoar(repertoar);
-                Kreiranje kreiranje=new Kreiranje(null,repertoar.getId(),null,LogInController.idLogovanog);
+                Kreiranje kreiranje = new Kreiranje(null, repertoar.getId(), null, LogInController.idLogovanog);
+                
                 KreiranjeDAO.dodajKreiranje(kreiranje);
                 return true;
                 // } //else {
@@ -112,19 +113,19 @@ public class DodajRepertoarController implements Initializable {
                 return false;
             }
         } else {
-          //  if (sdf.format(simo.getMjesecIGodina()).equals(sdf.format(PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina()))) {
-                RepertoarDAO.izmjeniRepertoar(repertoar);
-                Azuriranje azuriranje=new Azuriranje(null,repertoar.getId(),null,LogInController.idLogovanog);
-                AzuriranjeDAO.dodajAzuriranje(azuriranje);
-                return true;
+            //  if (sdf.format(simo.getMjesecIGodina()).equals(sdf.format(PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina()))) {
+            RepertoarDAO.izmjeniRepertoar(repertoar);
+            Azuriranje azuriranje = new Azuriranje(null, repertoar.getId(), null, LogInController.idLogovanog);
+            AzuriranjeDAO.dodajAzuriranje(azuriranje);
+            return true;
            // } else if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
-           //         .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
-           //     RepertoarDAO.izmjeniRepertoar(repertoar);
-           //     return true;
-          //  } else {
-           //     upozorenjeRepertoar();
+            //         .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
+            //     RepertoarDAO.izmjeniRepertoar(repertoar);
+            //     return true;
+            //  } else {
+            //     upozorenjeRepertoar();
             //    return false;
-         //   }
+            //   }
 
         }
     }

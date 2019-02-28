@@ -83,7 +83,7 @@ public class DodajIgranjeController implements Initializable {
             System.out.println("IGRANJE CMB: " + predstavaIzCmb);
             LinkedList<Igranje> igranjeIzCmb = new LinkedList<>();
             igranjeIzCmb.addAll(PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().filter(x -> x.getIdPredstave().equals(predstavaIzCmb.getId())).collect(Collectors.toList()));
-            //Igranje igranjeIzCMB = new Igranje(PregledSvihRepertoaraController.izabraniRepertoar.get, Integer.SIZE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE)
+
             IgranjeDAO.UkloniIgranje(igranjeIzCmb.getFirst());
             obavjestenjePredstavaUspjesnoUklonjena();
         } else {

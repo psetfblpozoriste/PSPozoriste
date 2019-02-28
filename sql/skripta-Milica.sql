@@ -69,15 +69,14 @@ begin
 end$$
 delimiter ;
 
+select * from radnik_koji_koristi_sistem;
+
 drop procedure if exists idAdmina;
 delimiter $$
 create procedure idAdmina(in korisnickoIme varchar(20), out idAdmina int )
 begin
-	select radnik.idRadnik
+	select radnik.idRadnik into idAdmina
     from radnik_koji_koristi_sistem join radnik on radnik_koji_koristi_sistem.idRadnik=radnik.idRadnik
     where radnik_koji_koristi_sistem.korisnickoIme = korisnickoIme;
-    set idAdmina = radnik.idRadnik;
 end$$
 delimiter ;
-call idAdmina('admin',@pero);
-select @pero;
