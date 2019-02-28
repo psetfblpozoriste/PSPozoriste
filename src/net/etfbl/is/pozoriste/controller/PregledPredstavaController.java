@@ -212,6 +212,7 @@ public class PregledPredstavaController implements Initializable {
     private void ubaciKoloneUTabeluGostujucaPredstava(ObservableList gostujucePredstaveObservableList) {
         nazivGpColumn = new TableColumn("Naziv");
         nazivGpColumn.setCellValueFactory(new PropertyValueFactory<>("naziv"));
+        nazivGpColumn.setPrefWidth(210);
 
         tipGpColumn = new TableColumn("Tip");
         tipGpColumn.setCellValueFactory(new PropertyValueFactory<>("tip"));
@@ -230,11 +231,11 @@ public class PregledPredstavaController implements Initializable {
     private void ubaciKoloneUTabeluPredstava(ObservableList predstaveObservableList) {
         nazivColumn = new TableColumn("Naziv");
         nazivColumn.setCellValueFactory(new PropertyValueFactory<>("naziv"));
-        nazivColumn.setPrefWidth(210);
+        nazivColumn.setPrefWidth(310);
 
         tipColumn = new TableColumn("Tip");
         tipColumn.setCellValueFactory(new PropertyValueFactory<>("tip"));
-        tipColumn.setPrefWidth(210);
+        tipColumn.setPrefWidth(310);
 
         tablePredstave.setItems(predstaveObservableList);
         tablePredstave.getColumns().addAll(nazivColumn, tipColumn);
