@@ -5,16 +5,20 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,7 +26,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -79,8 +85,18 @@ public class PregledRepertoaraController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         if (!"Administrator".equals(LogInController.tipKorisnika)) {
             buttonNazad.setVisible(false);
-            LinkedList<Repertoar> zadnji = new LinkedList<>(RepertoarDAO.repertoars());
-            repertoarZaPrikaz = zadnji.peekLast();
+
+            Optional<Repertoar> op = RepertoarDAO.repertoars().stream().filter(e -> {
+                Calendar kalendar = Calendar.getInstance();
+                kalendar.setTime(e.getMjesecIGodina());
+                Calendar trenutni = Calendar.getInstance();
+                return kalendar.get(Calendar.YEAR) == trenutni.get(Calendar.YEAR) && kalendar.get(Calendar.MONTH) == trenutni.get(Calendar.MONTH);
+            }).findAny();
+            if (op.isPresent()) {
+                repertoarZaPrikaz = op.get();
+            } else {
+                repertoarZaPrikaz = null;
+            }
         }
         buttonNazad.setOnAction(e -> buttonSetAction());
 
@@ -137,6 +153,19 @@ public class PregledRepertoaraController implements Initializable {
             if ("Administrator".equals(LogInController.tipKorisnika)) {
                 scrollPane.addEventFilter(MouseEvent.ANY, MouseEvent::consume);
             }
+        } else {
+            Platform.runLater(() -> {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(1000);
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Za " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + " nije unjet repertoar", ButtonType.OK);
+                    alert.setTitle("Upozorenje");
+                    alert.setHeaderText("Upozorenje");
+                    ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
+                    alert.showAndWait();;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(PregledRepertoaraController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
         }
     }
 
