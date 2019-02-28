@@ -167,17 +167,16 @@ public class DodajIgranjeController implements Initializable {
     }
     
     private void ubaciUCMBIgranjaZaRepertoar() {
-        System.out.println("OBICNE");
-        PredstavaDAO.predstave().stream().forEach(System.out::println);
-        System.out.println("GOSTUJUCE");
-        GostujucaPredstavaDAO.gostujucePredstave().stream().forEach(System.out::println);
-        System.out.println("SVE PRED. NA IZABRANOM RPERTOARU");
+        
         PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().forEach(System.out::println);
         
         for (int i = 0; i < PredstavaDAO.predstave().size(); i++) {
             final int pom = i;
+           // if (PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream()
+            //       .filter(x -> x.getIdPredstave() == PredstavaDAO.predstave().get(pom).getId()).findAny().isPresent()) {
             if (PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream()
-                    .filter(x -> x.getIdPredstave() == PredstavaDAO.predstave().get(pom).getId()).findAny().isPresent()) {
+                  //  .anyMatch(x -> x.getIdPredstave() == PredstavaDAO.predstave().get(pom).getId())) {
+                .filter(x -> x.getIdPredstave() == PredstavaDAO.predstave().get(pom).getId()).findAny().isPresent()) {
                 System.out.println("DA: " + PredstavaDAO.predstave().get(i));
                 cmbIgranjaZaRepertoar.getItems().add(PredstavaDAO.predstave().get(i));
             }
