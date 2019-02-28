@@ -106,11 +106,13 @@ public class DodajPredstavuController implements Initializable {
             domaca.setNaziv(textFieldNaziv.getText());
             domaca.setOpis(textAreaOpis.getText());
             domaca.setTip(textFieldTip.getText());
-            PredstavaDAO.azurirajPredstavu(domaca);
-            Azuriranje azuriranje=new Azuriranje(domaca.getId(),null,null,LogInController.idLogovanog);
-            AzuriranjeDAO.dodajAzuriranje(azuriranje);
-            DodavanjeAngazmanaController.setPredstava(domaca);
-            otvoriAngazmane(event);
+            if (provjeraPredstava()) {
+                PredstavaDAO.azurirajPredstavu(domaca);
+                Azuriranje azuriranje = new Azuriranje(domaca.getId(), null, null, LogInController.idLogovanog);
+                AzuriranjeDAO.dodajAzuriranje(azuriranje);
+                DodavanjeAngazmanaController.setPredstava(domaca);
+                otvoriAngazmane(event);
+            }
         } else {
             upozorenjePoljaSuPrazna();
         }
@@ -122,22 +124,26 @@ public class DodajPredstavuController implements Initializable {
             if (domacaPredstava) {
                 if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty()) {
                     Predstava predstava = new Predstava(textFieldNaziv.getText(), textAreaOpis.getText(), textFieldTip.getText());
-                    PredstavaDAO.dodajPredstavu(predstava);
-                    Kreiranje kreiranje=new Kreiranje(predstava.getId(),null,null,LogInController.idLogovanog);
-                    KreiranjeDAO.dodajKreiranje(kreiranje);
-                    DodavanjeAngazmanaController.setPredstava(predstava);
-                    otvoriAngazmane(event);
-                    
+                    if (provjeraPredstava()) {
+                        PredstavaDAO.dodajPredstavu(predstava);
+                        Kreiranje kreiranje = new Kreiranje(predstava.getId(), null, null, LogInController.idLogovanog);
+                        KreiranjeDAO.dodajKreiranje(kreiranje);
+                        DodavanjeAngazmanaController.setPredstava(predstava);
+                        otvoriAngazmane(event);
+                    }
+
                 } else {
                     upozorenjePoljaSuPrazna();
                 }
             } else {
                 if (!textFieldNaziv.getText().isEmpty() && !textFieldTip.getText().isEmpty() && !textAreaOpis.getText().isEmpty() && !textAreaGlumci.getText().isEmpty() && !textFieldPisac.getText().isEmpty() && !textFieldReziser.getText().isEmpty()) {
                     GostujucaPredstava gostujucaPredstava = new GostujucaPredstava(textFieldNaziv.getText(), textAreaOpis.getText(), textFieldTip.getText(), textFieldPisac.getText(), textFieldReziser.getText(), textAreaGlumci.getText());
-                    GostujucaPredstavaDAO.dodajGostujucuPredstavu(gostujucaPredstava);
-                    Kreiranje kreiranje=new Kreiranje(null,null,gostujucaPredstava.getId(),LogInController.idLogovanog);
-                    KreiranjeDAO.dodajKreiranje(kreiranje);
-                    nazadNaPregledPredstava(event);
+                    if (provjeraGostujucaPredstava()) {
+                        GostujucaPredstavaDAO.dodajGostujucuPredstavu(gostujucaPredstava);
+                        Kreiranje kreiranje = new Kreiranje(null, null, gostujucaPredstava.getId(), LogInController.idLogovanog);
+                        KreiranjeDAO.dodajKreiranje(kreiranje);
+                        nazadNaPregledPredstava(event);
+                    }
                 } else {
                     upozorenjePoljaSuPrazna();
                 }
@@ -148,14 +154,16 @@ public class DodajPredstavuController implements Initializable {
                 GostujucaPredstava gostujuca = (GostujucaPredstava) predstava;
                 gostujuca.setNaziv(textFieldNaziv.getText());
                 gostujuca.setOpis(textAreaOpis.getText());
-                gostujuca.setTip(textFieldTip.getText());  
+                gostujuca.setTip(textFieldTip.getText());
                 gostujuca.setGlumci(textAreaGlumci.getText());
                 gostujuca.setPisac(textFieldPisac.getText());
                 gostujuca.setReziser(textFieldReziser.getText());
-                GostujucaPredstavaDAO.azurirajGostujucuPredstavu(gostujuca);
-                Azuriranje azuriranje=new Azuriranje(null,null,gostujuca.getId(),LogInController.idLogovanog);
-                AzuriranjeDAO.dodajAzuriranje(azuriranje);
-                nazadNaPregledPredstava(event);
+                if (provjeraGostujucaPredstava()) {
+                    GostujucaPredstavaDAO.azurirajGostujucuPredstavu(gostujuca);
+                    Azuriranje azuriranje = new Azuriranje(null, null, gostujuca.getId(), LogInController.idLogovanog);
+                    AzuriranjeDAO.dodajAzuriranje(azuriranje);
+                    nazadNaPregledPredstava(event);
+                }
             } else {
                 upozorenjePoljaSuPrazna();
             }
@@ -221,10 +229,50 @@ public class DodajPredstavuController implements Initializable {
 
     private void upozorenjePoljaSuPrazna() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Greska prilikom unosa podataka !");
+        alert.setTitle("Greska prazna polja !");
         alert.setHeaderText(null);
         alert.setContentText("Polja su prazna.");
         alert.showAndWait();
+    }
+
+    private void upozorenjeUnosDug(String s) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom unosa podataka !");
+        alert.setHeaderText(null);
+        alert.setContentText("Unos \"" + s + "\" je predugacak!");
+        alert.showAndWait();
+    }
+
+    private boolean provjeraPredstava() {
+        if (textFieldNaziv.getText().length() > 40) {
+            upozorenjeUnosDug("Naziv");
+            return false;
+        }
+        if (textFieldTip.getText().length() > 40) {
+            upozorenjeUnosDug("Tip");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean provjeraGostujucaPredstava() {
+        if (textFieldNaziv.getText().length() > 64) {
+            upozorenjeUnosDug("Naziv");
+            return false;
+        }
+        if (textFieldTip.getText().length() > 40) {
+            upozorenjeUnosDug("Tip");
+            return false;
+        }
+        if (textFieldPisac.getText().length() > 40) {
+            upozorenjeUnosDug("Pisac");
+            return false;
+        }
+        if (textFieldReziser.getText().length() > 40) {
+            upozorenjeUnosDug("Reziser");
+            return false;
+        }
+        return true;
     }
 
     private void otvoriAngazmane(ActionEvent event) {
@@ -241,4 +289,5 @@ public class DodajPredstavuController implements Initializable {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }
