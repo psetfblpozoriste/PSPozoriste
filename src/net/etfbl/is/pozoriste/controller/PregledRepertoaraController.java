@@ -165,11 +165,24 @@ public class PregledRepertoaraController implements Initializable {
             scrollPane.setContent(vBox);
 
         } else {
-            if ( !repertoarZaPrikaz.getIgranja().isEmpty()) {
+            if (repertoarZaPrikaz == null) {
                 Platform.runLater(() -> {
                     try {
-                        TimeUnit.MILLISECONDS.sleep(1000);
+                        TimeUnit.MILLISECONDS.sleep(750);
                         Alert alert = new Alert(Alert.AlertType.WARNING, "Za " + (new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime())) + " nije unjet repertoar", ButtonType.OK);
+                        alert.setTitle("Upozorenje");
+                        alert.setHeaderText("Upozorenje");
+                        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
+                        alert.showAndWait();;
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PregledRepertoaraController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+            } else if (repertoarZaPrikaz.getIgranja().isEmpty()) {
+                Platform.runLater(() -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(750);
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Za " + (new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime())) + " nisu unjeta igranja", ButtonType.OK);
                         alert.setTitle("Upozorenje");
                         alert.setHeaderText("Upozorenje");
                         ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));

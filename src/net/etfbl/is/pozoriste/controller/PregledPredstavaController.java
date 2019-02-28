@@ -220,7 +220,7 @@ public class PregledPredstavaController implements Initializable {
         pisacColumn = new TableColumn("Pisac");
         pisacColumn.setCellValueFactory(new PropertyValueFactory<>("pisac"));
 
-        reziserColumn = new TableColumn("Reziser");
+        reziserColumn = new TableColumn("Režiser");
         reziserColumn.setCellValueFactory(new PropertyValueFactory<>("reziser"));
 
         tableGostujucePredstave.setItems(gostujucePredstaveObservableList);
@@ -265,7 +265,7 @@ public class PregledPredstavaController implements Initializable {
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(dodajRadnikaScene);
             window.setResizable(false);
-            window.setTitle("Angazman");
+            window.setTitle("Angažman");
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(PregledPredstavaController.class.getName()).log(Level.SEVERE, null, ex);

@@ -11,7 +11,6 @@ delimiter $$
     end$$
 delimiter ;
 
-select * from radnik_koji_koristi_sistem;
 
 delimiter $$
 	create procedure provjeraKorisnickogImena(in pkorisnickoIme varchar(64),out vpostojiUSistemu boolean )
