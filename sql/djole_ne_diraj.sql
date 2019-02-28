@@ -34,9 +34,6 @@ delimiter $$
     end$$
 delimiter ;
 
-
-select * from repertoar;
-
 drop procedure dodavanjeRepertoara;
 delimiter $$
 create procedure dodavanjeRepertoara (in mjesecIGodina date, out idRepertoara int)
@@ -52,9 +49,6 @@ drop view repertoari_info;
 create view repertoari_info as
 select * from repertoar
 order by mjesecIGodina desc;
-#order by year(mjesecIGodina) desc ,month(mjesecIGodina) asc , day(mjesecIGodina) desc;
-
-select * from repertoari_info;
 
 drop procedure azuriranjeRepertoara;
 delimiter $$
@@ -64,11 +58,6 @@ begin
     where repertoar.id = id;
 end$$
 delimiter ;
-
-
-
-#select * from predstava;
-#select * from gostujuca_predstava;
 
 /*
 drop trigger postaviPrviDanUMjesecu;

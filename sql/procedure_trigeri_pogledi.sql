@@ -143,7 +143,6 @@ begin
 end$$
 delimiter ;
 
-#===========================================================
 delimiter $$
 create procedure pregledKontakta(in idRadnika int)
 begin
@@ -152,7 +151,6 @@ begin
     where k.id = idRadnika;
 end$$
 delimiter ;
-#=====================================================
 
 delimiter $$
 create procedure pregledKreiranjaPredstave(in id int)
@@ -302,17 +300,12 @@ begin
 end$$
 delimiter ;
 
-
-
-#DOOOOOOOOOOOOOOOOOOOOOOOOOOOOORADIT===================================
 delimiter $$
 create procedure dodavanjeKontakta(in jmb varchar(13),in kontakt varchar(20))
 begin
 
 end$$
 delimiter ;
-#======================================================================================================
-#kad nesto dodajes u bazu za ovu poruku salji prazan string i ako procedura vrati opet prazan string znaci da je upisano
 
 delimiter $$
 create procedure dodavanjePredstave (in naziv varchar(64) , in opis text, in tip varchar(20),out poruka varchar(255))
@@ -394,9 +387,6 @@ begin
 end$$
 delimiter ;
 
-
-
-
 delimiter $$
 create procedure otkazivanjeRezervacije (in id int)
 begin
@@ -431,8 +421,6 @@ begin
 end$$
 delimiter ;
 
-
-
 delimiter $$
 create procedure azuriranjeUmjetnika (in ime varchar(40), in prezime varchar(40), in jmb varchar(13),in idRadnik int,in statusRadnika boolean,in biografija text)
 begin
@@ -446,7 +434,6 @@ begin
     
 end$$
 delimiter ;
-
 
 delimiter $$
 create procedure azuriranjeRadnikaKojiKoristiSistem (in ime varchar(40), in prezime varchar(40), in jmb varchar(13)
@@ -463,7 +450,6 @@ begin
 end$$
 delimiter ;
 
-
 delimiter $$
 create procedure azuriranjeRepertoara (in id int, in mjesecIGodina date)
 begin
@@ -472,7 +458,6 @@ begin
     where repertoar.id=id;
 end$$
 delimiter ;
-
 
 delimiter $$
 create procedure azuriranjeAngazmana (in idVrsteAngazmana int,in idPredstave int,in idUmjetnika int, in datumOd date,in datumDo date)
@@ -493,7 +478,6 @@ begin
 end$$
 delimiter ;
 
-
 delimiter $$
 create procedure azuriranjeGostujucePredstave (in id int, in naziv varchar(64),in opis text, in tip varchar(40), in pisac varchar(40), in reziser varchar(40), in glumci text)
 begin
@@ -502,8 +486,6 @@ begin
     where gostujuca_predstava.id=id;
 end$$
 delimiter ;
-
-
 
 delimiter $$
 create procedure azuriranjeIgranjaGostujucePredstave (in termin date, in idScene int, in idGostujucePredstave int, in idRepertoara int)
@@ -514,7 +496,6 @@ begin
 end$$
 delimiter ;
 
-
 delimiter $$
 create procedure azuriranjeIgranjaPredstave (in termin date, in idScene int, in idPredstave int, in idRepertoara int)
 begin
@@ -523,7 +504,6 @@ begin
     where igranje.idPredstave=idPredstave;
 end$$
 delimiter ;
-
 
 delimiter $$
 create procedure azuriranjeScene (in id int, in nazivScene varchar(64))
@@ -537,13 +517,10 @@ delimiter ;
 create view biltetari_info(Id,Ime,Prezime,JMB,StatusRadnika,Kontakt,KorisnickoIme,HashLozinke,TipKorisnika,ImaNalogStatus)as
 select r.idRadnik,r.ime,r.prezime,r.jmb,r.statusRadnika,r.kontakt,rS.korisnickoIme,rS.heshLozinke,rS.tipKorisnika,rS.aktivan
 from (radnik as r join radnik_koji_koristi_sistem as rS on r.idRadnik=rS.idRadnik) join biletar as b on r.idRadnik=b.idRadnik;
-#where r.statusRadnika = true;
 
-#drop view umjetnici_info;
 create view umjetnici_info(Id,Ime,Prezime,JMB,StatusRadnika,Kontakt,Biografija)as
 select r.idRadnik,r.ime,r.prezime,r.jmb,r.statusRadnika,r.kontakt,u.biografija
 from radnik as r join umjetnik as u on r.idRadnik=u.idRadnik;
-#where r.statusRadnika = true;
 
 
 delimiter $$
@@ -564,7 +541,6 @@ delimiter $$
 
     end$$
 delimiter ;
-
 
 create view admini_info(Id,Ime,Prezime,JMB,StatusRadnika,Kontakt,KorisnickoIme,HashLozinke,TipKorisnika,ImaNalogStatus)as
 select r.idRadnik,r.ime,r.prezime,r.jmb,r.statusRadnika,r.kontakt,rS.korisnickoIme,rS.heshLozinke,rS.tipKorisnika,rS.aktivan

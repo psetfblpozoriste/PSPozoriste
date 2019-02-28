@@ -165,7 +165,7 @@ public class PregledRepertoaraController implements Initializable {
             scrollPane.setContent(vBox);
 
         } else {
-            if (!repertoarZaPrikaz.getIgranja().isEmpty()) {
+            if ( !repertoarZaPrikaz.getIgranja().isEmpty()) {
                 Platform.runLater(() -> {
                     try {
                         TimeUnit.MILLISECONDS.sleep(1000);

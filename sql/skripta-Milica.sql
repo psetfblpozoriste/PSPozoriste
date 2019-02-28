@@ -69,8 +69,6 @@ begin
 end$$
 delimiter ;
 
-select * from radnik_koji_koristi_sistem;
-
 drop procedure if exists idAdmina;
 delimiter $$
 create procedure idAdmina(in korisnickoIme varchar(20), out idAdmina int )
