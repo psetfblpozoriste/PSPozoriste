@@ -51,8 +51,8 @@ public class PredstavaDAO {
         }
         return predstave;
     }
-    
-    public static void dodajPredstavu(Predstava predstava){
+
+    public static void dodajPredstavu(Predstava predstava) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         String poruka;
@@ -62,13 +62,13 @@ public class PredstavaDAO {
             callableStatement.setString(1, predstava.getNaziv());
             callableStatement.setString(2, predstava.getOpis());
             callableStatement.setString(3, predstava.getTip());
-            callableStatement.registerOutParameter(4,Types.VARCHAR);
-            callableStatement.registerOutParameter(5,Types.INTEGER);
+            callableStatement.registerOutParameter(4, Types.VARCHAR);
+            callableStatement.registerOutParameter(5, Types.INTEGER);
             callableStatement.executeQuery();
-            
+
             predstava.setId(callableStatement.getInt(5));
-            poruka=callableStatement.getString(4);
-            if(poruka!=null){
+            poruka = callableStatement.getString(4);
+            if (poruka != null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(null);
                 alert.setHeaderText(null);
@@ -91,7 +91,7 @@ public class PredstavaDAO {
         }
     }
 
-    public static void azurirajPredstavu(Predstava predstava){
+    public static void azurirajPredstavu(Predstava predstava) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         String poruka;
@@ -103,7 +103,7 @@ public class PredstavaDAO {
             callableStatement.setString(3, predstava.getOpis());
             callableStatement.setString(4, predstava.getTip());
             callableStatement.executeQuery();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -119,4 +119,32 @@ public class PredstavaDAO {
             }
         }
     }
+/*
+    public static void UkloniPredstavu(Predstava predstava) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            String query = "delete from predstava  where id = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, predstava.getId());
+
+            preparedStatement.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(IgranjeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(IgranjeDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+*/
 }

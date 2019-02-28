@@ -8,6 +8,7 @@ package net.etfbl.is.pozoriste.model.dao.mysql;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -22,8 +23,8 @@ import net.etfbl.is.pozoriste.model.dto.Repertoar;
  * @author Ognjen
  */
 public class IgranjeDAO {
-    
-        public static void dodajIgranje(Igranje igranje) {
+
+    public static void dodajIgranje(Igranje igranje) {
         Connection connection = null;
         CallableStatement callableStatement = null;
         try {
@@ -36,7 +37,7 @@ public class IgranjeDAO {
             callableStatement.setInt(5, igranje.getIdRepertoara());
 
             callableStatement.executeQuery();
-  
+
         } catch (SQLException ex) {
             Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -69,7 +70,7 @@ public class IgranjeDAO {
                 Integer idGost = resultSet.getInt("idGostujucePredstave");
                 Integer idP = resultSet.getInt("idPredstave");
                 Integer idR = resultSet.getInt("idRepertoara");
-                igranja.add(new Igranje(termin, idS, idP,idGost, idR));
+                igranja.add(new Igranje(termin, idS, idP, idGost, idR));
             }
         } catch (SQLException sql) {
             Logger.getLogger(IgranjeDAO.class.getName()).log(Level.SEVERE, null, sql);
@@ -88,6 +89,32 @@ public class IgranjeDAO {
             }
         }
         return igranja;
+    }
+
+    public static void UkloniIgranje(Igranje igranje) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            String query = "delete from igranje  where termin = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, igranje.getTermin());
+            preparedStatement.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(IgranjeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(IgranjeDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
 }

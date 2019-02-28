@@ -55,7 +55,7 @@ public class Predstava {
     }
 
     public String toString() {
-        return this.naziv;
+        return this.naziv +" "+ this.getId();
     }
 
 }

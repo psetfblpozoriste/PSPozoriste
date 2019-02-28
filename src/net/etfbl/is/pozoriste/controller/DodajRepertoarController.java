@@ -91,7 +91,7 @@ public class DodajRepertoarController implements Initializable {
         final Repertoar simo = repertoar;
 
         if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
-             if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
+            if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
                     .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
                 //if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
                 RepertoarDAO.dodajRepertoar(repertoar);
@@ -106,20 +106,17 @@ public class DodajRepertoarController implements Initializable {
                 return false;
             }
         } else {
-            System.out.println("SIMO: "+simo.getMjesecIGodina());
-            System.out.println("IZABRANI: "+PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina());
-            if(sdf.format(simo.getMjesecIGodina()).equals(sdf.format(PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina()))) {
+          //  if (sdf.format(simo.getMjesecIGodina()).equals(sdf.format(PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina()))) {
                 RepertoarDAO.izmjeniRepertoar(repertoar);
                 return true;
-            }  
-            else if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
-                    .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
-                RepertoarDAO.izmjeniRepertoar(repertoar);
-                return true;
-            } else {
-                upozorenjeRepertoar();
-                return false;
-            }
+           // } else if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
+           //         .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
+           //     RepertoarDAO.izmjeniRepertoar(repertoar);
+           //     return true;
+          //  } else {
+           //     upozorenjeRepertoar();
+            //    return false;
+         //   }
 
         }
     }
@@ -177,6 +174,10 @@ public class DodajRepertoarController implements Initializable {
 
             cmbGodina.getSelectionModel().select(Integer.valueOf(godinaIzabranogRepertoara));
             cmbMjesec.getSelectionModel().select(Integer.valueOf(mjesecIzabranogRepertoara));
+            cmbMjesec.getItems().clear();
+            cmbMjesec.getItems().add(Integer.valueOf(mjesecIzabranogRepertoara));
+            cmbMjesec.getSelectionModel().select(Integer.valueOf(mjesecIzabranogRepertoara));
+
         }
 
     }

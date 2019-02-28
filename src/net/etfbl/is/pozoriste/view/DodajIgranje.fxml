@@ -1,15 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="222.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.DodajIgranjeController">
+<AnchorPane id="AnchorPane" prefHeight="200.0" prefWidth="679.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.DodajIgranjeController">
    <children>
-      <ComboBox fx:id="cmbPredstave" layoutX="14.0" layoutY="24.0" prefWidth="150.0" />
-      <DatePicker fx:id="dpTerminPredstave" layoutX="181.0" layoutY="24.0" promptText="izaberite termin" />
-      <Button fx:id="bDodaj" layoutX="388.0" layoutY="24.0" mnemonicParsing="false" onAction="#dodajIgranjeAction" text="Dodaj" />
-      <Button fx:id="bZavrsi" layoutX="481.0" layoutY="24.0" mnemonicParsing="false" onAction="#zavrsiDodavanjeRepertoara" text="Zavrsi" />
+      <VBox layoutX="14.0" layoutY="7.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+         <children>
+            <Label text="Dodaj igranje">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lUkloniIgranje" text="Ukloni igranje">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </VBox>
+      <VBox layoutX="125.0" layoutY="7.0" prefHeight="200.0" prefWidth="204.0" spacing="10.0">
+         <children>
+            <ComboBox fx:id="cmbPredstave" prefWidth="150.0" />
+            <ComboBox fx:id="cmbIgranjaZaRepertoar" prefWidth="150.0" />
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </VBox>
+      <HBox layoutX="302.0" layoutY="7.0" prefHeight="40.0" prefWidth="302.0" spacing="10.0">
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+         <children>
+            <DatePicker fx:id="dpTerminPredstave" promptText="izaberite termin" />
+            <Button fx:id="bDodaj" mnemonicParsing="false" onAction="#dodajIgranjeAction" text="Dodaj" />
+            <Button fx:id="bZavrsi" mnemonicParsing="false" onAction="#zavrsiDodavanjeRepertoara" text="Zavrsi" />
+         </children>
+      </HBox>
+      <HBox layoutX="302.0" layoutY="47.0" prefHeight="32.0" prefWidth="302.0">
+         <children>
+            <Button fx:id="bUkloni" mnemonicParsing="false" onAction="#ukloniPredstavuAction" text="Ukloni" />
+         </children>
+      </HBox>
    </children>
 </AnchorPane>

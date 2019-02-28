@@ -210,6 +210,7 @@ CREATE TABLE angazman
     FOREIGN KEY R_16 (idUmjetnika) REFERENCES umjetnik(idRadnik),
 	FOREIGN KEY R_17 (idPredstave) REFERENCES predstava(id),
 	FOREIGN KEY R_18 (idVrsteAngazmana) REFERENCES vrsta_angazmana(id)
+	#on delete cascade
 );
 
 

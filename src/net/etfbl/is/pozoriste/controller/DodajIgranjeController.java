@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
 import net.etfbl.is.pozoriste.model.dao.mysql.GostujucaPredstavaDAO;
@@ -48,44 +52,63 @@ import net.etfbl.is.pozoriste.model.dto.Scena;
  * @author djord
  */
 public class DodajIgranjeController implements Initializable {
-
+    
     @FXML
     private ComboBox<Object> cmbPredstave;
-
+    
     @FXML
     private DatePicker dpTerminPredstave;
-
+    
     @FXML
     private Button bDodaj;
-
+    
     @FXML
     private Button bZavrsi;
-
-
+    
+    @FXML
+    private Button bUkloni;
+    
+    @FXML
+    private ComboBox<Object> cmbIgranjaZaRepertoar;
+    @FXML
+    private Label lUkloniIgranje;
+    
+    @FXML
+    void ukloniPredstavuAction(ActionEvent event) {
+        if (!cmbIgranjaZaRepertoar.getSelectionModel().isEmpty()) {
+            Predstava predstavaIzCmb = (Predstava) cmbIgranjaZaRepertoar.getSelectionModel().getSelectedItem();
+            System.out.println("IGRANJE CMB: " + predstavaIzCmb);
+            LinkedList<Igranje> igranjeIzCmb = new LinkedList<>();
+            igranjeIzCmb.addAll(PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().filter(x -> x.getIdPredstave().equals(predstavaIzCmb.getId())).collect(Collectors.toList()));
+            //Igranje igranjeIzCMB = new Igranje(PregledSvihRepertoaraController.izabraniRepertoar.get, Integer.SIZE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE)
+            IgranjeDAO.UkloniIgranje(igranjeIzCmb.getFirst());
+        } else {
+            upozorenjeIzaberitePredstavuZaBrisati();
+        }
+    }
+    
     @FXML
     void dodajIgranjeAction(ActionEvent event) {
         if (!dodajIgranje()) {
             return;
         }
     }
-
-
-
+    
     private boolean dodajIgranje() {
-
+        
         if (cmbPredstave.getSelectionModel().isEmpty()) {
             upozorenjeIzaberitePredstavu();
             return false;
         }
-
+        
         if (dpTerminPredstave.getValue() == null) {
             upozorenjeTermin();
             return false;
         }
-
+        
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
-
+        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar kalendarRepertoar = Calendar.getInstance();
         if (dpTerminPredstave.getValue().getYear() != DodajRepertoarController.godinaRepertoara
@@ -93,14 +116,14 @@ public class DodajIgranjeController implements Initializable {
             upozorenjeTerminPredstave();
             return false;
         }
-
+        
         sdf.format(new Date(calendar.getInstance().getTimeInMillis()));
         List<Scena> scena = ScenaDAO.scene();
-
+        
         Igranje novoIgranje = new Igranje(new Date(calendar.getTimeInMillis()), scena.get(0).getIdScene(), (cmbPredstave.getSelectionModel().getSelectedItem() instanceof Predstava) ? ((Predstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, (cmbPredstave.getSelectionModel().getSelectedItem() instanceof GostujucaPredstava) ? ((GostujucaPredstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, DodajRepertoarController.repertoar.getId());
         LinkedList<Igranje> svaIgranja = new LinkedList<>();
         svaIgranja = IgranjeDAO.getIgranja(DodajRepertoarController.repertoar.getId());
-
+        
         if (!svaIgranja.stream().filter(x -> sdf.format(x.getTermin()).equals(sdf.format(novoIgranje.getTermin()))).findAny().isPresent()) {
             IgranjeDAO.dodajIgranje(novoIgranje);
             return true;
@@ -109,12 +132,12 @@ public class DodajIgranjeController implements Initializable {
             return false;
         }
     }
-
+    
     @FXML
     void nazadNaDodajRepertoar(ActionEvent event) {
         try {
             Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRepertoar.fxml"));
-
+            
             Scene dodajRadnikaScene = new Scene(adminController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(dodajRadnikaScene);
@@ -123,12 +146,12 @@ public class DodajIgranjeController implements Initializable {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     @FXML
     void zavrsiDodavanjeRepertoara(ActionEvent event) {
         try {
             Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledSvihRepertoara.fxml"));
-
+            
             Scene dodajRadnikaScene = new Scene(adminController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(dodajRadnikaScene);
@@ -137,12 +160,40 @@ public class DodajIgranjeController implements Initializable {
             Logger.getLogger(DodajIgranjeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private void ubaciUCMBPredstave() {
         cmbPredstave.getItems().addAll(PredstavaDAO.predstave());
         cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
     }
-
+    
+    private void ubaciUCMBIgranjaZaRepertoar() {
+        System.out.println("OBICNE");
+        PredstavaDAO.predstave().stream().forEach(System.out::println);
+        System.out.println("GOSTUJUCE");
+        GostujucaPredstavaDAO.gostujucePredstave().stream().forEach(System.out::println);
+        System.out.println("SVE PRED. NA IZABRANOM RPERTOARU");
+        PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().forEach(System.out::println);
+        
+        for (int i = 0; i < PredstavaDAO.predstave().size(); i++) {
+            final int pom = i;
+            if (PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream()
+                    .filter(x -> x.getIdPredstave() == PredstavaDAO.predstave().get(pom).getId()).findAny().isPresent()) {
+                System.out.println("DA: " + PredstavaDAO.predstave().get(i));
+                cmbIgranjaZaRepertoar.getItems().add(PredstavaDAO.predstave().get(i));
+            }
+        }
+        for (int i = 0; i < GostujucaPredstavaDAO.gostujucePredstave().size(); i++) {
+            
+            final int pom = i;
+            if (PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream()
+                    .filter(x -> x.getIdGostujucePredstave() == GostujucaPredstavaDAO.gostujucePredstave().get(pom).getId()).findAny().isPresent()) {
+                System.out.println("DAA: " + GostujucaPredstavaDAO.gostujucePredstave().get(i));
+                cmbIgranjaZaRepertoar.getItems().add(GostujucaPredstavaDAO.gostujucePredstave().get(i));
+            }
+        }
+        
+    }
+    
     private void upozorenjePredstavaSeVecIgraNaTajDan() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom dodavanja predstave !");
@@ -150,7 +201,7 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Termin popunjen izaberite drugi!");
         alert.showAndWait();
     }
-
+    
     private void upozorenjeTerminPredstave() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom dodavanja predstave !");
@@ -158,7 +209,7 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Pogresan termin , prilagodite igranje predstave odgovarajucem repertoaru!");
         alert.showAndWait();
     }
-
+    
     private void upozorenjeTermin() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom izbora termina !");
@@ -166,7 +217,7 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Izaberite termin");
         alert.showAndWait();
     }
-
+    
     private void upozorenjeIzaberitePredstavu() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom izbora predstave !");
@@ -174,11 +225,27 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Izaberite predstavu!");
         alert.showAndWait();
     }
-
+    
+    private void upozorenjeIzaberitePredstavuZaBrisati() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Greska prilikom izbora predstave !");
+        alert.setHeaderText(null);
+        alert.setContentText("Izaberite predstavu za brisanje!");
+        alert.showAndWait();
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ubaciUCMBPredstave();
-
+        lUkloniIgranje.setVisible(false);
+        cmbIgranjaZaRepertoar.setVisible(false);
+        bUkloni.setVisible(false);
+        if (PregledSvihRepertoaraController.izmjenaRepertoara) {
+            lUkloniIgranje.setVisible(true);
+            cmbIgranjaZaRepertoar.setVisible(true);
+            bUkloni.setVisible(true);
+            ubaciUCMBIgranjaZaRepertoar();
+        }
     }
-
+    
 }
