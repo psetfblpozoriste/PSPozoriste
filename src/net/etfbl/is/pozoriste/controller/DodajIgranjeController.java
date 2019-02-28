@@ -109,10 +109,15 @@ public class DodajIgranjeController implements Initializable {
             upozorenjeTermin();
             return false;
         }
-
+        Calendar trenutni = Calendar.getInstance();
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
-
+        
+        if(calendar.before(trenutni)){
+            upozorenjeTermin();
+            return false;
+        }
+        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar kalendarRepertoar = Calendar.getInstance();
         if (dpTerminPredstave.getValue().getYear() != DodajRepertoarController.godinaRepertoara
