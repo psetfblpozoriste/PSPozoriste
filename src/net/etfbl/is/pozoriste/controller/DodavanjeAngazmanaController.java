@@ -144,8 +144,11 @@ public class DodavanjeAngazmanaController implements Initializable {
             osvjeziTabelu();
             izmjena = false;
             datePickerDatumDo.setVisible(false);
-            buttonIzmijeni.setVisible(true);
-
+            buttonIzmijeni.setVisible(false);
+            tableAngazmani.setDisable(false);
+            comboBoxUmjetnik.setDisable(false);
+            comboBoxVrstaAngazmana.setDisable(false);
+            datePickerDatumOd.setDisable(false);
         }
     }
 
@@ -157,16 +160,17 @@ public class DodavanjeAngazmanaController implements Initializable {
         Angazman izabraniAngazman = (Angazman) izabranaVrsta.get(0);
         if (izabraniAngazman != null) {
             izmjena = true;
-            datePickerDatumDo.setVisible(true);
-            buttonIzmijeni.setVisible(false);
-
+            tableAngazmani.setDisable(true);
             comboBoxUmjetnik.setValue(izabraniAngazman.getIme() + " " + izabraniAngazman.getPrezime());
-            comboBoxUmjetnik.setEditable(false);
+            comboBoxUmjetnik.setDisable(true);
             comboBoxVrstaAngazmana.setValue(izabraniAngazman.getVrstaAngazmana());
-            comboBoxVrstaAngazmana.setEditable(false);
+            comboBoxVrstaAngazmana.setDisable(true);
             LocalDate l = izabraniAngazman.getDatumOd().toLocalDate();
             datePickerDatumOd.setValue(l);
-            datePickerDatumOd.setEditable(false);
+            datePickerDatumOd.setDisable(true);
+
+            datePickerDatumDo.setVisible(true);
+            buttonIzmijeni.setVisible(false);
 
         } else {
             upozorenjeSelekcijeTabele();
@@ -176,7 +180,34 @@ public class DodavanjeAngazmanaController implements Initializable {
 
     @FXML
     void dodajVrstuAngazmanaAction(ActionEvent event) {
-
+        ((Stage) tableAngazmani.getScene().getWindow()).getScene().getRoot().getChildrenUnmodifiable().forEach(e -> e.setDisable(true));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/net/etfbl/is/pozoriste/view/DodavanjeVrsteAngazmana.fxml"));
+        DodavanjeVrsteAngazmanaController dodajVrstuAngazmana = null;
+        loader.setController(dodajVrstuAngazmana);
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(DodavanjeAngazmanaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setTitle("Dodaj vrstu angazmana");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            ((Stage) tableAngazmani.getScene().getWindow()).getScene().getRoot().getChildrenUnmodifiable().forEach(k -> k.setDisable(false));
+            vrste.clear();
+            vrste.addAll(VrstaAngazmanaDAO.vrsteAngazmana());
+            ObservableList<String> pomocni = FXCollections.observableArrayList();
+            vrste.forEach((v) -> {
+                pomocni.add(v.getNaziv());
+            });
+            comboBoxVrstaAngazmana.getItems().removeAll(comboBoxVrstaAngazmana.getItems());
+            comboBoxVrstaAngazmana.setItems(pomocni);
+        });
+        DodavanjeVrsteAngazmanaController.setDjeca(((Stage) tableAngazmani.getScene().getWindow()).getScene().getRoot().getChildrenUnmodifiable());
+        stage.show();
     }
 
     @FXML

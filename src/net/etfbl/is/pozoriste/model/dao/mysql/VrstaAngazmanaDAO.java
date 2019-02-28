@@ -1,7 +1,9 @@
 
 package net.etfbl.is.pozoriste.model.dao.mysql;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,5 +48,29 @@ public class VrstaAngazmanaDAO {
             }
         }
         return angazmani;
+    }
+    
+    public static void dodajAngazman(String naziv){
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call dodavanjeVrstaAngazmana(?)}");
+            callableStatement.setString(1, naziv);
+            callableStatement.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(VrstaAngazmanaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(VrstaAngazmanaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 }

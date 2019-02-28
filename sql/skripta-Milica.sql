@@ -57,9 +57,19 @@ begin
 end$$
 delimiter ;
 
+drop procedure if exists azuriranjeAngazmana;
+delimiter $$
+create procedure azuriranjeAngazmana (in idVrsteAngazmana int,in idPredstave int,in idUmjetnika int, in datumOd date,in datumDo date)
+begin
+	update angazman
+    set angazman.datumDo=datumDo
+    where angazman.idVrsteAngazmana=idVrsteAngazmana and angazman.idPredstave=idPredstave and angazman.idUmjetnika=idUmjetnika and angazman.datumOd=datumOd;
+end$$
+delimiter ;
 
 insert into vrsta_angazmana values(0,"Glumac");
 insert into vrsta_angazmana values(0,"Reziser");
 insert into vrsta_angazmana values(0,"Sufler");
 insert into angazman values(curdate(),null,5,1,1);
 call dodavanjeAngazmana(1,6,1,curdate());
+call azuriranjeAngazmana(1,6,1,curdate(),curdate());
