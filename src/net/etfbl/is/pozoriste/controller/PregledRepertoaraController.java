@@ -202,7 +202,7 @@ public class PregledRepertoaraController implements Initializable {
     private void pregledRepertoara(Label label, Label vrijeme) {
         Igranje zeljenoIgranje = null;
         try {
-            predstavaSaKojomRadim = label.getText().split(" ")[0];
+            predstavaSaKojomRadim = label.getText();
             // String string = label.getText().split(" ")[Arrays.asList(label.getText().split(" ")).size() - 1];
             String string = vrijeme.getText();
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm", Locale.GERMANY);
