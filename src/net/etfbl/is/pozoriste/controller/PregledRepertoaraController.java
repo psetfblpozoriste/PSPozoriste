@@ -112,13 +112,11 @@ public class PregledRepertoaraController implements Initializable {
             PredstavaDAO.predstave().stream().forEach(e -> {
                 if (nadji.stream().filter(p -> p == e.getId()).findFirst().isPresent()) {
                     predstave.add(e);
-                    System.out.println(e);
                 }
             });
             GostujucaPredstavaDAO.gostujucePredstave().stream().forEach(e -> {
                 if (nadji.stream().filter(p -> p == e.getId()).findFirst().isPresent()) {
                     gostujuce.add(e);
-                    System.out.println(e);
                 }
             });
             repertoarZaPrikaz.getIgranja().sort(Comparator.comparing(e -> e.getTermin()));
@@ -153,12 +151,12 @@ public class PregledRepertoaraController implements Initializable {
                 }
                 Label nazivLabel = new Label(stringZaPrikaz);
                 nazivLabel.setId(i.toString());
-                setLabel(nazivLabel,vrijeme);
+                setLabel(nazivLabel, vrijeme);
                 hBox.setMinWidth(900);
                 hBox.getChildren().add(nazivLabel);
                 hBox.getChildren().add(vrijeme);
                 if ("Biletar".equals(LogInController.tipKorisnika)) {
-                    labelSetAction(nazivLabel,vrijeme);
+                    labelSetAction(nazivLabel, vrijeme);
                 }
                 vBox.getChildren().add(hBox);
             }
@@ -167,18 +165,20 @@ public class PregledRepertoaraController implements Initializable {
             scrollPane.setContent(vBox);
 
         } else {
-            Platform.runLater(() -> {
-                try {
-                    TimeUnit.MILLISECONDS.sleep(1000);
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Za " + (new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime())) + " nije unjet repertoar", ButtonType.OK);
-                    alert.setTitle("Upozorenje");
-                    alert.setHeaderText("Upozorenje");
-                    ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
-                    alert.showAndWait();;
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(PregledRepertoaraController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
+            if (!repertoarZaPrikaz.getIgranja().isEmpty()) {
+                Platform.runLater(() -> {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(1000);
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Za " + (new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime())) + " nije unjet repertoar", ButtonType.OK);
+                        alert.setTitle("Upozorenje");
+                        alert.setHeaderText("Upozorenje");
+                        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
+                        alert.showAndWait();;
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PregledRepertoaraController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+            }
         }
     }
 

@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -140,7 +141,7 @@ public class IzvjestajProdatihKarataController {
         Font font = new Font(baseFont);
 
         // Paragraph subPara = new Paragraph("Subcategory 1    ŠŠŠŠ Đ ĐĐ Š Č Ć ŠŠŽŽ  đ ć ", font);
-        List<Repertoar> listaRepertoara = RepertoarDAO.repertoars();
+        List<Repertoar> listaRepertoara = RepertoarDAO.repertoars().stream().sorted(Comparator.comparing(e -> e.getMjesecIGodina())).collect(Collectors.toList());
         List<Predstava> listaPredstava = PredstavaDAO.predstave();
         List<GostujucaPredstava> gostujucePredstava = GostujucaPredstavaDAO.gostujucePredstave();
 
