@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -84,6 +85,7 @@ public class DodajIgranjeController implements Initializable {
             igranjeIzCmb.addAll(PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().filter(x -> x.getIdPredstave().equals(predstavaIzCmb.getId())).collect(Collectors.toList()));
             //Igranje igranjeIzCMB = new Igranje(PregledSvihRepertoaraController.izabraniRepertoar.get, Integer.SIZE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE)
             IgranjeDAO.UkloniIgranje(igranjeIzCmb.getFirst());
+            obavjestenjePredstavaUspjesnoUklonjena();
         } else {
             upozorenjeIzaberitePredstavuZaBrisati();
         }
@@ -128,7 +130,9 @@ public class DodajIgranjeController implements Initializable {
 
         if (!svaIgranja.stream().filter(x -> sdf.format(x.getTermin()).equals(sdf.format(novoIgranje.getTermin()))).findAny().isPresent()) {
             IgranjeDAO.dodajIgranje(novoIgranje);
+            obavjestenjePredstavaUspjesnoDodata();
             return true;
+
         } else {
             upozorenjePredstavaSeVecIgraNaTajDan();
             return false;
@@ -164,9 +168,16 @@ public class DodajIgranjeController implements Initializable {
     }
 
     private void ubaciUCMBPredstave() {
+        
+        
         cmbPredstave.getItems().addAll(PredstavaDAO.predstave());
         cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
     }
+    
+   // private void magija(Igranje ){
+   //     HashMap<Predstava,Date> mapa = new HashMap<>();
+   //     HashMap<GostujucaPredstava,Date> mapaG = new HashMap<>();
+  //  }
 
     private void ubaciUCMBIgranjaZaRepertoar() {
 
@@ -193,7 +204,23 @@ public class DodajIgranjeController implements Initializable {
 
         cmbIgranjaZaRepertoar.getItems().addAll(predstave);
         cmbIgranjaZaRepertoar.getItems().addAll(gostujuce);
-   
+
+    }
+
+    private void obavjestenjePredstavaUspjesnoDodata() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Uspjesno uklanjanje predstave!");
+        alert.setHeaderText(null);
+        alert.setContentText("Uspjesno dodana predstave!");
+        alert.showAndWait();
+    }
+
+    private void obavjestenjePredstavaUspjesnoUklonjena() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Uspjesno uklanjanje predstave!");
+        alert.setHeaderText(null);
+        alert.setContentText("Uspjesno uklanjanje predstave!");
+        alert.showAndWait();
     }
 
     private void upozorenjePredstavaSeVecIgraNaTajDan() {

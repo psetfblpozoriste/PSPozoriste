@@ -31,5 +31,7 @@
                </VBox.margin></Button>
          </children>
       </VBox>
+      <Label fx:id="lKorisnik" layoutX="48.0" layoutY="97.0" prefHeight="25.0" prefWidth="28.0" />
+      <Label fx:id="lSifra" layoutX="48.0" layoutY="161.0" prefHeight="25.0" prefWidth="28.0" />
    </children>
 </AnchorPane>

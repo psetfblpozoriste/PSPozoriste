@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import net.etfbl.is.pozoriste.model.dao.mysql.ConnectionPool;
 
 /**
@@ -37,6 +38,8 @@ public class AdminController implements Initializable {
 
     @FXML // fx:id="buttonStatistika"
     private Button buttonStatistika; // Value injected by FXMLLoader
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -49,18 +52,16 @@ public class AdminController implements Initializable {
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         directoryChooser.setTitle("Izaberite lokaciju izvjestaja");
         File folder = directoryChooser.showDialog((Stage) buttonStatistika.getScene().getWindow());
-        if (folder != null) {
-            IzvjestajProdatihKarataController k = new IzvjestajProdatihKarataController(folder);
-            k.metoda();
-        }
+        IzvjestajProdatihKarataController k = new IzvjestajProdatihKarataController(folder);
+        k.metoda();
     }
 
     public void PregledRadnikaAction(ActionEvent event) {
         try {
             Parent radnikController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRadnika.fxml"));
-
             Scene radnikScene = new Scene(radnikController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setTitle("Radnici");
             window.setScene(radnikScene);
 
             /* Screen screen = Screen.getPrimary();
@@ -94,6 +95,7 @@ public class AdminController implements Initializable {
 
             Scene repertoarScene = new Scene(repertoarController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setTitle("Repertoar");
             window.setScene(repertoarScene);
             window.setResizable(false);
             window.show();
@@ -108,6 +110,7 @@ public class AdminController implements Initializable {
 
             Scene predstavaScene = new Scene(predstavaController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setTitle("Predstave");
             window.setScene(predstavaScene);
             window.show();
         } catch (IOException ex) {
