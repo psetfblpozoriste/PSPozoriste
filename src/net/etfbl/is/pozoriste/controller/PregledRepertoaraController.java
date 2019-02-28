@@ -182,7 +182,7 @@ public class PregledRepertoaraController implements Initializable {
                 Platform.runLater(() -> {
                     try {
                         TimeUnit.MILLISECONDS.sleep(750);
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Za " + (new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime())) + " nisu unjeta igranja", ButtonType.OK);
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Igranja nisu unjeta za ovaj repertoar", ButtonType.OK);
                         alert.setTitle("Upozorenje");
                         alert.setHeaderText("Upozorenje");
                         ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
