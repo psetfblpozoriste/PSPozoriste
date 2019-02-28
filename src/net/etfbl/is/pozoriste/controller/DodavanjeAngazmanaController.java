@@ -1,13 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.etfbl.is.pozoriste.controller;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -22,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -38,11 +36,6 @@ import net.etfbl.is.pozoriste.model.dto.Predstava;
 import net.etfbl.is.pozoriste.model.dto.Umjetnik;
 import net.etfbl.is.pozoriste.model.dto.VrstaAngazmana;
 
-/**
- * FXML Controller class
- *
- * @author Tanja
- */
 public class DodavanjeAngazmanaController implements Initializable {
 
     @FXML
@@ -80,10 +73,10 @@ public class DodavanjeAngazmanaController implements Initializable {
 
     @FXML
     private Label labelUmjetnik;
-    
+
     @FXML
     private Button buttonDodajVrstuAngazmana;
-    
+
     @FXML
     private TableColumn<Angazman, String> imeColumn;
     @FXML
@@ -95,16 +88,16 @@ public class DodavanjeAngazmanaController implements Initializable {
     @FXML
     private TableColumn<Angazman, Date> datumDoColumn;
 
-    
     public static ObservableList<Angazman> angazmani = FXCollections.observableArrayList();
     public static ObservableList<Umjetnik> umjetnici = FXCollections.observableArrayList();
     public static ObservableList<VrstaAngazmana> vrste = FXCollections.observableArrayList();
-    private boolean izmjena=false;
+    private boolean izmjena = false;
     private static Predstava predstava;
-    public static void setPredstava(Predstava p){
-        predstava=p;
+
+    public static void setPredstava(Predstava p) {
+        predstava = p;
     }
-    
+
     private void ubaciKoloneUTabeluAngazmana(ObservableList angazmani) {
         imeColumn = new TableColumn("Ime");
         imeColumn.setCellValueFactory(new PropertyValueFactory<>("ime"));
@@ -117,41 +110,75 @@ public class DodavanjeAngazmanaController implements Initializable {
 
         datumOdColumn = new TableColumn("Datum od");
         datumOdColumn.setCellValueFactory(new PropertyValueFactory<>("datumOd"));
-        
+
         datumDoColumn = new TableColumn("Datum do");
         datumDoColumn.setCellValueFactory(new PropertyValueFactory<>("datumDo"));
 
-        
         tableAngazmani.setItems(angazmani);
-        tableAngazmani.getColumns().addAll(imeColumn,prezimeColumn,vrstaAngazmanaColumn,datumOdColumn,datumDoColumn);
+        tableAngazmani.getColumns().addAll(imeColumn, prezimeColumn, vrstaAngazmanaColumn, datumOdColumn, datumDoColumn);
     }
-    
+
     @FXML
     void dodajAction(ActionEvent event) {
+        if (!izmjena) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(datePickerDatumOd.getValue().getYear(), datePickerDatumOd.getValue().getMonthValue() - 1, datePickerDatumOd.getValue().getDayOfMonth());
 
+            if (((comboBoxUmjetnik.getSelectionModel().getSelectedIndex()) < 0) || ((comboBoxVrstaAngazmana.getSelectionModel().getSelectedIndex()) < 0)) {
+                upozorenjeSelekcije();
+            } else {
+                AngazmanDAO.dodajAngazman(predstava.getId(), umjetnici.get(comboBoxUmjetnik.getSelectionModel().getSelectedIndex()).getIdRadnika(),
+                        vrste.get(comboBoxVrstaAngazmana.getSelectionModel().getSelectedIndex()).getId(), new Date(calendar.getTimeInMillis()));
+
+                osvjeziTabelu();
+
+            }
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            Calendar calendar1 = Calendar.getInstance();
+            calendar.set(datePickerDatumOd.getValue().getYear(), datePickerDatumOd.getValue().getMonthValue() - 1, datePickerDatumOd.getValue().getDayOfMonth());
+            calendar1.set(datePickerDatumDo.getValue().getYear(), datePickerDatumDo.getValue().getMonthValue() - 1, datePickerDatumDo.getValue().getDayOfMonth());
+
+            AngazmanDAO.azurirajAngazman(predstava.getId(), umjetnici.get(comboBoxUmjetnik.getSelectionModel().getSelectedIndex()).getIdRadnika(),
+                    vrste.get(comboBoxVrstaAngazmana.getSelectionModel().getSelectedIndex()).getId(), new Date(calendar.getTimeInMillis()), new Date(calendar1.getTimeInMillis()));
+            osvjeziTabelu();
+            izmjena = false;
+            datePickerDatumDo.setVisible(false);
+            buttonIzmijeni.setVisible(true);
+
+        }
     }
 
     @FXML
     void izmijeniAction(ActionEvent event) {
-        izmjena=true;
-        
-        labelDatumDo.setVisible(true);
-        datePickerDatumDo.setVisible(true);
-        
-        labelUmjetnik.setVisible(false);
-        comboBoxUmjetnik.setVisible(false);
-        labelVrstaAngazmana.setVisible(false);
-        comboBoxVrstaAngazmana.setVisible(false);
-        labelDatumOd.setVisible(false);
-        datePickerDatumOd.setVisible(false);
-        
+        ObservableList<Angazman> izabranaVrsta, angazmaniObservableList;
+        angazmaniObservableList = tableAngazmani.getItems();
+        izabranaVrsta = tableAngazmani.getSelectionModel().getSelectedItems();
+        Angazman izabraniAngazman = (Angazman) izabranaVrsta.get(0);
+        if (izabraniAngazman != null) {
+            izmjena = true;
+            datePickerDatumDo.setVisible(true);
+            buttonIzmijeni.setVisible(false);
+
+            comboBoxUmjetnik.setValue(izabraniAngazman.getIme() + " " + izabraniAngazman.getPrezime());
+            comboBoxUmjetnik.setEditable(false);
+            comboBoxVrstaAngazmana.setValue(izabraniAngazman.getVrstaAngazmana());
+            comboBoxVrstaAngazmana.setEditable(false);
+            LocalDate l = izabraniAngazman.getDatumOd().toLocalDate();
+            datePickerDatumOd.setValue(l);
+            datePickerDatumOd.setEditable(false);
+
+        } else {
+            upozorenjeSelekcijeTabele();
+        }
+
     }
 
     @FXML
     void dodajVrstuAngazmanaAction(ActionEvent event) {
-        
+
     }
-    
+
     @FXML
     void okAction(ActionEvent event) {
         try {
@@ -165,31 +192,52 @@ public class DodavanjeAngazmanaController implements Initializable {
             Logger.getLogger(DodavanjeAngazmanaController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         labelDatumDo.setVisible(false);
         datePickerDatumDo.setVisible(false);
-        
+
         umjetnici.addAll(UmjetnikDAO.umjetnici());
         ObservableList<String> pomocno = FXCollections.observableArrayList();
-        for(Umjetnik u:umjetnici){
-            String pom=u.getIme()+" "+u.getPrezime();
+        umjetnici.stream().map((u) -> u.getIme() + " " + u.getPrezime()).forEachOrdered((pom) -> {
             pomocno.add(pom);
-        }
+        });
         comboBoxUmjetnik.getItems().removeAll(comboBoxUmjetnik.getItems());
         comboBoxUmjetnik.setItems(pomocno);
-        
+
         vrste.addAll(VrstaAngazmanaDAO.vrsteAngazmana());
         ObservableList<String> pomocni = FXCollections.observableArrayList();
-        for(VrstaAngazmana v:vrste){
+        vrste.forEach((v) -> {
             pomocni.add(v.getNaziv());
-        }
+        });
         comboBoxVrstaAngazmana.getItems().removeAll(comboBoxVrstaAngazmana.getItems());
         comboBoxVrstaAngazmana.setItems(pomocni);
-        
+
+        angazmani.clear();
         angazmani.addAll(AngazmanDAO.angazmani(predstava));
         ubaciKoloneUTabeluAngazmana(angazmani);
-        
-    }    
-    
+
+    }
+
+    private void osvjeziTabelu() {
+        angazmani.clear();
+        angazmani.addAll(AngazmanDAO.angazmani(predstava));
+        tableAngazmani.setItems(angazmani);
+    }
+
+    private void upozorenjeSelekcije() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText("Izaberite umjetnika i vrstu angazmana!");
+        alert.showAndWait();
+    }
+
+    private void upozorenjeSelekcijeTabele() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText("Izaberite angazman!");
+        alert.showAndWait();
+    }
+
 }

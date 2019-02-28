@@ -7,6 +7,7 @@ package net.etfbl.is.pozoriste.model.dao.mysql;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -40,7 +41,7 @@ public class AngazmanDAO {
                 angazmani.add(angazman);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(BIletarDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AngazmanDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (connection != null) {
                 ConnectionPool.getInstance().checkIn(connection);
@@ -56,5 +57,58 @@ public class AngazmanDAO {
         return angazmani;
     }
     
+    public static void dodajAngazman(Integer idPredstave,Integer idUmjetnika,Integer idVrstaAngazmana,Date datumOd){
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call dodavanjeAngazmana(?,?,?,?)}");
+            callableStatement.setInt(1, idPredstave);
+            callableStatement.setInt(2, idUmjetnika);
+            callableStatement.setInt(3, idVrstaAngazmana);
+            callableStatement.setDate(4, datumOd);
+            callableStatement.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(AngazmanDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AngazmanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
     
+    public static void azurirajAngazman(Integer idPredstave,Integer idUmjetnika,Integer idVrstaAngazmana,Date datumOd,Date datumDo){
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        try {
+            connection = ConnectionPool.getInstance().checkOut();
+            callableStatement = connection.prepareCall("{call azuriranjeAngazmana(?,?,?,?,?)}");
+            callableStatement.setInt(1, idPredstave);
+            callableStatement.setInt(2, idUmjetnika);
+            callableStatement.setInt(3, idVrstaAngazmana);
+            callableStatement.setDate(4, datumOd);
+            callableStatement.setDate(5, datumDo);
+            callableStatement.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(AngazmanDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (connection != null) {
+                ConnectionPool.getInstance().checkIn(connection);
+            }
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AngazmanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }

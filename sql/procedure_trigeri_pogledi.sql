@@ -478,7 +478,7 @@ delimiter $$
 create procedure azuriranjeAngazmana (in idVrsteAngazmana int,in idPredstave int,in idUmjetnika int, in datumOd date,in datumDo date)
 begin
 	update angazman
-    set angazman.idVrsteAngazmana=idVrsteAngazmana,angazman.idPredstave=idPredstave,angazman.idUmjetnika=idUmjetnika,angazman.datumDo=datumDo,angazman.datumOd=datumOd
+    set angazman.datumDo=datumDo
     where angazman.idVrsteAngazmana=idVrsteAngazmana and angazman.idPredstave=idPredstave and angazman.idUmjetnika=idUmjetnika
     and angazman.datumOd=datumOd;
 end$$
