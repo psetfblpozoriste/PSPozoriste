@@ -138,17 +138,21 @@ public class DodavanjeAngazmanaController implements Initializable {
             Calendar calendar1 = Calendar.getInstance();
             calendar.set(datePickerDatumOd.getValue().getYear(), datePickerDatumOd.getValue().getMonthValue() - 1, datePickerDatumOd.getValue().getDayOfMonth());
             calendar1.set(datePickerDatumDo.getValue().getYear(), datePickerDatumDo.getValue().getMonthValue() - 1, datePickerDatumDo.getValue().getDayOfMonth());
+            if (calendar1.after(calendar)) {
+                AngazmanDAO.azurirajAngazman(predstava.getId(), umjetnici.get(comboBoxUmjetnik.getSelectionModel().getSelectedIndex()).getIdRadnika(),
+                        vrste.get(comboBoxVrstaAngazmana.getSelectionModel().getSelectedIndex()).getId(), new Date(calendar.getTimeInMillis()), new Date(calendar1.getTimeInMillis()));
+                osvjeziTabelu();
+                izmjena = false;
+                datePickerDatumDo.setVisible(false);
+                buttonIzmijeni.setVisible(false);
+                tableAngazmani.setDisable(false);
+                comboBoxUmjetnik.setDisable(false);
+                comboBoxVrstaAngazmana.setDisable(false);
+                datePickerDatumOd.setDisable(false);
+            } else {
+                upozorenjeDate();
+            }
 
-            AngazmanDAO.azurirajAngazman(predstava.getId(), umjetnici.get(comboBoxUmjetnik.getSelectionModel().getSelectedIndex()).getIdRadnika(),
-                    vrste.get(comboBoxVrstaAngazmana.getSelectionModel().getSelectedIndex()).getId(), new Date(calendar.getTimeInMillis()), new Date(calendar1.getTimeInMillis()));
-            osvjeziTabelu();
-            izmjena = false;
-            datePickerDatumDo.setVisible(false);
-            buttonIzmijeni.setVisible(false);
-            tableAngazmani.setDisable(false);
-            comboBoxUmjetnik.setDisable(false);
-            comboBoxVrstaAngazmana.setDisable(false);
-            datePickerDatumOd.setDisable(false);
         }
     }
 
@@ -275,11 +279,16 @@ public class DodavanjeAngazmanaController implements Initializable {
         alert.setContentText("Izaberite umjetnika i vrstu angazmana!");
         alert.showAndWait();
     }
-
+    private void upozorenjeDate() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText("Izabrani datum nije tacan!");
+        alert.showAndWait();
+    }
     private void upozorenjeSelekcijeTabele() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(null);
-        alert.setContentText("Izaberite angazman!");
+        alert.setContentText("Selektujte angazman!");
         alert.showAndWait();
     }
 
