@@ -191,7 +191,7 @@ public class PregledRepertoaraController implements Initializable {
         try {
             predstavaSaKojomRadim = label.getText().split(" ")[0];
             // String string = label.getText().split(" ")[Arrays.asList(label.getText().split(" ")).size() - 1];
-            String string = label.getText();
+            String string = vrijeme.getText();
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm", Locale.GERMANY);
             Date date = format.parse(string);
             zeljenoIgranje = repertoarZaPrikaz.getIgranja().stream().filter(e -> e.getTermin().equals(date)).findFirst().get();
@@ -266,7 +266,7 @@ public class PregledRepertoaraController implements Initializable {
                 if (((MouseEvent) event).getClickCount() == 2) {
                     Optional<Node> hOpt = vBox.getChildren().stream().filter(e -> e.getId().equals(label.getId())).findFirst();
                     if (hOpt.isPresent()) {
-                        pregledRepertoara((Label) ((HBox) hOpt.get()).getChildren().get(1), (Label) ((HBox) hOpt.get()).getChildren().get(0));
+                        pregledRepertoara((Label) ((HBox) hOpt.get()).getChildren().get(0), (Label) ((HBox) hOpt.get()).getChildren().get(1));
                     }
                 }
             }

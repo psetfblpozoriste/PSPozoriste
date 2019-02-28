@@ -22,6 +22,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -60,18 +61,15 @@ public class IzvjestajProdatihKarataController {
 
     public IzvjestajProdatihKarataController(File file) {
         File temp = null;
-        File tempPravo = null;
         try {
-            temp = new File(file.getAbsolutePath() + File.separator + "Izvjestaj"+Calendar.getInstance().getTime().toString().replace(".", "_").replace(":", "_")+".pdf");
+            temp = new File(file.getAbsolutePath() + File.separator + "Izvjestaj" + new SimpleDateFormat("yyyy:MM:dd_hh:mm:ss").format(Calendar.getInstance().getTime()).replace(".", "_").replace(":", "_") + ".pdf");
             if (!temp.exists()) {
-                tempPravo = new File(file.getAbsolutePath() + File.separator + temp.getName().substring(0, temp.getName().length() - 4) + "(1)"+Calendar.getInstance().getTime().toString().replace(".", "_").replace(":", "_")+".pdf");
-                tempPravo.createNewFile();
-                this.file = tempPravo;
-            } else {
                 temp.createNewFile();
                 this.file = temp;
+            } else {
+                this.file = temp;
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(IzvjestajProdatihKarataController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -146,10 +144,13 @@ public class IzvjestajProdatihKarataController {
         List<Predstava> listaPredstava = PredstavaDAO.predstave();
         List<GostujucaPredstava> gostujucePredstava = GostujucaPredstavaDAO.gostujucePredstave();
 
-        Font fontNaziva = new Font(FontFamily.HELVETICA, 18, Font.BOLD);
+        Font fontNaziva = new Font(FontFamily.HELVETICA, 24, Font.BOLD);
         Paragraph nazivIzvjestaja = new Paragraph("STATISTIKA PRODATIH KARATA", fontNaziva);
         nazivIzvjestaja.setAlignment(Paragraph.ALIGN_CENTER);
         document.newPage();
+        for (int i = 0; i < 15; i++) {
+            document.add(new Paragraph(" "));
+        }
         document.add(nazivIzvjestaja);
 
         PdfPTable table = new PdfPTable(5);//broj kolona imace 4 kolone
@@ -178,13 +179,11 @@ public class IzvjestajProdatihKarataController {
                     optPredtsva = listaPredstava.stream().filter(e -> e.getId() == igranje.getIdPredstave()).findFirst();
                     if (optPredtsva.isPresent()) {
                         naziv = optPredtsva.get().getNaziv();
-                        System.out.println("dodao obicnu predstavu");
                     }
                 } else if (igranje.getIdGostujucePredstave() != 0) {
                     optGostujuca = gostujucePredstava.stream().filter(e -> e.getId() == igranje.getIdGostujucePredstave()).findFirst();
                     if (optGostujuca.isPresent()) {
                         naziv = optGostujuca.get().getNaziv();
-                        System.out.println("dodao gostujucu");
                     }
                 }
                 PdfPCell celija2 = new PdfPCell(new Phrase("Repertoar " + p.getMjesecIGodina().toString(), font));
