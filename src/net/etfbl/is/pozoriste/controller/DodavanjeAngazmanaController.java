@@ -245,6 +245,7 @@ public class DodavanjeAngazmanaController implements Initializable {
         labelDatumDo.setVisible(false);
         datePickerDatumDo.setVisible(false);
 
+        umjetnici.clear();
         umjetnici.addAll(UmjetnikDAO.umjetnici());
         ObservableList<String> pomocno = FXCollections.observableArrayList();
         umjetnici.stream().map((u) -> u.getIme() + " " + u.getPrezime()).forEachOrdered((pom) -> {
@@ -253,6 +254,7 @@ public class DodavanjeAngazmanaController implements Initializable {
         comboBoxUmjetnik.getItems().removeAll(comboBoxUmjetnik.getItems());
         comboBoxUmjetnik.setItems(pomocno);
 
+        vrste.clear();
         vrste.addAll(VrstaAngazmanaDAO.vrsteAngazmana());
         ObservableList<String> pomocni = FXCollections.observableArrayList();
         vrste.forEach((v) -> {

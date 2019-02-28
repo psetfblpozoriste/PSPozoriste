@@ -182,6 +182,7 @@ public class PregledPredstavaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tipovi.clear();
         tipovi.addAll("Predstava", "Gostujuca predstava");
         comboBoxTip.setItems(tipovi);
         textAreaOpisPredstave.setEditable(false);
