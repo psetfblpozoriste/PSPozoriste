@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.AdminController">
+<AnchorPane id="AnchorPane" prefHeight="550.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.AdminController">
    <children>
-      <VBox layoutX="290.0" layoutY="147.0" prefHeight="220.0" prefWidth="171.0" spacing="15.0">
+      <VBox layoutX="190.0" layoutY="127.0" prefHeight="314.0" prefWidth="201.0" spacing="15.0" AnchorPane.bottomAnchor="108.60000000000002" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="190.39999999999998" AnchorPane.topAnchor="127.0">
          <children>
-            <Button fx:id="bPregledPredstave" mnemonicParsing="false" onAction="#PregledPredstavaAction" prefHeight="46.0" prefWidth="170.0" text="Pregled predstava" />
-            <Button fx:id="bPregledRepertoara" mnemonicParsing="false" onAction="#PregledRepertoaraAction" prefHeight="44.0" prefWidth="174.0" text="Pregled repertoara" />
-            <Button fx:id="bPregledRadnika" mnemonicParsing="false" onAction="#PregledRadnikaAction" prefHeight="42.0" prefWidth="173.0" text="Pregled radnika" />
-            <Button fx:id="buttonStatistika" mnemonicParsing="false" prefHeight="41.0" prefWidth="174.0" text="Statistika" />
+            <Button fx:id="bPregledPredstave" mnemonicParsing="false" onAction="#PregledPredstavaAction" prefHeight="60.0" prefWidth="200.0" text="Pregled predstava" />
+            <Button fx:id="bPregledRepertoara" mnemonicParsing="false" onAction="#PregledRepertoaraAction" prefHeight="60.0" prefWidth="200.0" text="Pregled repertoara" />
+            <Button fx:id="bPregledRadnika" mnemonicParsing="false" onAction="#PregledRadnikaAction" prefHeight="60.0" prefWidth="200.0" text="Pregled radnika" />
+            <Button fx:id="buttonStatistika" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" text="Statistika" />
          </children>
          <opaqueInsets>
             <Insets />

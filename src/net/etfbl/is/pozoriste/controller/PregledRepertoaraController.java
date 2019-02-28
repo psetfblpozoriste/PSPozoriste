@@ -19,11 +19,13 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.application.Platform;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -81,6 +83,8 @@ public class PregledRepertoaraController implements Initializable {
 
     private static Repertoar repertoarZaPrikaz;
 
+    private VBox vBox = null;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (!"Administrator".equals(LogInController.tipKorisnika)) {
@@ -101,7 +105,7 @@ public class PregledRepertoaraController implements Initializable {
         buttonNazad.setOnAction(e -> buttonSetAction());
 
         if (repertoarZaPrikaz != null && !repertoarZaPrikaz.getIgranja().isEmpty()) {
-            VBox vBox = new VBox();
+            vBox = new VBox();
             final LinkedList<Predstava> predstave = new LinkedList<>();
             final LinkedList<GostujucaPredstava> gostujuce = new LinkedList<>();
             List<Integer> nadji = repertoarZaPrikaz.getIgranja().stream().mapToInt(e -> (e.getIdPredstave() != 0 ? e.getIdPredstave() : e.getIdGostujucePredstave())).boxed().collect(Collectors.toList());
@@ -120,44 +124,53 @@ public class PregledRepertoaraController implements Initializable {
             repertoarZaPrikaz.getIgranja().sort(Comparator.comparing(e -> e.getTermin()));
 
             for (Integer i = 0; i < repertoarZaPrikaz.getIgranja().size(); i++) {
+                HBox hBox = new HBox();
+                Label vrijeme = new Label();
+                vrijeme.setId(i.toString());
+                hBox.setId(i.toString());
+
                 final Igranje igranje = repertoarZaPrikaz.getIgranja().get(i);
                 String stringZaPrikaz = "";
                 if (igranje.getIdPredstave() != 0) {
                     stringZaPrikaz += predstave.stream().filter(e -> e.getId() == igranje.getIdPredstave()).findFirst().get().getNaziv();
-                    String[] empty = new String[115 - stringZaPrikaz.length()];
-                    Arrays.fill(empty, " ");
-                    stringZaPrikaz += Arrays.asList(empty).stream().collect(Collectors.joining(""));
+                    // String[] empty = new String[135 - stringZaPrikaz.length()];
+                    //Arrays.fill(empty, " ");
+                    //stringZaPrikaz += Arrays.asList(empty).stream().collect(Collectors.joining(""));
+                    // SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
+                    // stringZaPrikaz += format.format(igranje.getTermin());
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
-                    stringZaPrikaz += format.format(igranje.getTermin());
+                    vrijeme.setText(format.format(igranje.getTermin()));
                 }
                 if (igranje.getIdGostujucePredstave() != 0) {
                     stringZaPrikaz += gostujuce.stream().filter(e -> e.getId() == igranje.getIdGostujucePredstave()).findFirst().get().getNaziv();
-                    String[] empty = new String[115 - stringZaPrikaz.length()];
-                    Arrays.fill(empty, " ");
-                    stringZaPrikaz += Arrays.asList(empty).stream().collect(Collectors.joining(""));
+                    //String[] empty = new String[135 - stringZaPrikaz.length()];
+                    //Arrays.fill(empty, " ");
+                    //stringZaPrikaz += Arrays.asList(empty).stream().collect(Collectors.joining(""));
+                    //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
+                    // stringZaPrikaz += format.format(igranje.getTermin());
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
-                    stringZaPrikaz += format.format(igranje.getTermin());
+                    vrijeme.setText(format.format(igranje.getTermin()));
                 }
                 Label nazivLabel = new Label(stringZaPrikaz);
                 nazivLabel.setId(i.toString());
-                setLabel(nazivLabel);
+                setLabel(nazivLabel,vrijeme);
+                hBox.setMinWidth(900);
+                hBox.getChildren().add(nazivLabel);
+                hBox.getChildren().add(vrijeme);
                 if ("Biletar".equals(LogInController.tipKorisnika)) {
-                    labelSetAction(nazivLabel);
+                    labelSetAction(nazivLabel,vrijeme);
                 }
-                vBox.getChildren().add(nazivLabel);
+                vBox.getChildren().add(hBox);
             }
             vBox.setMaxWidth(747);
-            System.out.println("fff" + vBox.getWidth());
             scrollPane.vvalueProperty().bind(vBox.heightProperty());
             scrollPane.setContent(vBox);
-            if ("Administrator".equals(LogInController.tipKorisnika)) {
-                scrollPane.addEventFilter(MouseEvent.ANY, MouseEvent::consume);
-            }
+
         } else {
             Platform.runLater(() -> {
                 try {
                     TimeUnit.MILLISECONDS.sleep(1000);
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Za " + (Calendar.getInstance().get(Calendar.MONTH) + 1) + " nije unjet repertoar", ButtonType.OK);
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Za " + (new SimpleDateFormat("MMM").format(Calendar.getInstance().getTime())) + " nije unjet repertoar", ButtonType.OK);
                     alert.setTitle("Upozorenje");
                     alert.setHeaderText("Upozorenje");
                     ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
@@ -173,11 +186,12 @@ public class PregledRepertoaraController implements Initializable {
         repertoarZaPrikaz = repertoar;
     }
 
-    private void pregledRepertoara(Label label) {
+    private void pregledRepertoara(Label label, Label vrijeme) {
         Igranje zeljenoIgranje = null;
         try {
             predstavaSaKojomRadim = label.getText().split(" ")[0];
-            String string = label.getText().split(" ")[Arrays.asList(label.getText().split(" ")).size() - 1];
+            // String string = label.getText().split(" ")[Arrays.asList(label.getText().split(" ")).size() - 1];
+            String string = label.getText();
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm", Locale.GERMANY);
             Date date = format.parse(string);
             zeljenoIgranje = repertoarZaPrikaz.getIgranja().stream().filter(e -> e.getTermin().equals(date)).findFirst().get();
@@ -201,17 +215,37 @@ public class PregledRepertoaraController implements Initializable {
         }
     }
 
-    private void setLabel(Label label) {
-        label.setMinWidth(747);
+    private void setLabel(Label label, Label vrijeme) {
+        if ("Administrator".equals(LogInController.tipKorisnika)) {
+            label.addEventFilter(MouseEvent.ANY, MouseEvent::consume);
+        }
+        label.setMinWidth(665);
         label.setMinHeight(40);
         label.setFont(new Font(16));
         label.setStyle("-fx-font-weight: bold");
         label.setPadding(new Insets(0, 0, 0, 10));
+
+        vrijeme.setMinWidth(230);
+        vrijeme.setMinHeight(40);
+        vrijeme.setFont(new Font(16));
+        vrijeme.setStyle("-fx-font-weight: bold");
+        vrijeme.setPadding(new Insets(0, 0, 0, 0));
         if (Integer.parseInt(label.getId()) % 2 == 0) {
-            label.setBackground(new Background(new BackgroundFill(Color.CYAN, CornerRadii.EMPTY, Insets.EMPTY)));
+            //label.setBackground(new Background(new BackgroundFill(Color.color(144, 100, 100), CornerRadii.EMPTY, Insets.EMPTY)));
+            label.setStyle("-fx-background-color: #90c8ff");
         } else {
-            label.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+            //label.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+            label.setStyle("-fx-background-color: #e6e6e6");
         }
+
+        if (Integer.parseInt(vrijeme.getId()) % 2 == 0) {
+            //label.setBackground(new Background(new BackgroundFill(Color.color(144, 100, 100), CornerRadii.EMPTY, Insets.EMPTY)));
+            vrijeme.setStyle("-fx-background-color: #90c8ff");
+        } else {
+            //label.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+            vrijeme.setStyle("-fx-background-color: #e6e6e6");
+        }
+
     }
 
     private void buttonSetAction() {
@@ -226,21 +260,24 @@ public class PregledRepertoaraController implements Initializable {
         }
     }
 
-    private void labelSetAction(Label label) {
+    private void labelSetAction(Label label, Label vrijeme) {
         label.setOnMouseClicked(event -> {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 if (((MouseEvent) event).getClickCount() == 2) {
-                    pregledRepertoara(label);
+                    Optional<Node> hOpt = vBox.getChildren().stream().filter(e -> e.getId().equals(label.getId())).findFirst();
+                    if (hOpt.isPresent()) {
+                        pregledRepertoara((Label) ((HBox) hOpt.get()).getChildren().get(1), (Label) ((HBox) hOpt.get()).getChildren().get(0));
+                    }
                 }
             }
         });
         label.setOnMouseEntered(event -> {
-            label.setStyle("-fx-border-color: black");
+            label.setStyle("-fx-border-color: #005cb7");
             //setLabel(label);
         });
         label.setOnMouseExited(event -> {
             label.setBorder(Border.EMPTY);
-            setLabel(label);
+            setLabel(label, vrijeme);
         });
     }
 

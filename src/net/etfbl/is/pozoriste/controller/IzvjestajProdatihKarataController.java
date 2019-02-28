@@ -22,6 +22,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -61,9 +62,9 @@ public class IzvjestajProdatihKarataController {
         File temp = null;
         File tempPravo = null;
         try {
-            temp = new File(file.getAbsolutePath() + File.separator + "Izvjestaj.pdf");
+            temp = new File(file.getAbsolutePath() + File.separator + "Izvjestaj"+Calendar.getInstance().getTime().toString().replace(".", "_").replace(":", "_")+".pdf");
             if (!temp.exists()) {
-                tempPravo = new File(file.getAbsolutePath() + File.separator + temp.getName().substring(0, temp.getName().length() - 4) + "(1).pdf");
+                tempPravo = new File(file.getAbsolutePath() + File.separator + temp.getName().substring(0, temp.getName().length() - 4) + "(1)"+Calendar.getInstance().getTime().toString().replace(".", "_").replace(":", "_")+".pdf");
                 tempPravo.createNewFile();
                 this.file = tempPravo;
             } else {
@@ -76,7 +77,16 @@ public class IzvjestajProdatihKarataController {
     }
 
     public void metoda() {
-        if(file == null || !file.exists() || !file.renameTo(file)){
+        if (file == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Fajl ne moze biti kreiran", ButtonType.OK);
+            alert.setTitle("Upozorenje");
+            alert.setHeaderText("Upozorenje");
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
+            alert.showAndWait();
+            return;
+        }
+
+        if (file == null || !file.exists() || !file.renameTo(file)) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Fajl je otvoren od strane drugog programa", ButtonType.OK);
             alert.setTitle("Upozorenje");
             alert.setHeaderText("Upozorenje");
@@ -136,13 +146,11 @@ public class IzvjestajProdatihKarataController {
         List<Predstava> listaPredstava = PredstavaDAO.predstave();
         List<GostujucaPredstava> gostujucePredstava = GostujucaPredstavaDAO.gostujucePredstave();
 
-        
         Font fontNaziva = new Font(FontFamily.HELVETICA, 18, Font.BOLD);
-        Paragraph nazivIzvjestaja = new Paragraph("STATISTIKA PRODATIH KARATA",fontNaziva);
+        Paragraph nazivIzvjestaja = new Paragraph("STATISTIKA PRODATIH KARATA", fontNaziva);
         nazivIzvjestaja.setAlignment(Paragraph.ALIGN_CENTER);
         document.newPage();
         document.add(nazivIzvjestaja);
-        
 
         PdfPTable table = new PdfPTable(5);//broj kolona imace 4 kolone
 

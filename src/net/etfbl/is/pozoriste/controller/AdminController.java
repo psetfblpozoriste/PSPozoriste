@@ -38,13 +38,15 @@ public class AdminController implements Initializable {
 
     @FXML // fx:id="buttonStatistika"
     private Button buttonStatistika; // Value injected by FXMLLoader
-    
-    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ConnectionPool.getInstance();//da otvori odmah konekciju ka bazi 
         buttonStatistika.setOnAction(e -> izaberiFolderZaStatistiku());
+        bPregledPredstave.setStyle("-fx-background-color: #90c8ff");
+        bPregledRepertoara.setStyle("-fx-background-color: #e6e6e6");
+        bPregledRadnika.setStyle("-fx-background-color: #90c8ff");
+        buttonStatistika.setStyle("-fx-background-color: #e6e6e6");
     }
 
     private void izaberiFolderZaStatistiku() {
@@ -52,8 +54,10 @@ public class AdminController implements Initializable {
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         directoryChooser.setTitle("Izaberite lokaciju izvjestaja");
         File folder = directoryChooser.showDialog((Stage) buttonStatistika.getScene().getWindow());
-        IzvjestajProdatihKarataController k = new IzvjestajProdatihKarataController(folder);
-        k.metoda();
+        if (folder != null) {
+            IzvjestajProdatihKarataController k = new IzvjestajProdatihKarataController(folder);
+            k.metoda();
+        }
     }
 
     public void PregledRadnikaAction(ActionEvent event) {
