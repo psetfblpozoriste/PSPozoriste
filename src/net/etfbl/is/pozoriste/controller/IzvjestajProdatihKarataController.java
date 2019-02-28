@@ -11,6 +11,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -60,8 +61,8 @@ public class IzvjestajProdatihKarataController {
         File tempPravo = null;
         try {
             temp = new File(file.getAbsolutePath() + File.separator + "Izvjestaj.pdf");
-            if (temp.exists()) {
-                tempPravo = new File(file.getAbsolutePath() + File.separator + temp.getName() + "1.pdf");
+            if (!temp.exists()) {
+                tempPravo = new File(file.getAbsolutePath() + File.separator + temp.getName().substring(0, temp.getName().length() - 4) + "(1).pdf");
                 tempPravo.createNewFile();
                 this.file = tempPravo;
             } else {
@@ -124,6 +125,10 @@ public class IzvjestajProdatihKarataController {
         List<Repertoar> listaRepertoara = RepertoarDAO.repertoars();
         List<Predstava> listaPredstava = PredstavaDAO.predstave();
         List<GostujucaPredstava> gostujucePredstava = GostujucaPredstavaDAO.gostujucePredstave();
+
+        Paragraph preface = new Paragraph("STATISTIKA PRODATIH KARATA",font);
+        preface.setAlignment(Element.ALIGN_CENTER);
+        
 
         PdfPTable table = new PdfPTable(5);//broj kolona imace 4 kolone
 
