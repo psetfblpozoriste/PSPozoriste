@@ -68,6 +68,7 @@ public class IzvjestajProdatihKarataController {
                 this.file = tempPravo;
             } else {
                 temp.createNewFile();
+                this.file = temp;
             }
         } catch (IOException ex) {
             Logger.getLogger(IzvjestajProdatihKarataController.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,6 +76,14 @@ public class IzvjestajProdatihKarataController {
     }
 
     public void metoda() {
+        if(file == null || !file.exists() || !file.renameTo(file)){
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Fajl je otvoren od strane drugog programa", ButtonType.OK);
+            alert.setTitle("Upozorenje");
+            alert.setHeaderText("Upozorenje");
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/warning.png")));
+            alert.showAndWait();
+            return;
+        }
         if (file != null && file.exists()) {
             Document document = new Document();
             try {
