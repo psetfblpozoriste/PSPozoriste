@@ -134,12 +134,13 @@ public class AdministratorDAO {
         ResultSet resultSet=null;
         try {
             connection = ConnectionPool.getInstance().checkOut();
-            callableStatement = connection.prepareCall("{call idAdmina(?)}");
+            callableStatement = connection.prepareCall("{call idAdmina(?,?)}");
 
             callableStatement.setString(1, korisnickoIme);
-
-            resultSet=callableStatement.executeQuery();
-            id=resultSet.getInt(0);
+            callableStatement.registerOutParameter(2, Types.INTEGER);
+            
+            callableStatement.executeQuery();
+            id=callableStatement.getInt(2);
         } catch (SQLException ex) {
             Logger.getLogger(UmjetnikDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
