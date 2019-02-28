@@ -49,8 +49,10 @@ public class AdminController implements Initializable {
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         directoryChooser.setTitle("Izaberite lokaciju izvjestaja");
         File folder = directoryChooser.showDialog((Stage) buttonStatistika.getScene().getWindow());
-        IzvjestajProdatihKarataController k = new IzvjestajProdatihKarataController(folder);
-        k.metoda();
+        if (folder != null) {
+            IzvjestajProdatihKarataController k = new IzvjestajProdatihKarataController(folder);
+            k.metoda();
+        }
     }
 
     public void PregledRadnikaAction(ActionEvent event) {

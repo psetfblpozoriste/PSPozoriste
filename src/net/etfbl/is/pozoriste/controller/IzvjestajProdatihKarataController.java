@@ -11,6 +11,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.BaseFont;
@@ -126,8 +127,12 @@ public class IzvjestajProdatihKarataController {
         List<Predstava> listaPredstava = PredstavaDAO.predstave();
         List<GostujucaPredstava> gostujucePredstava = GostujucaPredstavaDAO.gostujucePredstave();
 
-        Paragraph preface = new Paragraph("STATISTIKA PRODATIH KARATA",font);
-        preface.setAlignment(Element.ALIGN_CENTER);
+        
+        Font fontNaziva = new Font(FontFamily.HELVETICA, 18, Font.BOLD);
+        Paragraph nazivIzvjestaja = new Paragraph("STATISTIKA PRODATIH KARATA",fontNaziva);
+        nazivIzvjestaja.setAlignment(Paragraph.ALIGN_CENTER);
+        document.newPage();
+        document.add(nazivIzvjestaja);
         
 
         PdfPTable table = new PdfPTable(5);//broj kolona imace 4 kolone
