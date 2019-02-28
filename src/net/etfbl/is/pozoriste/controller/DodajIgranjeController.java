@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +45,7 @@ import net.etfbl.is.pozoriste.model.dao.mysql.ScenaDAO;
 import net.etfbl.is.pozoriste.model.dto.GostujucaPredstava;
 import net.etfbl.is.pozoriste.model.dto.Igranje;
 import net.etfbl.is.pozoriste.model.dto.Predstava;
+import net.etfbl.is.pozoriste.model.dto.Repertoar;
 import net.etfbl.is.pozoriste.model.dto.Scena;
 
 /**
@@ -52,27 +54,27 @@ import net.etfbl.is.pozoriste.model.dto.Scena;
  * @author djord
  */
 public class DodajIgranjeController implements Initializable {
-    
+
     @FXML
     private ComboBox<Object> cmbPredstave;
-    
+
     @FXML
     private DatePicker dpTerminPredstave;
-    
+
     @FXML
     private Button bDodaj;
-    
+
     @FXML
     private Button bZavrsi;
-    
+
     @FXML
     private Button bUkloni;
-    
+
     @FXML
     private ComboBox<Object> cmbIgranjaZaRepertoar;
     @FXML
     private Label lUkloniIgranje;
-    
+
     @FXML
     void ukloniPredstavuAction(ActionEvent event) {
         if (!cmbIgranjaZaRepertoar.getSelectionModel().isEmpty()) {
@@ -86,29 +88,29 @@ public class DodajIgranjeController implements Initializable {
             upozorenjeIzaberitePredstavuZaBrisati();
         }
     }
-    
+
     @FXML
     void dodajIgranjeAction(ActionEvent event) {
         if (!dodajIgranje()) {
             return;
         }
     }
-    
+
     private boolean dodajIgranje() {
-        
+
         if (cmbPredstave.getSelectionModel().isEmpty()) {
             upozorenjeIzaberitePredstavu();
             return false;
         }
-        
+
         if (dpTerminPredstave.getValue() == null) {
             upozorenjeTermin();
             return false;
         }
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar kalendarRepertoar = Calendar.getInstance();
         if (dpTerminPredstave.getValue().getYear() != DodajRepertoarController.godinaRepertoara
@@ -116,14 +118,14 @@ public class DodajIgranjeController implements Initializable {
             upozorenjeTerminPredstave();
             return false;
         }
-        
+
         sdf.format(new Date(calendar.getInstance().getTimeInMillis()));
         List<Scena> scena = ScenaDAO.scene();
-        
+
         Igranje novoIgranje = new Igranje(new Date(calendar.getTimeInMillis()), scena.get(0).getIdScene(), (cmbPredstave.getSelectionModel().getSelectedItem() instanceof Predstava) ? ((Predstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, (cmbPredstave.getSelectionModel().getSelectedItem() instanceof GostujucaPredstava) ? ((GostujucaPredstava) cmbPredstave.getSelectionModel().getSelectedItem()).getId() : null, DodajRepertoarController.repertoar.getId());
         LinkedList<Igranje> svaIgranja = new LinkedList<>();
         svaIgranja = IgranjeDAO.getIgranja(DodajRepertoarController.repertoar.getId());
-        
+
         if (!svaIgranja.stream().filter(x -> sdf.format(x.getTermin()).equals(sdf.format(novoIgranje.getTermin()))).findAny().isPresent()) {
             IgranjeDAO.dodajIgranje(novoIgranje);
             return true;
@@ -132,12 +134,12 @@ public class DodajIgranjeController implements Initializable {
             return false;
         }
     }
-    
+
     @FXML
     void nazadNaDodajRepertoar(ActionEvent event) {
         try {
             Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRepertoar.fxml"));
-            
+
             Scene dodajRadnikaScene = new Scene(adminController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(dodajRadnikaScene);
@@ -146,12 +148,12 @@ public class DodajIgranjeController implements Initializable {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @FXML
     void zavrsiDodavanjeRepertoara(ActionEvent event) {
         try {
             Parent adminController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledSvihRepertoara.fxml"));
-            
+
             Scene dodajRadnikaScene = new Scene(adminController);
             Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
             window.setScene(dodajRadnikaScene);
@@ -160,39 +162,40 @@ public class DodajIgranjeController implements Initializable {
             Logger.getLogger(DodajIgranjeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void ubaciUCMBPredstave() {
         cmbPredstave.getItems().addAll(PredstavaDAO.predstave());
         cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
     }
-    
+
     private void ubaciUCMBIgranjaZaRepertoar() {
-        
+
         PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().forEach(System.out::println);
-        
-        for (int i = 0; i < PredstavaDAO.predstave().size(); i++) {
-            final int pom = i;
-           // if (PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream()
-            //       .filter(x -> x.getIdPredstave() == PredstavaDAO.predstave().get(pom).getId()).findAny().isPresent()) {
-            if (PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream()
-                  //  .anyMatch(x -> x.getIdPredstave() == PredstavaDAO.predstave().get(pom).getId())) {
-                .filter(x -> x.getIdPredstave() == PredstavaDAO.predstave().get(pom).getId()).findAny().isPresent()) {
-                System.out.println("DA: " + PredstavaDAO.predstave().get(i));
-                cmbIgranjaZaRepertoar.getItems().add(PredstavaDAO.predstave().get(i));
+
+        final LinkedList<Predstava> predstave = new LinkedList<>();
+        final LinkedList<GostujucaPredstava> gostujuce = new LinkedList<>();
+        List<Integer> nadjiOBicne = PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().mapToInt(e -> (e.getIdPredstave() != 0 ? e.getIdPredstave() : 0)).boxed().collect(Collectors.toList());
+        List<Integer> nadjiGostujuce = PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().mapToInt(e -> (e.getIdGostujucePredstave() != 0 ? e.getIdGostujucePredstave() : 0)).boxed().collect(Collectors.toList());
+        Long obicneBroj = nadjiOBicne.stream().count();
+        Long gostujuceBroj = nadjiGostujuce.stream().count();
+        nadjiOBicne.forEach(e -> {
+            Optional<Predstava> op = PredstavaDAO.predstave().stream().filter(p -> p.getId() == e).findFirst();
+            if (op.isPresent()) {
+                predstave.add(op.get());
             }
-        }
-        for (int i = 0; i < GostujucaPredstavaDAO.gostujucePredstave().size(); i++) {
-            
-            final int pom = i;
-            if (PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream()
-                    .filter(x -> x.getIdGostujucePredstave() == GostujucaPredstavaDAO.gostujucePredstave().get(pom).getId()).findAny().isPresent()) {
-                System.out.println("DAA: " + GostujucaPredstavaDAO.gostujucePredstave().get(i));
-                cmbIgranjaZaRepertoar.getItems().add(GostujucaPredstavaDAO.gostujucePredstave().get(i));
+        });
+        nadjiGostujuce.forEach(e -> {
+            Optional<GostujucaPredstava> op = GostujucaPredstavaDAO.gostujucePredstave().stream().filter(p -> p.getId() == e).findFirst();
+            if (op.isPresent()) {
+                gostujuce.add(op.get());
             }
-        }
-        
+        });
+
+        cmbIgranjaZaRepertoar.getItems().addAll(predstave);
+        cmbIgranjaZaRepertoar.getItems().addAll(gostujuce);
+   
     }
-    
+
     private void upozorenjePredstavaSeVecIgraNaTajDan() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom dodavanja predstave !");
@@ -200,7 +203,7 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Termin popunjen izaberite drugi!");
         alert.showAndWait();
     }
-    
+
     private void upozorenjeTerminPredstave() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom dodavanja predstave !");
@@ -208,7 +211,7 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Pogresan termin , prilagodite igranje predstave odgovarajucem repertoaru!");
         alert.showAndWait();
     }
-    
+
     private void upozorenjeTermin() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom izbora termina !");
@@ -216,7 +219,7 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Izaberite termin");
         alert.showAndWait();
     }
-    
+
     private void upozorenjeIzaberitePredstavu() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom izbora predstave !");
@@ -224,7 +227,7 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Izaberite predstavu!");
         alert.showAndWait();
     }
-    
+
     private void upozorenjeIzaberitePredstavuZaBrisati() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Greska prilikom izbora predstave !");
@@ -232,7 +235,7 @@ public class DodajIgranjeController implements Initializable {
         alert.setContentText("Izaberite predstavu za brisanje!");
         alert.showAndWait();
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ubaciUCMBPredstave();
@@ -246,5 +249,5 @@ public class DodajIgranjeController implements Initializable {
             ubaciUCMBIgranjaZaRepertoar();
         }
     }
-    
+
 }
