@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="529.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.DodajPredstavuController">
+<AnchorPane id="AnchorPane" prefHeight="529.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.etfbl.is.pozoriste.controller.DodajPredstavuController">
    <children>
       <Label fx:id="labelNaziv" layoutX="137.0" layoutY="39.0" prefHeight="27.0" prefWidth="71.0" text="Naziv" AnchorPane.leftAnchor="120.0">
          <font>
@@ -37,7 +37,7 @@
          <font>
             <Font name="Tempus Sans ITC" size="18.0" />
          </font></TextField>
-      <TextArea fx:id="textAreaOpis" layoutX="224.0" layoutY="79.0" prefHeight="89.0" prefWidth="300.0" AnchorPane.leftAnchor="200.0">
+      <TextArea fx:id="textAreaOpis" layoutX="224.0" layoutY="79.0" prefHeight="89.0" prefWidth="300.0" wrapText="true" AnchorPane.leftAnchor="200.0">
          <font>
             <Font name="Tempus Sans ITC" size="18.0" />
          </font></TextArea>
