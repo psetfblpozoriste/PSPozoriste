@@ -75,7 +75,6 @@ public class RezervisanoSjedisteDAO {
             callableStatement.setInt(3, rezervisanoSjediste.getIdScene());
             callableStatement.setInt(4, rezervisanoSjediste.getIdRezervacije());
             
-            System.out.println("unosim sjediste"+rezervisanoSjediste.getBrojSjedista()+" "+rezervisanoSjediste.getIdRezervacije()+ " "+rezervisanoSjediste.getIdScene());
             int count = callableStatement.executeUpdate();
             if (count <= 0) {
                 return false;
