@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -109,21 +110,28 @@ public class DodajIgranjeController implements Initializable {
             upozorenjeTermin();
             return false;
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar trenutni = Calendar.getInstance();
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
-        
-        if(calendar.before(trenutni)){
-            upozorenjeTermin();
-            return false;
-        }
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        System.out.println("trenutni " + sdf.format(trenutni.getTime()));
+        System.out.println("calendar1 " + sdf.format(calendar.getTime()));
+
         Calendar kalendarRepertoar = Calendar.getInstance();
         if (dpTerminPredstave.getValue().getYear() != DodajRepertoarController.godinaRepertoara
                 || ((dpTerminPredstave.getValue().getMonthValue()) != (DodajRepertoarController.mjesecRepertoara - 1))) {
             upozorenjeTerminPredstave();
             return false;
+        }
+
+        try {
+            if (sdf.parse(sdf.format(calendar.getTime())).before(sdf.parse(sdf.format(trenutni.getTime())))) {
+                upozorenjeTermin();
+                return false;
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(DodajIgranjeController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         sdf.format(new Date(calendar.getInstance().getTimeInMillis()));
@@ -173,17 +181,15 @@ public class DodajIgranjeController implements Initializable {
     }
 
     private void ubaciUCMBPredstave() {
-        
-        
+
         cmbPredstave.getItems().addAll(PredstavaDAO.predstave());
         cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
     }
-    
-   // private void magija(Igranje ){
-   //     HashMap<Predstava,Date> mapa = new HashMap<>();
-   //     HashMap<GostujucaPredstava,Date> mapaG = new HashMap<>();
-  //  }
 
+    // private void magija(Igranje ){
+    //     HashMap<Predstava,Date> mapa = new HashMap<>();
+    //     HashMap<GostujucaPredstava,Date> mapaG = new HashMap<>();
+    //  }
     private void ubaciUCMBIgranjaZaRepertoar() {
 
         PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().forEach(System.out::println);
