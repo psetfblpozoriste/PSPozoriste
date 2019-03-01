@@ -131,21 +131,13 @@ public class PregledRepertoaraController implements Initializable {
                 String stringZaPrikaz = "";
                 if (igranje.getIdPredstave() != 0) {
                     stringZaPrikaz += predstave.stream().filter(e -> e.getId() == igranje.getIdPredstave()).findFirst().get().getNaziv();
-                    // String[] empty = new String[135 - stringZaPrikaz.length()];
-                    //Arrays.fill(empty, " ");
-                    //stringZaPrikaz += Arrays.asList(empty).stream().collect(Collectors.joining(""));
-                    // SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
-                    // stringZaPrikaz += format.format(igranje.getTermin());
+                   
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
                     vrijeme.setText(format.format(igranje.getTermin()));
                 }
                 if (igranje.getIdGostujucePredstave() != 0) {
                     stringZaPrikaz += gostujuce.stream().filter(e -> e.getId() == igranje.getIdGostujucePredstave()).findFirst().get().getNaziv();
-                    //String[] empty = new String[135 - stringZaPrikaz.length()];
-                    //Arrays.fill(empty, " ");
-                    //stringZaPrikaz += Arrays.asList(empty).stream().collect(Collectors.joining(""));
-                    //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
-                    // stringZaPrikaz += format.format(igranje.getTermin());
+                    
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm");
                     vrijeme.setText(format.format(igranje.getTermin()));
                 }
@@ -203,7 +195,6 @@ public class PregledRepertoaraController implements Initializable {
         Igranje zeljenoIgranje = null;
         try {
             predstavaSaKojomRadim = label.getText();
-            // String string = label.getText().split(" ")[Arrays.asList(label.getText().split(" ")).size() - 1];
             String string = vrijeme.getText();
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh-mm", Locale.GERMANY);
             Date date = format.parse(string);
@@ -244,18 +235,14 @@ public class PregledRepertoaraController implements Initializable {
         vrijeme.setStyle("-fx-font-weight: bold");
         vrijeme.setPadding(new Insets(0, 0, 0, 0));
         if (Integer.parseInt(label.getId()) % 2 == 0) {
-            //label.setBackground(new Background(new BackgroundFill(Color.color(144, 100, 100), CornerRadii.EMPTY, Insets.EMPTY)));
             label.setStyle("-fx-background-color: #90c8ff");
         } else {
-            //label.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
             label.setStyle("-fx-background-color: #e6e6e6");
         }
 
         if (Integer.parseInt(vrijeme.getId()) % 2 == 0) {
-            //label.setBackground(new Background(new BackgroundFill(Color.color(144, 100, 100), CornerRadii.EMPTY, Insets.EMPTY)));
             vrijeme.setStyle("-fx-background-color: #90c8ff");
         } else {
-            //label.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
             vrijeme.setStyle("-fx-background-color: #e6e6e6");
         }
 
@@ -286,7 +273,6 @@ public class PregledRepertoaraController implements Initializable {
         });
         label.setOnMouseEntered(event -> {
             label.setStyle("-fx-border-color: #005cb7");
-            //setLabel(label);
         });
         label.setOnMouseExited(event -> {
             label.setBorder(Border.EMPTY);
