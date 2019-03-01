@@ -81,7 +81,6 @@ public class DodajIgranjeController implements Initializable {
     void ukloniPredstavuAction(ActionEvent event) {
         if (!cmbIgranjaZaRepertoar.getSelectionModel().isEmpty()) {
             Predstava predstavaIzCmb = (Predstava) cmbIgranjaZaRepertoar.getSelectionModel().getSelectedItem();
-            System.out.println("IGRANJE CMB: " + predstavaIzCmb);
             LinkedList<Igranje> igranjeIzCmb = new LinkedList<>();
             igranjeIzCmb.addAll(PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().filter(x -> x.getIdPredstave().equals(predstavaIzCmb.getId())).collect(Collectors.toList()));
 
@@ -115,8 +114,6 @@ public class DodajIgranjeController implements Initializable {
         Calendar calendar = Calendar.getInstance();
         calendar.set(dpTerminPredstave.getValue().getYear(), dpTerminPredstave.getValue().getMonthValue() - 1, dpTerminPredstave.getValue().getDayOfMonth());
 
-        System.out.println("trenutni " + sdf.format(trenutni.getTime()));
-        System.out.println("calendar1 " + sdf.format(calendar.getTime()));
 
         Calendar kalendarRepertoar = Calendar.getInstance();
         if (dpTerminPredstave.getValue().getYear() != DodajRepertoarController.godinaRepertoara
@@ -186,13 +183,8 @@ public class DodajIgranjeController implements Initializable {
         cmbPredstave.getItems().addAll(GostujucaPredstavaDAO.gostujucePredstave());
     }
 
-    // private void magija(Igranje ){
-    //     HashMap<Predstava,Date> mapa = new HashMap<>();
-    //     HashMap<GostujucaPredstava,Date> mapaG = new HashMap<>();
-    //  }
     private void ubaciUCMBIgranjaZaRepertoar() {
 
-        PregledSvihRepertoaraController.izabraniRepertoar.getIgranja().stream().forEach(System.out::println);
 
         final LinkedList<Predstava> predstave = new LinkedList<>();
         final LinkedList<GostujucaPredstava> gostujuce = new LinkedList<>();

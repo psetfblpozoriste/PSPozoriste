@@ -36,8 +36,8 @@ public class AdminController implements Initializable {
     @FXML
     private Button bPregledRepertoara;
 
-    @FXML // fx:id="buttonStatistika"
-    private Button buttonStatistika; // Value injected by FXMLLoader
+    @FXML 
+    private Button buttonStatistika; 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -68,13 +68,6 @@ public class AdminController implements Initializable {
             window.setTitle("Radnici");
             window.setScene(radnikScene);
 
-            /* Screen screen = Screen.getPrimary();
-            Rectangle2D bounds = screen.getVisualBounds();
-            window.setX(bounds.getMinX());
-            window.setY(bounds.getMinY());
-            window.setWidth(bounds.getWidth());
-            window.setHeight(bounds.getHeight());
-             */
             window.show();
         } catch (IOException ex) {
             Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,18 +75,7 @@ public class AdminController implements Initializable {
     }
 
     public void PregledRepertoaraAction(ActionEvent event) {
-        /*  try {
-            Parent repertoarController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
 
-            Scene repertoarScene = new Scene(repertoarController);
-            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            window.setScene(repertoarScene);
-            window.setResizable(false);
-            window.show();
-        } catch (IOException ex) {
-            Logger.getLogger(LogInController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         */
         try {
             Parent repertoarController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledSvihRepertoara.fxml"));
 

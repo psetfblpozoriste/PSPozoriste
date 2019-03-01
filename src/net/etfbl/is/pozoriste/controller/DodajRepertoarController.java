@@ -86,7 +86,6 @@ public class DodajRepertoarController implements Initializable {
                 repertoar.setMjesecIGodina(new java.sql.Date(sdf.parse(cmbGodina.getSelectionModel().getSelectedItem().toString()
                         + "-" + Integer.valueOf(cmbMjesec.getSelectionModel().getSelectedItem()).toString() + "-1").getTime()));
                 repertoar.setIgranja(PregledSvihRepertoaraController.izabraniRepertoar.getIgranja());
-                System.out.println("IZMJENJENI REPERTOAR: " + repertoar);
             }
         } catch (ParseException ex) {
             Logger.getLogger(DodajRepertoarController.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,36 +96,21 @@ public class DodajRepertoarController implements Initializable {
         if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
             if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
                     .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
-                //if (!PregledSvihRepertoaraController.izmjenaRepertoara) {
                 RepertoarDAO.dodajRepertoar(repertoar);
                 Kreiranje kreiranje = new Kreiranje(null, repertoar.getId(), null, LogInController.idLogovanog);
                 
                 KreiranjeDAO.dodajKreiranje(kreiranje);
                 return true;
-                // } //else {
-                //  RepertoarDAO.izmjeniRepertoar(repertoar);
-                //  return true;
-                //  }
-            } //else 
+            } 
             else {
                 upozorenjeRepertoar();
                 return false;
             }
         } else {
-            //  if (sdf.format(simo.getMjesecIGodina()).equals(sdf.format(PregledSvihRepertoaraController.izabraniRepertoar.getMjesecIGodina()))) {
             RepertoarDAO.izmjeniRepertoar(repertoar);
             Azuriranje azuriranje = new Azuriranje(null, repertoar.getId(), null, LogInController.idLogovanog);
             AzuriranjeDAO.dodajAzuriranje(azuriranje);
             return true;
-           // } else if (!PregledSvihRepertoaraController.repertoariObservableList.stream().filter(x -> sdf.format(x.getMjesecIGodina())
-            //         .equals(sdf.format(simo.getMjesecIGodina()))).findAny().isPresent()) {
-            //     RepertoarDAO.izmjeniRepertoar(repertoar);
-            //     return true;
-            //  } else {
-            //     upozorenjeRepertoar();
-            //    return false;
-            //   }
-
         }
     }
 
@@ -166,11 +150,7 @@ public class DodajRepertoarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //for (Integer year = 1950; year <= Calendar.getInstance().get(Calendar.YEAR); year++) {
-        // cmbGodina.getItems().add(year);
         cmbGodina.getItems().add(Calendar.getInstance().get(Calendar.YEAR));
-        //}
-        // for (Integer month = 1; month <= 12; month++) {
         for (Integer mjesec = (Calendar.getInstance().get(Calendar.MONTH) + 1); mjesec <= 12; mjesec++) {
             cmbMjesec.getItems().add(mjesec);
         }
