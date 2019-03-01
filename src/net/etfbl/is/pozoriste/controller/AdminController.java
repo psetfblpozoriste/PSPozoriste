@@ -15,6 +15,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -46,7 +48,12 @@ public class AdminController implements Initializable {
         bPregledPredstave.setStyle("-fx-background-color: #90c8ff");
         bPregledRepertoara.setStyle("-fx-background-color: #e6e6e6");
         bPregledRadnika.setStyle("-fx-background-color: #90c8ff");
+        
         buttonStatistika.setStyle("-fx-background-color: #e6e6e6");
+        bPregledPredstave.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/Theatre Mask_48px.png"))));
+        buttonStatistika.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/Statistics_48px.png"))));
+        bPregledRepertoara.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/Report Card_48px.png"))));
+        bPregledRadnika.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/net/etfbl/is/pozoriste/resursi/Find User Male_48px.png"))));
     }
 
     private void izaberiFolderZaStatistiku() {
