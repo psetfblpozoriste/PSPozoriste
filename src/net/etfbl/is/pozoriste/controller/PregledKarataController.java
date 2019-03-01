@@ -111,38 +111,6 @@ public class PregledKarataController implements Initializable {
 
     }
 
-    /*
-    private void buttonRezervacija() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/net/etfbl/is/pozoriste/view/DodajRezervaciju.fxml"));
-        DodajRezervacijuController dodajRezervacijuController = null;
-        loader.setController(dodajRezervacijuController);
-        DodajRezervacijuController.termin = terminPredstave;
-        DodajRezervacijuController.idScene = scenaZaPrikaz.getIdScene();
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(PregledKarataController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Stage stage = new Stage();
-        Scene scene = new Scene(root);
-        
-        stage.setTitle("Dodaj rezervaciju");
-        stage.getIcons().add(new Image(PregledKarataController.class.getResourceAsStream("/net/etfbl/is/pozoriste/resursi/drama.png")));
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            comboRezervacije.getItems().removeAll(comboRezervacije.getItems());
-            comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList()));
-        });
-        
-        stage.setOnHiding(e -> {
-            comboRezervacije.getItems().removeAll(comboRezervacije.getItems());
-            comboRezervacije.getItems().addAll(RezervacijaDAO.rezervacije(terminPredstave, scenaZaPrikaz.getIdScene()).stream().map(i -> i.getIme()).collect(Collectors.toList()));
-        });
-        stage.show();
-    }
-     */
     private void buttonNazadSetAction() {
         try {
             Parent pregledRepertoaraController = FXMLLoader.load(getClass().getResource("/net/etfbl/is/pozoriste/view/PregledRepertoara.fxml"));
