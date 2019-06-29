@@ -740,8 +740,6 @@ create procedure dodavanjeRepertoara (in mjesecIGodina date, out idRepertoara in
 begin
 	insert into repertoar values(0,CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01'));
     set idRepertoara = last_insert_id();
-    update repertoar set mjesecIGodina = date_add(CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01'),interval 1 month)
-    where repertoar.id = idRepertoara;
 end$$
 delimiter ;
 
@@ -754,7 +752,7 @@ drop procedure azuriranjeRepertoara;
 delimiter $$
 create procedure azuriranjeRepertoara (in id int, in mjesecIGodina date)
 begin
-	update repertoar set mjesecIGodina = date_add(CONCAT(DATE_FORMAT(mjesecIGodina, '%Y-%m-'), '01'),interval 1 month)
+	update repertoar set mjesecIGodina = mjesecIGodina
     where repertoar.id = id;
 end$$
 delimiter ;

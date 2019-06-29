@@ -1,4 +1,37 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
+<record>
+  <date>2019-06-28T13:16:11</date>
+  <millis>1561720571796</millis>
+  <sequence>0</sequence>
+  <logger>javafx</logger>
+  <level>WARNING</level>
+  <class>javafx.fxml.FXMLLoader$ValueElement</class>
+  <method>processValue</method>
+  <thread>13</thread>
+  <message>Loading FXML document with JavaFX API of version 10.0.1 by JavaFX runtime of version 8.0.201</message>
+</record>
+<record>
+  <date>2019-06-28T13:16:19</date>
+  <millis>1561720579657</millis>
+  <sequence>1</sequence>
+  <logger>javafx</logger>
+  <level>WARNING</level>
+  <class>javafx.fxml.FXMLLoader$ValueElement</class>
+  <method>processValue</method>
+  <thread>13</thread>
+  <message>Loading FXML document with JavaFX API of version 10.0.1 by JavaFX runtime of version 8.0.201</message>
+</record>
+<record>
+  <date>2019-06-28T13:16:21</date>
+  <millis>1561720581933</millis>
+  <sequence>2</sequence>
+  <logger>javafx</logger>
+  <level>WARNING</level>
+  <class>javafx.fxml.FXMLLoader$ValueElement</class>
+  <method>processValue</method>
+  <thread>13</thread>
+  <message>Loading FXML document with JavaFX API of version 10.0.1 by JavaFX runtime of version 8.0.201</message>
+</record>
 </log>
